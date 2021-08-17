@@ -13,10 +13,7 @@
 */
 int interpret(FILE *source, Storage *storage)
 {
-    char sname[35] = "roger";
-    char dirs[35] = "roger.on.on.on.on";
-    LampSwitch *lswitch = make_switch(source,sname);  
-    display_switch(get_switch_element(lswitch,convert_to_number_directions(dirs)));
+
     return 1;
 }
 
