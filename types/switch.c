@@ -321,3 +321,22 @@ void display_switch(LampSwitch *lswitch)
     }
     printf("\n");
 }
+
+/*
+    Deletes a switch and frees the allocated memory.
+
+    LampSwitch *lswitch: Switch to delete.
+*/
+void delete_switch(LampSwitch *lswitch)
+{
+    register int i = 0;
+    LampSwitchItem *current = NULL;
+    free(lswitch->name);
+    for (i = 0; i < (lswitch->item_arr_len); i++)
+    {
+        current = (lswitch->item_arr)[i];
+        free(current->directions);
+        free(current);
+    }
+    free(lswitch);
+}

@@ -125,3 +125,10 @@ LampSwitch *get_switch_element(LampSwitch *lswitch, unsigned char *directions_ra
     LampSwitch *lswitch: Switch to display.
 */
 void display_switch(LampSwitch *lswitch);
+
+/*
+    Deletes a switch and frees the allocated memory.
+
+    LampSwitch *lswitch: Switch to delete.
+*/
+void delete_switch(LampSwitch *lswitch);
