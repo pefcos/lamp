@@ -35,3 +35,22 @@ char *add_default_lamp_namespace(char *name)
     name = new_name;
     return name;
 }
+
+/*
+    Adds "switch:" in front of lamp name.
+
+    char *name: Name of switch to add namespace to. It will be added directly to this variable.
+*/
+char *add_default_switch_namespace(char *name)
+{
+    register int i = 0;
+    char prefix[8] = "switch:";
+    char *aux_pointer = NULL;
+    char *new_name = malloc((strlen(prefix) + strlen(name)) * sizeof(char));
+    strcpy(new_name,prefix);
+    aux_pointer = new_name + strlen(prefix);
+    strcpy(aux_pointer,name);
+    free(name);
+    name = new_name;
+    return name;
+}

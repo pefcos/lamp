@@ -165,8 +165,13 @@ LampSwitch *make_switch(FILE *source, char *name)
     result = (LampSwitch*) malloc(sizeof(LampSwitch));
     result->item_arr = NULL;
     result->item_arr_len = 0;
+    if (!has_namespace(name))
+        name = add_default_switch_namespace(name);
+    if (name != NULL && !validate_name(name))
+        return NULL;
     result->name = malloc((strlen(name) + 1) * sizeof(char));
     strcpy(result->name,name);
+    printf("name -> %s.\n",result->name);
     do
     {
         if (word != NULL)
