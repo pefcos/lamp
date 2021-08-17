@@ -19,6 +19,11 @@
 #define STORAGE_H
 #include "./storage/storage.h"
 #endif
+// Includes namespaces.
+#ifndef NAMESPACES_H
+#define NAMESPACES_H
+#include "./storage/namespaces.h"
+#endif
 
 /*
     Interprets the lamp code in the given file.

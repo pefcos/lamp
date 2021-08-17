@@ -7,7 +7,7 @@ FLAGS =
 OUT_NAME = lamp 
 
 # Files to input in compilation.
-FILE_LIST = ./main.c types/lamp.c types/switch.c storage/storage.c utils/utils.c
+FILE_LIST = ./main.c types/lamp.c types/switch.c storage/storage.c storage/namespaces.c utils/utils.c
 
 # Primary make target.
 lamp:
