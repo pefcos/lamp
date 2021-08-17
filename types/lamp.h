@@ -1,4 +1,11 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
 #include "../constants/constants.h"
+#endif
+#ifndef UTILS_H
+#define UTILS_H
+#include "../utils/utils.h"
+#endif
 
 /*
     Lamp struct.

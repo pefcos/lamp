@@ -1,6 +1,19 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
 #include "../constants/constants.h"
+#endif
+#ifndef TYPE_LAMP_H
+#define TYPE_LAMP_H
 #include "../types/lamp.h"
+#endif
+#ifndef TYPE_SWITCH_H
+#define TYPE_SWITCH_H
 #include "../types/switch.h"
+#endif
+#ifndef UTILS_H
+#define UTILS_H
+#include "../utils/utils.h"
+#endif
 
 /*
     Struct that takes care of the storage of lamps and switches in hashtables.
