@@ -8,6 +8,11 @@
 #include "../utils/utils.h"
 #endif
 
+#ifndef NAMESPACES_H
+#define NAMESPACES_H
+#include "../storage/namespaces.h"
+#endif
+
 /*
     Lamp struct.
     Stores the lamp name and value.
