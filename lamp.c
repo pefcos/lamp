@@ -344,7 +344,7 @@ unsigned char *next_directions(unsigned char *dir_arr, int dir_arr_len, int *new
         result = malloc((last_off_index + 1) * sizeof(unsigned char));
         for (i = 0; i < last_off_index; i++)
             result[i] = dir_arr[i];
-        dir_arr[last_off_index] = ON;
+        result[last_off_index] = ON;
     }
     *new_length = last_off_index + 1;
     return result; // Returns NULL if finished.
@@ -419,22 +419,18 @@ LampSwitch *make_switch(FILE *source, char *name)
             current_directions[cdir_len] = OFF;
             cdir_len++;
         }
-        if (close > 0)
-        {
-            aux_directions = next_directions(current_directions,cdir_len,&aux_len);
-            free(current_directions);
-            current_directions = aux_directions;
-            aux_directions = NULL;
-            cdir_len = aux_len;
-        }
         to_add = (LampSwitchItem*) malloc(sizeof(LampSwitchItem));
         to_add->dir_arr_len = cdir_len;
         to_add->directions = current_directions;
         to_add->value = get_value(word);   
         append_to_switch(result,to_add);                           
-        //Test end condition.
-        aux_directions = next_directions(current_directions,cdir_len,&aux_len);               
-    } while (aux_len != 0);
+        //Test end condition and update directions.
+        aux_directions = next_directions(current_directions,cdir_len,&aux_len);
+        free(current_directions);
+        current_directions = aux_directions;
+        aux_directions = NULL;
+        cdir_len = aux_len;         
+    } while (cdir_len != 0);
     return result;
 }
 
