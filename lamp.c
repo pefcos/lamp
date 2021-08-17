@@ -205,7 +205,6 @@ char *get_word(FILE *source)
     else
         fseek(source,(counter - 1) * -1,SEEK_END); // Lazy fix for EOF bug.
     word = (char*) malloc(counter * sizeof(char));
-    printf("get_word COUNTER -> %d\n",counter);
     fgets(word,counter,source);
     return word;
 }
@@ -237,12 +236,10 @@ unsigned char *convert_to_number_directions(char *directions)
     unsigned char *result = NULL; // Final result pointer.
     char *pointer = NULL; // Pointer for strtok reference.
     pointer = strtok(directions,"."); // Gets switch name, not important.
-    printf("starting in switch %s\n",pointer);
     // Fills dir_arr;
     pointer = strtok(NULL,".");
     while (pointer != NULL)
     {
-        printf("start...  %s\n",pointer);
         if (!strcmp(pointer,"on"))
         {
             dir_arr[index] = ON;
@@ -263,7 +260,6 @@ unsigned char *convert_to_number_directions(char *directions)
     for(i = 1; i <= index; i++)
     {
         result[i] = dir_arr[i-1];
-        printf("resulti = %d\n",(int) result[i]);
     }
     return result;
 }
@@ -395,9 +391,6 @@ LampSwitch *make_switch(FILE *source, char *name)
     strcpy(result->name,name);
     do
     {
-        if (aux_directions != NULL) 
-            free(aux_directions); // Frees aux_directions (end loop condition).
-        aux_directions = NULL;
         if (word != NULL)
             free(word); // Frees previous iteration word.
         word = get_word(source);
@@ -422,14 +415,14 @@ LampSwitch *make_switch(FILE *source, char *name)
         to_add = (LampSwitchItem*) malloc(sizeof(LampSwitchItem));
         to_add->dir_arr_len = cdir_len;
         to_add->directions = current_directions;
-        to_add->value = get_value(word);   
-        append_to_switch(result,to_add);                           
+        to_add->value = get_value(word);  
+        append_to_switch(result,to_add);  
+        to_add = NULL;                        
         //Test end condition and update directions.
         aux_directions = next_directions(current_directions,cdir_len,&aux_len);
-        free(current_directions);
         current_directions = aux_directions;
         aux_directions = NULL;
-        cdir_len = aux_len;         
+        cdir_len = aux_len;      
     } while (cdir_len != 0);
     return result;
 }
@@ -493,7 +486,7 @@ void display_switch(LampSwitch *lswitch)
 int interpret(FILE *source, Storage *storage)
 {
     char sname[35] = "roger";
-    LampSwitch *lswitch = make_switch(source,sname);
+    LampSwitch *lswitch = make_switch(source,sname);  
     display_switch(lswitch);
     return 1;
 }
