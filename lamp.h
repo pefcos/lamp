@@ -230,12 +230,31 @@ void append_to_switch(LampSwitch *lswitch, LampSwitchItem *lsi);
 LampSwitch *make_switch(FILE *source, char *name);  
 
 /*
-    Makes a switch based on words from file.
+    Checks if a switch element has specific directions as its prefix.
+    Returns 1 if the prefix matches, 0 otherwise.
 
-    FILE *source: File to get switch from;
-    unsigned char *directions: Directions in numeric format.
+    LampSwitchItem *lsi: Switch element to check;
+    unsigned char *prefix: Directions of the prefix;
+    int pre_len: Length of the prefix array.
 */
-LampSwitch *get_switch_element(LampSwitch *lswitch, unsigned char *directions); 
+int check_direction_prefix(LampSwitchItem *lsi, unsigned char *prefix, int pre_len);
+
+/*
+    Creates a copy of a switch element without the specified prefix.
+
+    LampSwitchItem *lsi: Switch element to copy;
+    unsigned char *prefix: Directions of the prefix;
+    int pre_len: Length of the prefix array.
+*/
+LampSwitchItem *copy_without_prefix(LampSwitchItem *lsi, unsigned char *prefix, int pre_len);
+
+/*
+    Gets a switch or a lamp from a switch.
+
+    LampSwitch *lswitch: Switch to get item from;
+    unsigned char *directions_raw: Directions in numeric format.
+*/
+LampSwitch *get_switch_element(LampSwitch *lswitch, unsigned char *directions_raw); 
 
 /*
     Displays a switch.

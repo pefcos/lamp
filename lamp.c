@@ -428,14 +428,81 @@ LampSwitch *make_switch(FILE *source, char *name)
 }
 
 /*
-    Makes a switch based on words from file.
+    Checks if a switch element has specific directions as its prefix.
+    Returns 1 if the prefix matches, 0 otherwise.
 
-    FILE *source: File to get switch from;
-    unsigned char *directions: Directions in numeric format.
+    LampSwitchItem *lsi: Switch element to check;
+    unsigned char *prefix: Directions of the prefix;
+    int pre_len: Length of the prefix array.
 */
-LampSwitch *get_switch_element(LampSwitch *lswitch, unsigned char *directions)
+int check_direction_prefix(LampSwitchItem *lsi, unsigned char *prefix, int pre_len)
 {
-    
+    register int i = 0;
+    for (i = 0; i < pre_len; i++)
+        if ((lsi->directions)[i] != prefix[i])
+            return 0;
+    return 1;
+}
+
+/*
+    Creates a copy of a switch element without the specified prefix.
+
+    LampSwitchItem *lsi: Switch element to copy;
+    unsigned char *prefix: Directions of the prefix;
+    int pre_len: Length of the prefix array.
+*/
+LampSwitchItem *copy_without_prefix(LampSwitchItem *lsi, unsigned char *prefix, int pre_len)
+{
+    register int i = 0;
+    LampSwitchItem *result = malloc(sizeof(LampSwitchItem));
+    result->value = lsi->value;
+    result->dir_arr_len = (lsi->dir_arr_len) - pre_len;
+    result->directions = malloc((result->dir_arr_len) * sizeof(unsigned char));
+    for (i = pre_len; i < (lsi->dir_arr_len); i++)
+        (result->directions)[i-pre_len] = (lsi->directions)[i];
+    return result;
+}
+
+/*
+    Gets a switch or a lamp from a switch.
+
+    LampSwitch *lswitch: Switch to get item from;
+    unsigned char *directions_raw: Directions in numeric format, with length as first item.
+*/
+LampSwitch *get_switch_element(LampSwitch *lswitch, unsigned char *directions_raw)
+{
+    register int i = 0;
+    LampSwitchItem *current = NULL;
+    LampSwitch *result = malloc(sizeof(LampSwitch));
+    int dir_len = directions_raw[0];
+    unsigned char *directions = directions_raw + 1;
+    result->item_arr_len = 0;
+    result->name = NULL;
+    result->item_arr = NULL;
+    for (i = 0; i < lswitch->item_arr_len; i++)
+    {
+        current = (lswitch->item_arr)[i];
+        // Case if the directions are not exact.
+        if (dir_len < current->dir_arr_len)
+        {
+            if (check_direction_prefix(current,directions,dir_len))
+            {
+                append_to_switch(result,copy_without_prefix(current,directions,dir_len));
+            }
+        }
+        // Case if the directions are exact.
+        else if (current->dir_arr_len == dir_len)
+        {
+            if (check_direction_prefix(current,directions,dir_len))
+            {
+                append_to_switch(result,current);
+                return result;
+            }
+        }
+        // Case if directions are greater than current (ignore).
+        // else { }
+    }   
+    return result;
 }
 
 /*
@@ -486,8 +553,9 @@ void display_switch(LampSwitch *lswitch)
 int interpret(FILE *source, Storage *storage)
 {
     char sname[35] = "roger";
+    char dirs[35] = "roger.on.on.on.on";
     LampSwitch *lswitch = make_switch(source,sname);  
-    display_switch(lswitch);
+    display_switch(get_switch_element(lswitch,convert_to_number_directions(dirs)));
     return 1;
 }
 
@@ -495,29 +563,28 @@ int main(int argc, char *argv[])
 {
     Storage *storage = create_storage();
     FILE *source = NULL;
-    char fn[10] = "test.lamp";
-    /* switch(argc)
+    switch(argc)
     {
     case 1:
         printf("No file to interpret. To specify a file, call the interpreter using \'lamp <filename.lamp>\'.\n");
         break;
     
-    case 2: */
-        source = fopen(fn,"r");
+    case 2:
+        source = fopen(argv[1],"r");
         if (source == NULL)
         {
             printf("Error opening file %s. Please specify the full filename with the extension and remember that uppercase and lowercase letters are different.\n",argv[1]);
-            //break;
+            break;
         }
         if (interpret(source, storage))
             printf("Program finished successfully.\n");
         else
             printf("Program execution interrupted.\n");
-        //break;
+        break;
     
-    /* default:
+    default:
         printf("Too many arguments! Please execute the program using \'lamp <filename.lamp>\'.\n");
-    } */
+    }
     
     return 0;
 }
