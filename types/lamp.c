@@ -33,3 +33,14 @@ void display_lamp(Lamp *lamp)
     else
         printf("off\n");
 }
+
+/*
+    Destroys a lamp and frees the memory allocated to it.
+
+    Lamp *lamp: Lamp to destroy;
+*/
+void delete_lamp(Lamp *lamp)
+{
+    free(lamp->name);
+    free(lamp);
+}

@@ -2,6 +2,7 @@
 #define CONSTANTS_H
 #include "../constants/constants.h"
 #endif
+
 #ifndef UTILS_H
 #define UTILS_H
 #include "../utils/utils.h"
@@ -47,3 +48,9 @@ Lamp *create_lamp(char *name, unsigned char initial_value);
 */
 void display_lamp(Lamp *lamp);
 
+/*
+    Destroys a lamp and frees the memory allocated to it.
+
+    Lamp *lamp: Lamp to destroy;
+*/
+void delete_lamp(Lamp *lamp);
