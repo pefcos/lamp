@@ -13,7 +13,71 @@
 */
 int interpret(FILE *source, Storage *storage)
 {
+    char *word = NULL;
+    char *name = NULL; // Variable for names.
+    unsigned char value = OFF;
+    Lamp *lamp_ptr = NULL;
+    word = get_word(source);
+    while (word != NULL)
+    {
+        // Lamp declaration/assignment.
+        if (!strcmp("lamp",word))
+        {
+            free(word);
+            word = get_word(source);
+            name = word;
+            if (!has_namespace(name))
+                name = add_default_lamp_namespace(name); 
+            word = get_word(source);
+            value = get_value(word);
+            lamp_ptr = get_lamp(storage,name);
+            if (lamp_ptr == NULL)
+            {
+                printf("Created lamp %s with value %d.\n",name,(int) value);
+                lamp_ptr = create_lamp(name, value);
+                store_lamp(storage,lamp_ptr);
+            }
+            else
+            {
+                printf("Assigned value %d to lamp %s.\n",(int) value, name);
+                lamp_ptr->value = value;
+                free(name);
+            }
+            name = NULL;
+            free(word);
+            word = NULL;
+        }
+        // Display lamp value.
+        else if (!strcmp("display",word))
+        {
+            free(word);
+            word = get_word(source);
+            if (!strcmp("lamp",word))
+            {
+                free(word);
+                word = get_word(source);
+                name = word;
+                if (!has_namespace(name))
+                    name = add_default_lamp_namespace(name);
+                lamp_ptr = get_lamp(storage,name);
+                if (lamp_ptr == NULL) 
+                {
+                    //EXCEPTION LAMP DOES NOT EXIST
+                }
+                display_lamp(lamp_ptr);
+            }
+            else if (!strcmp("switch",word))
+            {
 
+            }
+            else
+            {
+                //EXCEPTION INVALID TYPE
+            }
+        }
+        // Next word.
+        word = get_word(source);
+    }
     return 1;
 }
 

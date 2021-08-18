@@ -13,7 +13,6 @@ Lamp *create_lamp(char *name, unsigned char initial_value)
         name = add_default_lamp_namespace(name);
     if (name != NULL && !validate_name(name))
         return NULL;
-    printf("creating lamp %s.\n",name);
     Lamp *pointer = (Lamp*) malloc(sizeof(Lamp));
     pointer->name = (char*) malloc(sizeof(*name));
     if (name != NULL)
