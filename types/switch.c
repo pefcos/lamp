@@ -74,31 +74,6 @@ int count_open(char *word)
 }
 
 /*
-    Removes () characters and processes word value.
-
-    char *word: Word to trim '()' from and extract value.
-*/
-int get_value(char *word)
-{
-    register int i = 0; 
-    char copy[MAX_WORD_LEN] = "\0";
-    while (word[i] == '(')
-        i++;
-    strcpy(copy,word+i);
-    i = 0;
-    while (copy[i] != ')' && copy[i] != '\0')
-    {
-        i++;
-    }
-    copy[i] = '\0';
-    if (!strcmp(copy,"on"))
-        return ON;
-    if (!strcmp(copy,"off"))
-        return OFF;
-    return ERROR;
-}
-
-/*
     Calculates the next expected direction for switch.
 
     unsigned char *dir_arr: Direction array;

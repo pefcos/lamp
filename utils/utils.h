@@ -11,6 +11,13 @@
 int validate_name(char *name);
 
 /*
+    Removes () characters and processes word value.
+
+    char *word: Word to trim '()' from and extract value.
+*/
+int get_value(char *word);
+
+/*
     Calculates the hashtable address through a function that uses the name to calculate an index.
 
     char *name: Name of the lamp/switch.
