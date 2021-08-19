@@ -17,6 +17,7 @@ int interpret(FILE *source, Storage *storage)
     char *name = NULL; // Variable for names.
     unsigned char value = OFF;
     Lamp *lamp_ptr = NULL;
+    LampSwitch *lswitch_ptr = NULL;
     word = get_word(source);
     while (word != NULL)
     {
@@ -42,6 +43,31 @@ int interpret(FILE *source, Storage *storage)
                 printf("Assigned value %d to lamp %s.\n",(int) value, name);
                 lamp_ptr->value = value;
                 free(name);
+            }
+            name = NULL;
+            free(word);
+            word = NULL;
+        }
+        // Switch declaration/assignment.
+        if (!strcmp("switch",word))
+        {
+            free(word);
+            word = get_word(source);
+            name = word;
+            if (!has_namespace(name))
+                name = add_default_switch_namespace(name); 
+            word = get_word(source);
+            value = get_value(word);
+            lswitch_ptr = get_switch(storage,name);
+            if (lswitch_ptr == NULL)
+            {
+                printf("Created switch %s.\n",name,(int) value);
+                lswitch_ptr = make_switch(source,name);
+                store_switch(storage,lswitch_ptr);
+            }
+            else
+            {
+                // TODO
             }
             name = NULL;
             free(word);

@@ -53,6 +53,38 @@ int store_lamp(Storage *storage, Lamp *lamp)
 }
 
 /*
+    Stores a switch in the  given storage.
+    Returns 1 if is able to store, return 0 if error.
+
+    Storage *storage: Storage to save in;
+    LampSwitch *lswitch: Lamp to be saved.
+*/
+int store_switch(Storage *storage, LampSwitch *lswitch)
+{
+    S_HC *cell = &((storage->switches)[calc_hash(lswitch->name)]);
+    S_HC *new_end = NULL;
+    while (cell->content != NULL)
+    {
+        if (!strcmp(cell->content->name,lswitch->name))
+            return 0; // Error for already existing name within storage.
+        if (cell->next != NULL)
+            cell = cell->next;
+        else
+        {
+            // Really bad code, fast bugfix, to fix requires changing storage struct definition to array of pointers.
+            new_end = (S_HC*) malloc(sizeof(S_HC));
+            new_end->content = lswitch;
+            new_end->next = NULL;
+            cell->next = new_end;
+            return 1;
+        }
+    }
+    cell->content = lswitch;
+    cell->next = NULL; 
+    return 1;
+}
+
+/*
     Retrieves a lamp in the given storage.
     Returns NULL if not found.
 
@@ -110,4 +142,32 @@ int assign_to_lamp(Storage *storage, char *name, unsigned char value)
         return 0;
     lamp->value = value;
     return 1;
+}
+
+/*
+    Removes a lamp with given name from the given storage.
+
+    Storage *storage: Storage to remove the lamp from;
+    char *name: Name of the lamp to remove.
+*/
+int remove_storage_lamp(Storage *storage, char *name)
+{
+    register int deleted = 0;
+    L_HC *cell = &((storage->lamps)[calc_hash(name)]);
+    while (cell != NULL)
+    {
+        if (!strcmp(cell->content->name,name))
+        {
+            delete_lamp(cell->content);
+        }
+        if (cell->next != NULL)
+        {
+            if (deleted)
+                cell->content = cell->next->content;
+            cell = cell->next;
+        }
+        else
+            return 1; // Finished.
+    }
+    return 0; // Not found.
 }

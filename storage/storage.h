@@ -52,6 +52,15 @@ Storage *create_storage();
 int store_lamp(Storage *storage, Lamp *lamp);
 
 /*
+    Stores a switch in the  given storage.
+    Returns 1 if is able to store, return 0 if error.
+
+    Storage *storage: Storage to save in;
+    LampSwitch *lswitch: Lamp to be saved.
+*/
+int store_switch(Storage *storage, LampSwitch *lswitch);
+
+/*
     Retrieves a lamp in the given storage.
     Returns NULL if not found.
 
@@ -77,3 +86,11 @@ LampSwitch *get_switch(Storage *storage, char *name);
     int value: Value to be assigned.
 */
 int assign_to_lamp(Storage *storage, char *name, unsigned char value);
+
+/*
+    Removes a lamp with given name from the given storage.
+
+    Storage *storage: Storage to remove the lamp from;
+    char *name: Name of the lamp to remove.
+*/
+int remove_storage_lamp(Storage *storage, char *name);
