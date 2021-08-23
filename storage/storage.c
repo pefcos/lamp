@@ -9,13 +9,13 @@ Storage *create_storage()
     register int i = 0;
     for (i = 0; i < HASHTABLE_LEN; i++)
     {
-        (storage->lamps)[0].content = NULL;
-        (storage->lamps)[0].next = NULL;
+        (storage->lamps)[i] = NULL;
+        (storage->lamps)[i] = NULL;
     }
     for (i = 0; i < HASHTABLE_LEN; i++)
     {
-        (storage->switches)[0].content = NULL;
-        (storage->switches)[0].next = NULL;
+        (storage->switches)[i] = NULL;
+        (storage->switches)[i] = NULL;
     }
     return storage;
 }
@@ -29,8 +29,17 @@ Storage *create_storage()
 */
 int store_lamp(Storage *storage, Lamp *lamp)
 {
-    L_HC *cell = &((storage->lamps)[calc_hash(lamp->name)]);
+    L_HC *cell = (storage->lamps)[calc_hash(lamp->name)];
     L_HC *new_end = NULL;
+    if (cell == NULL)
+    {
+        // Bad code, too lazy to fix.
+        new_end = (L_HC*) malloc(sizeof(L_HC));
+        new_end->content = lamp;
+        new_end->next = NULL;
+        (storage->lamps)[calc_hash(lamp->name)] = new_end;
+        return 1;
+    }
     while (cell->content != NULL)
     {
         if (!strcmp(cell->content->name,lamp->name))
@@ -39,7 +48,7 @@ int store_lamp(Storage *storage, Lamp *lamp)
             cell = cell->next;
         else
         {
-            // Really bad code, fast bugfix, to fix requires changing storage struct definition to array of pointers.
+            // Bad code, too lazy to fix.
             new_end = (L_HC*) malloc(sizeof(L_HC));
             new_end->content = lamp;
             new_end->next = NULL;
@@ -61,7 +70,7 @@ int store_lamp(Storage *storage, Lamp *lamp)
 */
 int store_switch(Storage *storage, LampSwitch *lswitch)
 {
-    S_HC *cell = &((storage->switches)[calc_hash(lswitch->name)]);
+    S_HC *cell = (storage->switches)[calc_hash(lswitch->name)];
     S_HC *new_end = NULL;
     while (cell->content != NULL)
     {
@@ -71,7 +80,7 @@ int store_switch(Storage *storage, LampSwitch *lswitch)
             cell = cell->next;
         else
         {
-            // Really bad code, fast bugfix, to fix requires changing storage struct definition to array of pointers.
+            // Bad code, too lazy to fix.
             new_end = (S_HC*) malloc(sizeof(S_HC));
             new_end->content = lswitch;
             new_end->next = NULL;
@@ -93,8 +102,8 @@ int store_switch(Storage *storage, LampSwitch *lswitch)
 */
 Lamp *get_lamp(Storage *storage, char *name)
 {
-    L_HC *cell = &((storage->lamps)[calc_hash(name)]);
-    while (cell->content != NULL)
+    L_HC *cell = (storage->lamps)[calc_hash(name)];
+    while (cell != NULL && cell->content != NULL)
     {
         if (!strcmp(cell->content->name,name))
             return cell->content;
@@ -115,7 +124,7 @@ Lamp *get_lamp(Storage *storage, char *name)
 */
 LampSwitch *get_switch(Storage *storage, char *name)
 {
-    S_HC *cell = &((storage->switches)[calc_hash(name)]);
+    S_HC *cell = (storage->switches)[calc_hash(name)];
     while (cell->content != NULL)
     {
         if (!strcmp(cell->content->name,name))
@@ -150,10 +159,10 @@ int assign_to_lamp(Storage *storage, char *name, unsigned char value)
     Storage *storage: Storage to remove the lamp from;
     char *name: Name of the lamp to remove.
 */
-int remove_storage_lamp(Storage *storage, char *name)
+/* int remove_storage_lamp(Storage *storage, char *name)
 {
     register int deleted = 0;
-    L_HC *cell = &((storage->lamps)[calc_hash(name)]);
+    L_HC *cell = (storage->lamps)[calc_hash(name)];
     while (cell != NULL)
     {
         if (!strcmp(cell->content->name,name))
@@ -170,4 +179,4 @@ int remove_storage_lamp(Storage *storage, char *name)
             return 1; // Finished.
     }
     return 0; // Not found.
-}
+} */

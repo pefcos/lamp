@@ -20,8 +20,8 @@
 */
 struct storage 
 {
-    L_HC lamps[HASHTABLE_LEN];
-    S_HC switches[HASHTABLE_LEN];
+    L_HC *lamps[HASHTABLE_LEN];
+    S_HC *switches[HASHTABLE_LEN];
 };
 
 typedef struct storage Storage;
