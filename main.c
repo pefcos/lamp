@@ -49,7 +49,7 @@ int interpret(FILE *source, Storage *storage)
             word = NULL;
         }
         // Switch declaration/assignment.
-        if (!strcmp("switch",word))
+        if (word != NULL && !strcmp("switch",word))
         {
             free(word);
             word = get_word(source);
@@ -61,7 +61,7 @@ int interpret(FILE *source, Storage *storage)
             lswitch_ptr = get_switch(storage,name);
             if (lswitch_ptr == NULL)
             {
-                printf("Created switch %s.\n",name,(int) value);
+                printf("Created switch %s.\n",name);
                 lswitch_ptr = make_switch(source,name);
                 store_switch(storage,lswitch_ptr);
             }
@@ -74,7 +74,7 @@ int interpret(FILE *source, Storage *storage)
             word = NULL;
         }
         // Display lamp value.
-        else if (!strcmp("display",word))
+        else if (word != NULL && !strcmp("display",word))
         {
             free(word);
             word = get_word(source);
