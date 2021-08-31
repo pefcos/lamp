@@ -73,6 +73,40 @@ int interpret(FILE *source, Storage *storage)
             free(word);
             word = NULL;
         }
+        // Lamp/switch delete.
+        if (word != NULL && !strcmp("delete",word))
+        {
+            free(word);
+            word = get_word(source);
+            if (!strcmp("lamp",word))
+            {
+                free(word);
+                word = get_word(source);
+                name = word;
+                if (!has_namespace(name))
+                    name = add_default_lamp_namespace(name); // Defaults to lamp
+                if (get_lamp(storage,name) != NULL)
+                    remove_storage_lamp(storage, name);
+            }
+            else if (!strcmp("switch",word))
+            {
+                free(word);
+                word = get_word(source);
+                name = word;
+                if (!has_namespace(name))
+                    name = add_default_switch_namespace(name); // Defaults to lamp
+                if (get_switch(storage,name) != NULL)
+                    1;
+            }
+            else
+            {
+                // EXCEPTION UNKNOWN TYPE
+            }
+            free(name);
+            name = NULL;
+            word = NULL;
+
+        }
         // Display lamp value.
         else if (word != NULL && !strcmp("display",word))
         {
@@ -88,7 +122,7 @@ int interpret(FILE *source, Storage *storage)
                 lamp_ptr = get_lamp(storage,name);
                 if (lamp_ptr == NULL) 
                 {
-                    //EXCEPTION LAMP DOES NOT EXIST
+                    return 0;
                 }
                 display_lamp(lamp_ptr);
             }

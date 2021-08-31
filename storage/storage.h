@@ -94,3 +94,11 @@ int assign_to_lamp(Storage *storage, char *name, unsigned char value);
     char *name: Name of the lamp to remove.
 */
 int remove_storage_lamp(Storage *storage, char *name);
+
+/*
+    Removes a switch with given name from the given storage.
+
+    Storage *storage: Storage to remove the switch from;
+    char *name: Name of the switch to remove.
+*/
+int remove_storage_switch(Storage *storage, char *name);

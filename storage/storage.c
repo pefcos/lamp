@@ -159,24 +159,66 @@ int assign_to_lamp(Storage *storage, char *name, unsigned char value)
     Storage *storage: Storage to remove the lamp from;
     char *name: Name of the lamp to remove.
 */
-/* int remove_storage_lamp(Storage *storage, char *name)
+int remove_storage_lamp(Storage *storage, char *name)
 {
     register int deleted = 0;
     L_HC *cell = (storage->lamps)[calc_hash(name)];
-    while (cell != NULL)
+    if (cell == NULL)
+        return 0; // Not found
+    if (!strcmp(cell->content->name,name))
     {
-        if (!strcmp(cell->content->name,name))
+        delete_lamp(cell->content);
+        cell->content = NULL;
+        cell->next = NULL;
+        deleted = 1;
+    }
+    if (cell != NULL)
+    {    
+        while (cell->next != NULL)
         {
-            delete_lamp(cell->content);
-        }
-        if (cell->next != NULL)
-        {
-            if (deleted)
-                cell->content = cell->next->content;
+            if (!strcmp(cell->next->content->name,name))
+            {
+                delete_lamp(cell->next->content);
+                cell->next = cell->next->next;
+                deleted = 1;
+            }
             cell = cell->next;
         }
-        else
-            return 1; // Finished.
     }
-    return 0; // Not found.
-} */
+    return deleted; // Not found if deleted == 0.
+}
+
+/*
+    Removes a switch with given name from the given storage.
+
+    Storage *storage: Storage to remove the switch from;
+    char *name: Name of the switch to remove.
+*/
+int remove_storage_switch(Storage *storage, char *name)
+{
+    register int deleted = 0;
+    S_HC *cell = (storage->switches)[calc_hash(name)];
+    if (cell == NULL)
+        return 0; // Not found
+    if (!strcmp(cell->content->name,name))
+    {
+        delete_switch(cell->content);
+        cell->content = NULL;
+        cell->next = NULL;
+        deleted = 1;
+    }
+    if (cell != NULL)
+    {    
+        while (cell->next != NULL)
+        {
+            if (!strcmp(cell->next->content->name,name))
+            {
+                delete_switch(cell->next->content);
+                cell->next = cell->next->next;
+                deleted = 1;
+            }
+            cell = cell->next;
+        }
+    }
+    return deleted; // Not found if deleted == 0.
+}
