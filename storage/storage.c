@@ -242,12 +242,12 @@ int remove_storage_switch(Storage *storage, char *name)
     long int offset: Offset to store;
     Stack *stack: Stack to push into.
 */
-void stack_push(long int offset, Stack *stack)
+void stack_push(long int offset, Stack **stack)
 {
     Stack *new_frame = (Stack*) malloc(sizeof(Stack));
     new_frame->offset = offset;
-    new_frame->previous = stack;
-    stack = new_frame;
+    new_frame->previous = *stack;
+    *stack = new_frame;
 }
 
 /*
@@ -256,16 +256,16 @@ void stack_push(long int offset, Stack *stack)
     long int offset: Offset to store;
     Stack *stack: Stack to pop from.
 */
-long int stack_pop(Stack *stack)
+long int stack_pop(Stack **stack)
 {
     Stack *new_stack = NULL;
     long int ret = 0;
     if (stack != NULL)
     {
-        new_stack = stack->previous;
-        ret = stack->offset;
-        free(stack);
-        stack = new_stack;
+        new_stack = (*stack)->previous;
+        ret = (*stack)->offset;
+        free(*stack);
+        *stack = new_stack;
         return ret;
     }
     return -1;

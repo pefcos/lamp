@@ -15,6 +15,7 @@ int interpret(FILE *source, Storage *storage)
 {
     char *word = NULL;
     char *name = NULL; // Variable for names.
+    int depth = 0; // Used in circuit ignoring.
     unsigned char value = OFF;
     Lamp *lamp_ptr = NULL;
     LampSwitch *lswitch_ptr = NULL;
@@ -146,20 +147,26 @@ int interpret(FILE *source, Storage *storage)
         }
         else if (word != NULL && !strcmp("circuit",word))
         {
-            while (word != NULL && strcmp(word,"ground") != 0)
+            depth = 1;
+            while (word != NULL && depth > 0)
             {
                 free(word);
                 word = get_word(source);
+                if (!strcmp(word,"circuit"))
+                    depth++;
+                if (!strcmp(word,"ground"))
+                    depth--;
             }
             if (word == NULL)
                 return 0; // Error no ground for circuit
             free(word);
+            word = NULL;
         }
         else if (word != NULL && !strcmp("ground",word))
         {
             if (stack == NULL)
                 return 1; // End execution.
-            fseek(source,stack_pop(stack),SEEK_SET);
+            fseek(source,stack_pop(&stack),SEEK_SET);
             free(word);
         }
         else if (word != NULL && !strcmp("power",word))
@@ -170,7 +177,7 @@ int interpret(FILE *source, Storage *storage)
             word = get_word(source); // Gets on/off value to decide if powers circuit or not.
             if (!strcmp("on",word))
             {
-                stack_push(ftell(source),stack);
+                stack_push(ftell(source),&stack);
                 call_circuit(storage,source,name);
             }
             free(name);

@@ -123,7 +123,7 @@ int remove_storage_switch(Storage *storage, char *name);
     long int offset: Offset to store;
     Stack *stack: Stack to push into.
 */
-void stack_push(long int offset, Stack *stack);
+void stack_push(long int offset, Stack **stack);
 
 /*
     Retrieves and removes the offset from the top (start) of the stack.
@@ -131,7 +131,7 @@ void stack_push(long int offset, Stack *stack);
     long int offset: Offset to store;
     Stack *stack: Stack to pop from.
 */
-long int stack_pop(Stack *stack);
+long int stack_pop(Stack **stack);
 
 /*
     Gets all circuit references in source file.
