@@ -4,6 +4,18 @@
 #endif
 
 /*
+    Struct that stores offsets before function calls.
+    Stack implemented as linked list.
+*/
+struct stackframe
+{
+    long int offset;
+    struct stackframe *previous;
+};
+
+typedef struct stackframe Stack;
+
+/*
     Validates a lamp/switch name.
 
     char *name: name to validate.
@@ -30,3 +42,19 @@ unsigned short int calc_hash(char *name);
     FILE *source: File to get the word from.
 */
 char *get_word(FILE *source);
+
+/*
+    Adds the offset to the top (start) of the stack.
+
+    long int offset: Offset to store;
+    Stack *stack: Stack to push into.
+*/
+void stack_push(long int offset, Stack **stack);
+
+/*
+    Retrieves and removes the offset from the top (start) of the stack.
+
+    long int offset: Offset to store;
+    Stack *stack: Stack to pop from.
+*/
+long int stack_pop(Stack **stack);

@@ -93,3 +93,38 @@ char *get_word(FILE *source)
     fgets(word,counter,source);
     return word;
 }
+
+/*
+    Adds the offset to the top (start) of the stack.
+
+    long int offset: Offset to store;
+    Stack *stack: Stack to push into.
+*/
+void stack_push(long int offset, Stack **stack)
+{
+    Stack *new_frame = (Stack*) malloc(sizeof(Stack));
+    new_frame->offset = offset;
+    new_frame->previous = *stack;
+    *stack = new_frame;
+}
+
+/*
+    Retrieves and removes the offset from the top (start) of the stack.
+
+    long int offset: Offset to store;
+    Stack *stack: Stack to pop from.
+*/
+long int stack_pop(Stack **stack)
+{
+    Stack *new_stack = NULL;
+    long int ret = 0;
+    if (stack != NULL)
+    {
+        new_stack = (*stack)->previous;
+        ret = (*stack)->offset;
+        free(*stack);
+        *stack = new_stack;
+        return ret;
+    }
+    return -1;
+}
