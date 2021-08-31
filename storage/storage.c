@@ -237,6 +237,41 @@ int remove_storage_switch(Storage *storage, char *name)
 }
 
 /*
+    Adds the offset to the top (start) of the stack.
+
+    long int offset: Offset to store;
+    Stack *stack: Stack to push into.
+*/
+void stack_push(long int offset, Stack *stack)
+{
+    Stack *new_frame = (Stack*) malloc(sizeof(Stack));
+    new_frame->offset = offset;
+    new_frame->previous = stack;
+    stack = new_frame;
+}
+
+/*
+    Retrieves and removes the offset from the top (start) of the stack.
+
+    long int offset: Offset to store;
+    Stack *stack: Stack to pop from.
+*/
+long int stack_pop(Stack *stack)
+{
+    Stack *new_stack = NULL;
+    long int ret = 0;
+    if (stack != NULL)
+    {
+        new_stack = stack->previous;
+        ret = stack->offset;
+        free(stack);
+        stack = new_stack;
+        return ret;
+    }
+    return -1;
+}
+
+/*
     Gets all circuit references in source file.
 
     Storage *storage: Storage to store the references in;
@@ -257,7 +292,7 @@ void get_circ_refs(Storage *storage, FILE *source)
             word = get_word(source);
             if (word == NULL)
                 return; // Breaks the loop on EOF.
-        } while (strcmp(word,"circuit"));
+        } while (strcmp(word,"circuit") != 0);
         // Initializes new arays.
         new_offsets = malloc((storage->circ_refs->length + 1) * sizeof(long int));
         new_names = malloc((storage->circ_refs->length + 1) * sizeof(char*));
@@ -267,9 +302,10 @@ void get_circ_refs(Storage *storage, FILE *source)
             new_offsets[i] = (storage->circ_refs->offsets)[i];
             new_names[i] = (storage->circ_refs->names)[i];
         }
-        new_offsets[i] = ftell(source);
         word = get_word(source);
         new_names[i] = word;
+        word = NULL;
+        new_offsets[i] = ftell(source);
         if ((storage->circ_refs->offsets) != NULL)
             free(storage->circ_refs->offsets);
         if ((storage->circ_refs->names) != NULL)
@@ -278,4 +314,26 @@ void get_circ_refs(Storage *storage, FILE *source)
         storage->circ_refs->offsets = new_offsets;
         storage->circ_refs->names = new_names;
     }
+}
+
+/*
+    Sets file cursor to a specific circuit.
+
+    Storage *storage: Storage to retrieve the reference from;
+    FILE *source: File to search for circuit reference;
+    char *name: Name of the circuit.
+*/
+int call_circuit(Storage *storage, FILE *source, char *name)
+{
+    long int circ_offset = 0;
+    register int i = 0;
+    while( i < (storage->circ_refs->length) && strcmp((storage->circ_refs->names)[i],name) != 0)
+        i++;
+    if (i != (storage->circ_refs->length))
+    {
+        circ_offset = (storage->circ_refs->offsets)[i];
+        fseek(source,circ_offset,SEEK_SET);
+        return 1;
+    }
+    return 0;
 }

@@ -18,6 +18,7 @@ int interpret(FILE *source, Storage *storage)
     unsigned char value = OFF;
     Lamp *lamp_ptr = NULL;
     LampSwitch *lswitch_ptr = NULL;
+    Stack *stack = NULL;
     word = get_word(source);
     while (word != NULL)
     {
@@ -142,6 +143,38 @@ int interpret(FILE *source, Storage *storage)
             {
                 //EXCEPTION INVALID TYPE
             }
+        }
+        else if (word != NULL && !strcmp("circuit",word))
+        {
+            while (word != NULL && strcmp(word,"ground") != 0)
+            {
+                free(word);
+                word = get_word(source);
+            }
+            if (word == NULL)
+                return 0; // Error no ground for circuit
+            free(word);
+        }
+        else if (word != NULL && !strcmp("ground",word))
+        {
+            if (stack == NULL)
+                return 1; // End execution.
+            fseek(source,stack_pop(stack),SEEK_SET);
+            free(word);
+        }
+        else if (word != NULL && !strcmp("power",word))
+        {
+            free(word);
+            word = get_word(source);
+            name = word;
+            word = get_word(source); // Gets on/off value to decide if powers circuit or not.
+            if (!strcmp("on",word))
+            {
+                stack_push(ftell(source),stack);
+                call_circuit(storage,source,name);
+            }
+            free(name);
+            free(word);
         }
         // Next word.
         word = get_word(source);

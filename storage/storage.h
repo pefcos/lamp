@@ -16,16 +16,16 @@
 #endif
 
 /*
-    Struct that takes care of the storage of lamps and switches in hashtables.
+    Struct that stores offsets before function calls.
+    Stack implemented as linked list.
 */
-struct storage 
+struct stackframe
 {
-    L_HC *lamps[HASHTABLE_LEN];
-    S_HC *switches[HASHTABLE_LEN];
-    CircRefs *circ_refs;
+    long int offset;
+    struct stackframe *previous;
 };
 
-typedef struct storage Storage;
+typedef struct stackframe Stack;
 
 /*
     Struct that stores circuit references in an array of fseek offsets from SEEK_SET.
@@ -38,6 +38,18 @@ struct circ_refs
 };
 
 typedef struct circ_refs CircRefs;
+
+/*
+    Struct that takes care of the storage of lamps and switches in hashtables.
+*/
+struct storage 
+{
+    L_HC *lamps[HASHTABLE_LEN];
+    S_HC *switches[HASHTABLE_LEN];
+    CircRefs *circ_refs;
+};
+
+typedef struct storage Storage;
 
 /*
     Creates a storage and returns the pointer to it.
@@ -106,9 +118,34 @@ int remove_storage_lamp(Storage *storage, char *name);
 int remove_storage_switch(Storage *storage, char *name);
 
 /*
+    Adds the offset to the top (start) of the stack.
+
+    long int offset: Offset to store;
+    Stack *stack: Stack to push into.
+*/
+void stack_push(long int offset, Stack *stack);
+
+/*
+    Retrieves and removes the offset from the top (start) of the stack.
+
+    long int offset: Offset to store;
+    Stack *stack: Stack to pop from.
+*/
+long int stack_pop(Stack *stack);
+
+/*
     Gets all circuit references in source file.
 
     Storage *storage: Storage to store the references in;
     FILE *source: File to search for circuit references.
 */
 void get_circ_refs(Storage *storage, FILE *source);
+
+/*
+    Sets file cursor to a specific circuit.
+
+    Storage *storage: Storage to retrieve the reference from;
+    FILE *source: File to search for circuit reference;
+    char *name: Name of the circuit.
+*/
+int call_circuit(Storage *storage, FILE *source, char *name);
