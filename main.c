@@ -66,7 +66,10 @@ int interpret(FILE *source, Storage *storage)
             }
             else
             {
-                // TODO
+                remove_storage_switch(storage,name);
+                lswitch_ptr = make_switch(source,name);
+                printf("Assigned to switch %s.\n",name);
+                store_switch(storage,lswitch_ptr);
             }
             name = NULL;
             free(word);
@@ -120,14 +123,20 @@ int interpret(FILE *source, Storage *storage)
                     name = add_default_lamp_namespace(name);
                 lamp_ptr = get_lamp(storage,name);
                 if (lamp_ptr == NULL) 
-                {
-                    return 0;
-                }
+                    return 0; // Error no lamp to display.
                 display_lamp(lamp_ptr);
             }
             else if (!strcmp("switch",word))
             {
-
+                free(word);
+                word = get_word(source);
+                name = word;
+                if (!has_namespace(name))
+                    name = add_default_switch_namespace(name);
+                lswitch_ptr = get_switch(storage,name);
+                if (lswitch_ptr == NULL) 
+                    return 0; // Error no switch to display.
+                display_switch(lswitch_ptr);
             }
             else
             {
