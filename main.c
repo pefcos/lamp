@@ -166,6 +166,9 @@ int main(int argc, char *argv[])
             printf("Error opening file %s. Please specify the full filename with the extension and remember that uppercase and lowercase letters are different.\n",argv[1]);
             break;
         }
+        // Get circuit references.
+        get_circ_refs(storage,source);
+        fseek(source,0,SEEK_SET);
         if (interpret(source, storage))
             printf("Program finished successfully.\n");
         else

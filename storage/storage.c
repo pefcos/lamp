@@ -17,6 +17,10 @@ Storage *create_storage()
         (storage->switches)[i] = NULL;
         (storage->switches)[i] = NULL;
     }
+    storage->circ_refs = (CircRefs*) malloc(sizeof(CircRefs));
+    storage->circ_refs->length = 0;
+    storage->circ_refs->names = NULL;
+    storage->circ_refs->offsets = NULL;
     return storage;
 }
 
@@ -230,4 +234,48 @@ int remove_storage_switch(Storage *storage, char *name)
         }
     }
     return deleted; // Not found if deleted == 0.
+}
+
+/*
+    Gets all circuit references in source file.
+
+    Storage *storage: Storage to store the references in;
+    FILE *source: File to search for circuit references.
+*/
+void get_circ_refs(Storage *storage, FILE *source)
+{
+    register int i = 0;
+    char *word = NULL;
+    long int *new_offsets = NULL;
+    char **new_names = NULL;
+    while (1)
+    {
+        // Loops until it finds a circuit reference.
+        do {
+            if (word != NULL)
+                free(word);
+            word = get_word(source);
+            if (word == NULL)
+                return; // Breaks the loop on EOF.
+        } while (strcmp(word,"circuit"));
+        // Initializes new arays.
+        new_offsets = malloc((storage->circ_refs->length + 1) * sizeof(long int));
+        new_names = malloc((storage->circ_refs->length + 1) * sizeof(char*));
+        // Copy contents to new array.
+        for (i = 0; i < storage->circ_refs->length; i++)
+        {
+            new_offsets[i] = (storage->circ_refs->offsets)[i];
+            new_names[i] = (storage->circ_refs->names)[i];
+        }
+        new_offsets[i] = ftell(source);
+        word = get_word(source);
+        new_names[i] = word;
+        if ((storage->circ_refs->offsets) != NULL)
+            free(storage->circ_refs->offsets);
+        if ((storage->circ_refs->names) != NULL)
+            free(storage->circ_refs->names);
+        (storage->circ_refs->length)++;
+        storage->circ_refs->offsets = new_offsets;
+        storage->circ_refs->names = new_names;
+    }
 }

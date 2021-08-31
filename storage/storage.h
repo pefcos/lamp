@@ -22,6 +22,7 @@ struct storage
 {
     L_HC *lamps[HASHTABLE_LEN];
     S_HC *switches[HASHTABLE_LEN];
+    CircRefs *circ_refs;
 };
 
 typedef struct storage Storage;
@@ -32,7 +33,8 @@ typedef struct storage Storage;
 struct circ_refs
 {
     int length;
-    int *offsets;
+    long int *offsets;
+    char **names;
 };
 
 typedef struct circ_refs CircRefs;
@@ -102,3 +104,11 @@ int remove_storage_lamp(Storage *storage, char *name);
     char *name: Name of the switch to remove.
 */
 int remove_storage_switch(Storage *storage, char *name);
+
+/*
+    Gets all circuit references in source file.
+
+    Storage *storage: Storage to store the references in;
+    FILE *source: File to search for circuit references.
+*/
+void get_circ_refs(Storage *storage, FILE *source);
