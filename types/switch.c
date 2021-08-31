@@ -146,7 +146,6 @@ LampSwitch *make_switch(FILE *source, char *name)
         return NULL;
     result->name = malloc((strlen(name) + 1) * sizeof(char));
     strcpy(result->name,name);
-    printf("name -> %s.\n",result->name);
     do
     {
         if (word != NULL)
