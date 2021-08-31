@@ -72,6 +72,15 @@ int store_switch(Storage *storage, LampSwitch *lswitch)
 {
     S_HC *cell = (storage->switches)[calc_hash(lswitch->name)];
     S_HC *new_end = NULL;
+    if (cell == NULL)
+    {
+        // Bad code, too lazy to fix.
+        new_end = (S_HC*) malloc(sizeof(S_HC));
+        new_end->content = lswitch;
+        new_end->next = NULL;
+        (storage->switches)[calc_hash(lswitch->name)] = new_end;
+        return 1;
+    }
     while (cell->content != NULL)
     {
         if (!strcmp(cell->content->name,lswitch->name))
@@ -125,7 +134,7 @@ Lamp *get_lamp(Storage *storage, char *name)
 LampSwitch *get_switch(Storage *storage, char *name)
 {
     S_HC *cell = (storage->switches)[calc_hash(name)];
-    while (cell->content != NULL)
+    while (cell != NULL && cell->content != NULL)
     {
         if (!strcmp(cell->content->name,name))
             return cell->content;

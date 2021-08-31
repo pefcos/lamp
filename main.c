@@ -55,14 +55,13 @@ int interpret(FILE *source, Storage *storage)
             word = get_word(source);
             name = word;
             if (!has_namespace(name))
-                name = add_default_switch_namespace(name); 
-            word = get_word(source);
-            value = get_value(word);
+                name = add_default_switch_namespace(name);
+            word = NULL;
             lswitch_ptr = get_switch(storage,name);
             if (lswitch_ptr == NULL)
             {
-                printf("Created switch %s.\n",name);
                 lswitch_ptr = make_switch(source,name);
+                printf("Created switch %s.\n",name);
                 store_switch(storage,lswitch_ptr);
             }
             else
