@@ -12,6 +12,6 @@
 // Maximum number of accesses in a word (.on and .off)
 #define MAX_ACCESSES 400
 
-#define ERROR -1
+#define ERROR 255
 #define OFF 0
 #define ON 1
