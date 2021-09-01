@@ -15,6 +15,8 @@
 #include "../utils/utils.h"
 #endif
 
+typedef union vartype VarType;
+
 /*
     Struct that stores circuit references in an array of fseek offsets from SEEK_SET.
 */
@@ -121,3 +123,13 @@ void get_circ_refs(Storage *storage, FILE *source);
     char *name: Name of the circuit.
 */
 int call_circuit(Storage *storage, FILE *source, char *name);
+
+/*
+    Gets the lamp/switch by its name. Useful to get value.
+
+    Storage *storage: Storage to get from;
+    char *name: Name to search by; 
+    Lamp **lamp: Pointer to assign lamp to;
+    LampSwitch **lswitch: Pointer to assign switch to.
+*/
+void get_var_by_name(Storage *storage, char *name, Lamp **lamp, LampSwitch **lswitch);

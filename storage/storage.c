@@ -302,3 +302,34 @@ int call_circuit(Storage *storage, FILE *source, char *name)
     }
     return 0;
 }
+
+/*
+    Gets the lamp/switch by its name. Useful to get value.
+    If both lamp and lswitch are NULL, var does not exist.
+
+    Storage *storage: Storage to get from;
+    char *name: Name to search by; 
+    Lamp **lamp: Pointer to assign lamp to;
+    LampSwitch **lswitch: Pointer to assign switch to.
+*/
+void get_var_by_name(Storage *storage, char *name, Lamp **lamp, LampSwitch **lswitch)
+{
+    char *new_name = NULL;
+    Lamp *temp_lamp = NULL;
+    LampSwitch *temp_lswitch = NULL;
+    strcpy(new_name,name);
+    if (!has_namespace(new_name))
+        new_name = add_default_lamp_namespace(new_name);
+    temp_lamp = get_lamp(storage,new_name);
+    if (temp_lamp != NULL)
+        *lamp = temp_lamp;
+    else
+    {
+        strcpy(new_name,name);
+        if (!has_namespace(new_name))
+            new_name = add_default_switch_namespace(new_name);
+        temp_lswitch = get_switch(storage,new_name);
+        if (temp_lswitch != NULL)
+            *lswitch = temp_lswitch;
+    }
+}
