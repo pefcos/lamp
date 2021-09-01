@@ -58,3 +58,10 @@ void stack_push(long int offset, Stack **stack);
     Stack *stack: Stack to pop from.
 */
 long int stack_pop(Stack **stack);
+
+/*
+    Duplicates a string, returning an allocated address.
+
+    char *str: String to duplicate.
+*/
+char *duplicate_string(char *str);

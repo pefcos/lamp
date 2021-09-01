@@ -128,3 +128,21 @@ long int stack_pop(Stack **stack)
     }
     return -1;
 }
+
+/*
+    Duplicates a string, returning an allocated address.
+
+    char *str: String to duplicate.
+*/
+char *duplicate_string(char *str)
+{
+    register int i = 0;
+    register int len = 0;
+    char *new_str = NULL;
+    while (str[len] != '\0')
+        len++;
+    new_str = (char*) malloc((len + 1) * sizeof(char));
+    for (i = 0; i <= len; i++)
+        new_str[i] = str[i];
+    return new_str;
+}
