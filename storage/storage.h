@@ -15,8 +15,6 @@
 #include "../utils/utils.h"
 #endif
 
-typedef union vartype VarType;
-
 /*
     Struct that stores circuit references in an array of fseek offsets from SEEK_SET.
 */

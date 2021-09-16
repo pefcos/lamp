@@ -317,7 +317,7 @@ void get_var_by_name(Storage *storage, char *name, Lamp **lamp, LampSwitch **lsw
     char *new_name = NULL;
     Lamp *temp_lamp = NULL;
     LampSwitch *temp_lswitch = NULL;
-    strcpy(new_name,name);
+    new_name = duplicate_string(name);
     if (!has_namespace(new_name))
         new_name = add_default_lamp_namespace(new_name);
     temp_lamp = get_lamp(storage,new_name);
@@ -325,7 +325,8 @@ void get_var_by_name(Storage *storage, char *name, Lamp **lamp, LampSwitch **lsw
         *lamp = temp_lamp;
     else
     {
-        strcpy(new_name,name);
+        free(new_name);
+        new_name = duplicate_string(name);
         if (!has_namespace(new_name))
             new_name = add_default_switch_namespace(new_name);
         temp_lswitch = get_switch(storage,new_name);

@@ -18,7 +18,9 @@ int interpret(FILE *source, Storage *storage)
     int depth = 0; // Used in circuit ignoring.
     unsigned char value = OFF;
     Lamp *lamp_ptr = NULL;
+    Lamp *lamp_ptr_ref = NULL;
     LampSwitch *lswitch_ptr = NULL;
+    LampSwitch *lswitch_ptr_ref = NULL;
     Stack *stack = NULL;
     word = get_word(source);
     while (word != NULL)
@@ -32,7 +34,16 @@ int interpret(FILE *source, Storage *storage)
             if (!has_namespace(name))
                 name = add_default_lamp_namespace(name); 
             word = get_word(source);
-            value = get_value(word);
+            if (!strcmp(word,"on") || !strcmp(word,"off")) // Tries to get on/off literal values.
+                value = get_value(word);
+            else // Tries to get reference to other variable.
+            {
+                get_var_by_name(storage, word, &lamp_ptr_ref, &lswitch_ptr_ref);
+                if (lamp_ptr_ref != NULL)
+                    value = lamp_ptr_ref->value;
+                else
+                    return 0; // Error no variablle found.
+            }
             lamp_ptr = get_lamp(storage,name);
             if (lamp_ptr == NULL)
             {
@@ -145,6 +156,7 @@ int interpret(FILE *source, Storage *storage)
                 //EXCEPTION INVALID TYPE
             }
         }
+        // Define circuit.
         else if (word != NULL && !strcmp("circuit",word))
         {
             depth = 1;
@@ -162,6 +174,7 @@ int interpret(FILE *source, Storage *storage)
             free(word);
             word = NULL;
         }
+        // End circuit.
         else if (word != NULL && !strcmp("ground",word))
         {
             if (stack == NULL)
@@ -169,13 +182,25 @@ int interpret(FILE *source, Storage *storage)
             fseek(source,stack_pop(&stack),SEEK_SET);
             free(word);
         }
+        // Power circuit.
         else if (word != NULL && !strcmp("power",word))
         {
+            value = OFF;
             free(word);
             word = get_word(source);
             name = word;
             word = get_word(source); // Gets on/off value to decide if powers circuit or not.
-            if (!strcmp("on",word))
+            if (!strcmp(word,"on") || !strcmp(word,"off")) // Tries to get on/off literal values.
+                value = get_value(word);
+            else // Tries to get reference to other to see if turns on or off.
+            {
+                get_var_by_name(storage, word, &lamp_ptr_ref, &lswitch_ptr_ref);
+                if (lamp_ptr_ref != NULL)
+                    value = lamp_ptr_ref->value;
+                else
+                    return 0; // Error no variablle found.
+            }
+            if (value == ON)
             {
                 stack_push(ftell(source),&stack);
                 call_circuit(storage,source,name);
