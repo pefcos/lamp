@@ -128,9 +128,10 @@ LampSwitch *get_switch_element(LampSwitch *lswitch, unsigned char *directions_ra
 /*
     Displays a switch.
 
-    LampSwitch *lswitch: Switch to display.
+    LampSwitch *lswitch: Switch to display;
+    unsigned char block: If printing as block.
 */
-void display_switch(LampSwitch *lswitch);
+void display_switch(LampSwitch *lswitch, unsigned char block);
 
 /*
     Deletes a switch and frees the allocated memory.

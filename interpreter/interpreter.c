@@ -146,16 +146,23 @@ IState *lamp_switch_delete(IState *istate)
 */
 IState *lamp_switch_display(IState *istate)
 {
+    unsigned char block = 0;
     free(istate->word);
     istate->word = get_word(istate->source);
+    block = !strcmp(("block"),istate->word);
+    if (!strcmp("word",istate->word) || block)
+    {
+        free(istate->word);
+        istate->word = get_word(istate->source); // Assumes its a var name.
+    }
     get_var_by_name(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref));
     if (istate->lamp_ptr_ref != NULL)
     {
-        display_lamp(istate->lamp_ptr_ref);
+        display_lamp(istate->lamp_ptr_ref,block);
     }
     else if (istate->lswitch_ptr_ref != NULL)
     {
-        display_switch(istate->lswitch_ptr_ref);
+        display_switch(istate->lswitch_ptr_ref,block);
     }
     else
     {

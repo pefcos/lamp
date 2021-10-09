@@ -265,9 +265,10 @@ LampSwitch *get_switch_element(LampSwitch *lswitch, unsigned char *directions_ra
 /*
     Displays a switch.
 
-    LampSwitch *lswitch: Switch to display.
+    LampSwitch *lswitch: Switch to display;
+    unsigned char block: If printing as block.
 */
-void display_switch(LampSwitch *lswitch)
+void display_switch(LampSwitch *lswitch, unsigned char block)
 {
     register int i = 0;
     register int j = 0;
@@ -288,15 +289,24 @@ void display_switch(LampSwitch *lswitch)
         }
         if (last_direction == OFF)
             for (j = 0; j < amount; j++)
-                printf("(");
+                if (!block)
+                    printf("(");
         if (current->value == OFF)
-            printf("off");
+            if (block)
+                printf(" ");
+            else
+                printf("off");
         else
-            printf("on");
+            if (block)
+                printf("█");
+            else
+                printf("on");
         if (last_direction == ON)
             for (j = 0; j < amount; j++)
-                printf(")");
-        printf(" ");
+                if (!block)
+                    printf(")");
+        if (!block)
+            printf(" ");
     }
     printf("\n");
 }
