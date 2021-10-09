@@ -317,6 +317,8 @@ void get_var_by_name(Storage *storage, char *name, Lamp **lamp, LampSwitch **lsw
     char *new_name = NULL;
     Lamp *temp_lamp = NULL;
     LampSwitch *temp_lswitch = NULL;
+    *lamp = NULL;
+    *lswitch = NULL;
     new_name = duplicate_string(name);
     if (!has_namespace(new_name))
         new_name = add_default_lamp_namespace(new_name);
