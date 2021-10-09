@@ -148,41 +148,22 @@ IState *lamp_switch_display(IState *istate)
 {
     free(istate->word);
     istate->word = get_word(istate->source);
-    if (!strcmp("lamp",istate->word))
+    get_var_by_name(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref));
+    if (istate->lamp_ptr_ref != NULL)
     {
-        free(istate->word);
-        istate->word = get_word(istate->source);
-        istate->name = istate->word;
-        if (!has_namespace(istate->name))
-            istate->name = add_default_lamp_namespace(istate->name);
-        istate->lamp_ptr = get_lamp(istate->storage,istate->name);
-        if (istate->lamp_ptr == NULL)  
-        {
-            istate->execution_end = EXCEPTION_NO_LAMP_TO_DISPLAY;// EXCEPTION NO LAMP
-            return istate;
-        }
-        display_lamp(istate->lamp_ptr);
+        display_lamp(istate->lamp_ptr_ref);
     }
-    else if (!strcmp("switch",istate->word))
+    else if (istate->lswitch_ptr_ref != NULL)
     {
-        free(istate->word);
-        istate->word = get_word(istate->source);
-        istate->name = istate->word;
-        if (!has_namespace(istate->name))
-            istate->name = add_default_switch_namespace(istate->name);
-        istate->lswitch_ptr = get_switch(istate->storage,istate->name);
-        if (istate->lswitch_ptr == NULL) 
-        {
-            istate->execution_end = EXCEPTION_NO_SWITCH_TO_DISPLAY;// EXCEPTION NO SWITCH
-            return istate;
-        }
-        display_switch(istate->lswitch_ptr);
+        display_switch(istate->lswitch_ptr_ref);
     }
     else
     {
-        istate->execution_end = EXCEPTION_UNKNOWN_TYPE;// EXCEPTION UNKNOWN TYPE
+        free(istate->word);
+        istate->execution_end = EXCEPTION_NO_VAR_FOUND;// EXCEPTION_NO_VAR_FOUND
         return istate;
     }
+    free(istate->word);
     return istate;
 }
 
