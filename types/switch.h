@@ -138,3 +138,10 @@ void display_switch(LampSwitch *lswitch);
     LampSwitch *lswitch: Switch to delete.
 */
 void delete_switch(LampSwitch *lswitch);
+
+/*
+    Checks if the given switch is in fact a lamp.
+
+    LampSwitch *lswitch: Switch to check.
+*/
+int is_lamp(LampSwitch *lswitch);

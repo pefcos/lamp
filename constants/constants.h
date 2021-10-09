@@ -15,3 +15,12 @@
 #define ERROR 255
 #define OFF 0
 #define ON 1
+
+// Exceptions and end codes:
+#define NOT_END 0
+#define END 1
+#define EXCEPTION_NO_VAR_FOUND 43
+#define EXCEPTION_UNKNOWN_TYPE 45
+#define EXCEPTION_NO_LAMP_TO_DISPLAY 47
+#define EXCEPTION_NO_SWITCH_TO_DISPLAY 49
+#define EXCEPTION_UNGROUNDED_CIRCUIT 51

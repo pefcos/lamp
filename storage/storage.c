@@ -334,3 +334,15 @@ void get_var_by_name(Storage *storage, char *name, Lamp **lamp, LampSwitch **lsw
             *lswitch = temp_lswitch;
     }
 }
+
+/*
+    Checks if the given switch is in fact a lamp.
+
+    LampSwitch *lswitch: Switch to check.
+*/
+int is_lamp(LampSwitch *lswitch)
+{
+    if (lswitch == NULL)
+        return 0;
+    return (lswitch->item_arr_len == 1);
+}

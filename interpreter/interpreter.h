@@ -1,0 +1,74 @@
+// Includes lamp type.
+#ifndef TYPE_LAMP_H
+#define TYPE_LAMP_H
+#include "../types/lamp.h"
+#endif
+// Includes switch type.
+#ifndef TYPE_SWITCH_H
+#define TYPE_SWITCH_H
+#include "../types/switch.h"
+#endif
+// Includes storage.
+#ifndef STORAGE_H
+#define STORAGE_H
+#include "../storage/storage.h"
+#endif
+
+struct interpreter_state
+{
+    char *word;
+    char *name; // Variable for names.
+    int depth; // Used in circuit ignoring.
+    unsigned char value;
+    Lamp *lamp_ptr;
+    Lamp *lamp_ptr_ref;
+    LampSwitch *lswitch_ptr;
+    LampSwitch *lswitch_ptr_ref;
+    Stack *stack;
+    Storage *storage;
+    FILE *source;
+    unsigned char debug; // Enables/disables prints explaining code.
+    unsigned char execution_end; // Return type for end of program. While 0 does not return.
+};
+
+typedef struct interpreter_state IState;
+
+/*
+    Initializes an interpreter state.
+*/
+IState *istate_init(FILE *source);
+
+/*
+    Lamp declaration/assignment.
+
+*/
+IState *lamp_declaration_assignment(IState *istate);
+
+/*
+    Switch declaration/assignment.
+
+*/
+IState *switch_declaration_assignment(IState *istate);
+
+/*
+    Lamp/Switch deleting.
+*/
+IState *lamp_switch_delete(IState *istate);
+
+/*
+    Lamp/Switch displaying.
+*/
+IState *lamp_switch_display(IState *istate);
+
+/*
+    Ignores a circuit definition.
+*/
+IState *ignore_circuit(IState *istate);
+
+/*
+    Interprets the lamp code in the given file.
+
+    FILE *source: File to draw code from;
+    Storage *storage: Storage to store values in.
+*/
+int interpret(IState *istate);

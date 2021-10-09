@@ -144,3 +144,16 @@ char *duplicate_string(char *str)
         new_str[i] = str[i];
     return new_str;
 }
+
+/*
+    Checks if a string has a '.'.
+
+    char *str: String to check.
+*/
+int is_switch_element_accessor(char *str)
+{
+    register int i = 0;
+    while (str[i] != '\0' && str[i] != '.')
+        i++;
+    return (str[i] == '.');
+}

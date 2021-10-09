@@ -65,3 +65,10 @@ long int stack_pop(Stack **stack);
     char *str: String to duplicate.
 */
 char *duplicate_string(char *str);
+
+/*
+    Checks if a string has a '.'.
+
+    char *str: String to check.
+*/
+int is_switch_element_accessor(char *str);
