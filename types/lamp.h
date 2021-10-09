@@ -49,9 +49,10 @@ Lamp *create_lamp(char *name, unsigned char initial_value);
 /*
     Prints a lamp's value.
 
-    Lamp *lamp: Lamp to display.
+    Lamp *lamp: Lamp to display;
+    unsigned char block: If printing as block.
 */
-void display_lamp(Lamp *lamp);
+void display_lamp(Lamp *lamp, unsigned char block);
 
 /*
     Destroys a lamp and frees the memory allocated to it.

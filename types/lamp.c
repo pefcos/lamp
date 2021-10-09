@@ -26,14 +26,21 @@ Lamp *create_lamp(char *name, unsigned char initial_value)
 /*
     Prints a lamp's value.
 
-    Lamp *lamp: Lamp to display.
+    Lamp *lamp: Lamp to display;
+    unsigned char block: If printing as block.
 */
-void display_lamp(Lamp *lamp)
+void display_lamp(Lamp *lamp, unsigned char block)
 {
-    if (lamp->value)
-        printf("on\n");
+    if (!block)
+        if (lamp->value)
+            printf("on\n");
+        else
+            printf("off\n");
     else
-        printf("off\n");
+        if (lamp->value)
+            printf("█\n");
+        else
+            printf(" \n");
 }
 
 /*
