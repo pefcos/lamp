@@ -34,7 +34,10 @@ int main(int argc, char *argv[])
         istate = istate_init(source);
         istate->debug = debug; // Sets debug.
         if (interpret(istate) == END)
-            printf("Program finished successfully.\n");
+        {
+            if (istate->debug)
+                printf("Program finished successfully.\n");
+        }
         else
             printf("Program execution interrupted.\n");
         break;
