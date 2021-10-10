@@ -128,7 +128,7 @@ IState *lamp_switch_delete(IState *istate)
         if (!has_namespace(istate->name))
             istate->name = add_default_switch_namespace(istate->name); // Defaults to lamp
         if (get_switch(istate->storage,istate->name) != NULL)
-            1; // TODO remove storage switch.
+            remove_storage_switch(istate->storage, istate->name);
     }
     else
     {
