@@ -315,10 +315,39 @@ int call_circuit(Storage *storage, FILE *source, char *name)
 void get_var_by_name(Storage *storage, char *name, Lamp **lamp, LampSwitch **lswitch)
 {
     char *new_name = NULL;
+    char *switch_name_no_directions = NULL; // Used to remove directions from the name. Switch element.
+    char *mock_name = NULL; // Used to create lamp. Switch element.
     Lamp *temp_lamp = NULL;
     LampSwitch *temp_lswitch = NULL;
+    LampSwitch *element_temp = NULL;
     *lamp = NULL;
     *lswitch = NULL;
+    // First verifies if is lamp/switch or switch element.  TODO transfer to aux function.
+    if (strchr(name,'.') != NULL)
+    { // Switch element
+        // Get switch.
+        new_name = duplicate_string(name);
+        if (!has_namespace(new_name))
+            new_name = add_default_switch_namespace(new_name);
+        switch_name_no_directions = switch_name(new_name);
+        element_temp = get_switch(storage,switch_name_no_directions);
+        // Get the element.
+        if (element_temp != NULL)
+        {
+            temp_lswitch = get_switch_element(element_temp,convert_to_number_directions(name));
+            if (is_lamp(temp_lswitch)) // Switch element is lamp.
+            {
+                mock_name = (char*) malloc(sizeof(char) * 4);
+                strcpy(mock_name,"def");
+                *lamp = create_lamp(mock_name,(temp_lswitch->item_arr[0])->value);
+            }
+            *lswitch = temp_lswitch;
+            return;
+        }
+        else
+            return;
+    }
+    // NOT a switch element.
     new_name = duplicate_string(name);
     if (!has_namespace(new_name))
         new_name = add_default_lamp_namespace(new_name);

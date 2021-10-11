@@ -126,6 +126,14 @@ LampSwitchItem *copy_without_prefix(LampSwitchItem *lsi, unsigned char *prefix, 
 LampSwitch *get_switch_element(LampSwitch *lswitch, unsigned char *directions_raw); 
 
 /*
+    Returns a name without directions.
+    BEWARE free the return.
+
+    char *name: Name to trim.
+*/
+char *switch_name(char *name);
+
+/*
     Displays a switch.
 
     LampSwitch *lswitch: Switch to display.
