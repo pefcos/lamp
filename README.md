@@ -5,6 +5,9 @@ Examples can be found in the examples directory.
 
 ## Lamp documentation
 
+### Syntax
+Lamp's syntax is much simples than other programming languages, as lamp has no indicators of coda blocks such as "{}" or even ":". Lamp also is indentation independent, which means that lamp code has only one requirement after all: the keywords need to be spaced and sequential.
+
 ### Variable types
 Since it is a boolean based language, all values in lamp are either on (true) or off (false). With that in mind, there are no types such as integers or strings, instead, the lamp language has two types: lamps and switches. A lamp is a variable that is either on or off (just like a real life lamp). An example of lamp declaration would be: `lamp example on`. This creates a lamp called example with the value on. 
 
