@@ -31,8 +31,10 @@ circuit or
     ground
 ground
 
+## Declaring a divider ##
 switch divider (((on on) (on on)) ((on on) (on on)))
 
+## Executing lamp and ##
 lamp nand:arg0 on
 lamp nand:arg1 off
 power nand on
@@ -40,6 +42,7 @@ display -nand:return
 
 display block divider
 
+## Executing lamp or ##
 lamp or:arg0 off
 lamp or:arg1 on
 power or on

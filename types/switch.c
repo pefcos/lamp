@@ -357,3 +357,15 @@ void invert_switch(LampSwitch *lswitch)
         lswitch->item_arr[i]->value = !(lswitch->item_arr[i]->value);
     }
 }
+
+/*
+    Checks if the given switch is in fact a lamp.
+
+    LampSwitch *lswitch: Switch to check.
+*/
+int is_lamp(LampSwitch *lswitch)
+{
+    if (lswitch == NULL)
+        return 0;
+    return (lswitch->item_arr_len == 1);
+}

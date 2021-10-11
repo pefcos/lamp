@@ -66,6 +66,11 @@ IState *lamp_switch_display(IState *istate);
 IState *ignore_circuit(IState *istate);
 
 /*
+    Ignores any text between two "##" delimiters.
+*/
+IState *ignore_comment(IState *istate);
+
+/*
     Interprets the lamp code in the given file.
 
     FILE *source: File to draw code from;

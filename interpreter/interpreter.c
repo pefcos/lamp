@@ -248,6 +248,21 @@ IState *power_circuit(IState *istate)
 }
 
 /*
+    Ignores any text between two "##" delimiters.
+*/
+IState *ignore_comment(IState *istate)
+{
+    do 
+    {
+        free(istate->word);
+        istate->word = get_word(istate->source);
+    } while (strcmp("##",istate->word));
+    free(istate->word);
+    istate->word = NULL;
+    return istate;
+}
+
+/*
     Interprets the lamp code in the given file.
 
     FILE *source: File to draw code from;
@@ -306,6 +321,11 @@ int interpret(IState *istate)
             istate = power_circuit(istate);
             if (istate->execution_end != NOT_END)
                 return istate->execution_end;
+        }
+        // Comment.
+        else if (istate->word != NULL && !strcmp("##",istate->word))
+        {
+            istate = ignore_comment(istate);
         }
         // Next word.
         istate->word = get_word(istate->source);
