@@ -14,6 +14,9 @@ circuit nand
     lamp and:arg1 nand:arg1
     power and on
     lamp nand:return -and:return
+    delete lamp and:arg0
+    delete lamp and:arg1
+    delete lamp and:return
 ground
 
 circuit not
@@ -39,6 +42,9 @@ lamp nand:arg0 on
 lamp nand:arg1 off
 power nand on
 display -nand:return
+delete lamp nand:arg0
+delete lamp nand:arg1
+delete lamp nand:return
 
 display block divider
 
@@ -47,3 +53,6 @@ lamp or:arg0 off
 lamp or:arg1 on
 power or on
 display or:return
+delete lamp or:arg0
+delete lamp or:arg1
+delete lamp or:return
