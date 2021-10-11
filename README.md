@@ -6,33 +6,36 @@ Examples can be found in the examples directory.
 ## Lamp documentation
 
 ### Syntax
-Lamp's syntax is much simples than other programming languages, as lamp has no indicators of coda blocks such as "{}" or even ":". Lamp also is indentation independent, which means that lamp code has only one requirement after all: the keywords need to be spaced and sequential.
+Lamp's syntax is much simples than other programming languages, as lamp has no indicators of code blocks such as "{}" or even ":". Lamp also is indentation independent, which means that lamp code has only one requirement after all: the keywords need to be spaced and sequential.
 
 ### Variable types
 Since it is a boolean based language, all values in lamp are either on (true) or off (false). With that in mind, there are no types such as integers or strings, instead, the lamp language has two types: lamps and switches. A lamp is a variable that is either on or off (just like a real life lamp). An example of lamp declaration would be: `lamp example on`. This creates a lamp called example with the value on. 
 
-A switch is analogous to a real life switch, that has an on and off position. Each position in a switch can hold a value, but all switches have only two positions, no more, no less. A basic example of a switch declaration would be: `switch example (on off)`. This creates a switch that holds the value on in the first position (called the off position) and the value off in the second position (called the on position). To access the first value we can type `example.off` while to access the second value we can type `example.on`. Simple, right? Now for the most interesting part. Switches can hold another switch instead of an on/off value, making nested switches not only viable, but essential. For example, we could declare a switch within a switch like this: `switch example (on (off on))`. Now, when accessing the off position, the value would be not on or off, but the `(on off)` switch. To access an element within the inner switch (off element for the example), we can type the following: `example.off.off`.
+A switch is analogous to a real life switch, that has an on and off position. Each position in a switch can hold a value, but all switches have only two positions, no more, no less. A basic example of a switch declaration would be: `switch example (on off)`. This creates a switch that holds the value on in the first position (called the off position) and the value off in the second position (called the on position). To access the first value we can type `example.off` while to access the second value we can type `example.on`. Simple, right? Now for the most interesting part. Switches can hold another switch instead of an on/off value, making nested switches not only viable, but essential in lamp programming. For example, we could declare a switch within a switch like this: `switch example (on (off on))`. Now, when accessing the on position, the value would be not on or off, but the `(off on)` switch. To access an element within the inner switch (off element for the example), we can type the following: `example.off.off`.
 
 ### Displaying values
-There are two types of displays, a block display and a word display. Word displays are inferred while block displays have to be explicited. For example, consider the following code:
+There are two types of value displays, a block display and a word display. Word displays are inferred while block displays have to be explicited. For example, consider the following code:
 ```
 lamp example on
 display example
 ```
-This code creates a lamp called example with the value on, and prints the word "on" on the screen. But interaction with the user becomes boring if you can only say "on" and "off". This is why the block display exists! An example of a block display would be:
+This code creates a lamp called example with the value on, and prints the word "on" on the screen. But displaying information to the user becomes boring if you can only say "on" and "off". This is why the block display exists! An example of a block display would be:
 ```
 lamp example on
 display block example
 ```
 This would print a "█" on the screen.
 
-Now you know about block displays, but they are kind of useless for lamps. Let's talk about displaying switches! They are displayed the same way as lamps and can also be displayed in blocks and words. Pairing block displays with switches gives you a creative way to draw on the display.
+Now you know about block displays, but they are kind of useless for single lamps. Let's talk about displaying switches! They are displayed the same way as lamps and can also be displayed in blocks and words. Pairing block displays with switches gives you a creative way to draw on the display (see examples/print_lamp.lamp for an example on block display drawing).
 
 ### Inverse values
 In lamp, a variable can have its value inverted using the "-" symbol before its name, without spaces in between. For example, we may want to display the inverse of a lamp's content. To display the inverse of the content of the lamp "example", we can write `display -example`. If example is "on", it will display "off", and if it is "off", lampi will display "on".
 
 ### Comments
-Comments are needed so that the programmer can better understand the code written, and every major programming language provides them.  In lamp, to comment a section, you can type "##" to open and close a comment section. An example would be `## this is a lamp comment ##`. Note that a space before and after the "##" IS REQUIRED, so `##this is a lamp comment##` will not work and will likely lead to an error.
+Comments are needed so that the programmer can better understand the code written, and every major programming language provides a way to write them. In lamp, to comment a section, you can type "##" to open and close a comment section. An example would be `## this is a lamp comment ##`. Note that a space before and after the "##" is required, so `##this is a lamp comment##` will not work and will likely lead to an error.
+
+### Deleting variables
+Variables in lamp can also be deleted by the programmer by typing the word "delete", followed by the variable type and the variable name. An example of deleting a lamp variable is `delete lamp example`. This can be used to increase the programmer's control over memory usage, deleting lamps and switches that will not be used anymore.
 
 ### Namespaces
 The lamp programming language supports namespaces. Namespaces are added to variables by inserting the namespace of the variable and its name after a ":". An example would be `lamp ex:example on`, where "ex" is the namespace and "example" is the name of the lamp. Namespacing your variables allows you to have variables with the same name in multiple places on your code without getting lost. For example, the code below:
@@ -55,9 +58,9 @@ ground
 ```
 Ok, so you can write a circuit, great, now you need to learn how to call them! To execute code inside a circuit you have to type the word "power" followed by the circuit name and the "on" word, or a reference to a lamp with value on. If you type `power example_circ on`, you can start the code inside the example circuit we made before. If you typed `power example_circ off`, the circuit example_circ would not be called.
 
-Where can I call a circuit? Anywhere that is not inside itself, as lamp does not yet support recursion (work in progress). This gives versatility to the syntax, as circuit definitions between lines of code will be ignored by lampi until it is called (and will be ignored forever if there is no "power" statement).
+Where can I call a circuit? Anywhere that is not inside itself, as lamp does not support recursion. This gives versatility to the syntax, as circuit definitions between lines of code will be ignored by lampi until it is called (and will be ignored forever if there is no "power" statement).
 
-Why do I have to put "on" in every circuit powering? Because, you may have noticed, lamp language has no "if" statement, like other languages do. The way to write a if statement in lamp is a clever trick involving circuits. The code:
+Why do I have to put "on" in every circuit powering? Because, as you may have noticed, lamp language has no "if" statement, like most other languages do. The way to write an if statement in lamp is a clever trick involving circuits. The code:
 ```
 power example_circ example_lamp
 circuit example_circ
@@ -91,7 +94,7 @@ display example
 ```
 and now the displaying will show a "on" and a "off", since they both modify a lamp called example, but in different namespaces.
 
-This concludes the presentation of all of lamp's simple features.
+Consgratulations! Now you too can start coding in lamp.
 
 ## Lampi usage
 
@@ -99,4 +102,4 @@ Lampi is the lamp interpreter for linux operating systems, which can be invoked 
 
 A lampi binary is provided in this repository, but to compile your own lampi you can clone this repository and execute `make lampi` on the repository's root directory.
 
-A debugging option is avaliable in lampi, you can access it by typing the "-d" argument after the file name.
+A debugging option is avaliable in lampi, you can access it by typing the "-d" argument after the file name. This will print messages on lamp creation/assignment and make 
