@@ -1,0 +1,19 @@
+power main on
+
+circuit print_lamp
+    switch row0 (on  (off (off (off (off  (off (on  (on  (off  (off    (on  (off (off (on  (off      (on (on  (on  on ))))))))))))))))))
+    switch row1 (on  (off (off (off (off  (on  (off (off (on   (off    (on  (on  (on  (on  (off      (on (off (off on ))))))))))))))))))
+    switch row2 (on  (off (off (off (off  (on  (off (off (on   (off    (on  (off (off (on  (off      (on (on  (on  on ))))))))))))))))))
+    switch row3 (on  (off (off (off (off  (on  (on  (on  (on   (off    (on  (off (off (on  (off      (on (off (off off))))))))))))))))))
+    switch row4 (on  (on  (on  (on  (off  (on  (off (off (on   (off    (on  (off (off (on  (off      (on (off (off off))))))))))))))))))
+    display block row0
+    display block row1
+    display block row2
+    display block row3
+    display block row4
+    delete switch row0
+ground
+
+circuit main
+    power print_lamp on
+ground
