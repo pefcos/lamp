@@ -28,6 +28,12 @@ This would print a "█" on the screen.
 
 Now you know about block displays, but they are kind of useless for lamps. Let's talk about displaying switches! They are displayed the same way as lamps and can also be displayed in blocks and words. Pairing block displays with switches gives you a creative way to draw on the display.
 
+### Inverse values
+In lamp, a variable can have its value inverted using the "-" symbol before its name, without spaces in between. For example, we may want to display the inverse of a lamp's content. To display the inverse of the content of the lamp "example", we can write `display -example`. If example is "on", it will display "off", and if it is "off", lampi will display "on".
+
+### Comments
+Comments are needed so that the programmer can better understand the code written, and every major programming language provides them.  In lamp, to comment a section, you can type "##" to open and close a comment section. An example would be `## this is a lamp comment ##`. Note that a space before and after the "##" IS REQUIRED, so `##this is a lamp comment##` will not work and will likely lead to an error.
+
 ### Namespaces
 The lamp programming language supports namespaces. Namespaces are added to variables by inserting the namespace of the variable and its name after a ":". An example would be `lamp ex:example on`, where "ex" is the namespace and "example" is the name of the lamp. Namespacing your variables allows you to have variables with the same name in multiple places on your code without getting lost. For example, the code below:
 ```
@@ -92,3 +98,5 @@ This concludes the presentation of all of lamp's simple features.
 Lampi is the lamp interpreter for linux operating systems, which can be invoked running "lampi" with the path to the .lamp file with your lamp code. An usage example would be `./lampi example.lamp`, to interpret the "example.lamp" file.
 
 A lampi binary is provided in this repository, but to compile your own lampi you can clone this repository and execute `make lampi` on the repository's root directory.
+
+A debugging option is avaliable in lampi, you can access it by typing the "-d" argument after the file name.
