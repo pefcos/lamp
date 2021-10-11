@@ -263,6 +263,20 @@ LampSwitch *get_switch_element(LampSwitch *lswitch, unsigned char *directions_ra
 }
 
 /*
+    Returns a name without directions.
+
+    char *name: Name to trim.
+*/
+char *switch_name(char *name)
+{
+    register int length = 0;
+    char *temp_name = NULL;
+    temp_name = duplicate_string(name);
+    *(strchr(temp_name,'.')) = '\0';
+    return temp_name;
+}
+
+/*
     Displays a switch.
 
     LampSwitch *lswitch: Switch to display;
