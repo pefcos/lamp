@@ -85,3 +85,5 @@ This concludes the presentation of all of lamp's simple features.
 ## Lampi usage
 
 Lampi is the lamp interpreter for linux operating systems, which can be invoked running "lampi" with the path to the .lamp file with your lamp code. An usage example would be `./lampi example.lamp`, to interpret the "example.lamp" file.
+
+A lampi binary is provided in this repository, but to compile your own lampi you can clone this repository and execute `make lampi` on the repository's root directory.
