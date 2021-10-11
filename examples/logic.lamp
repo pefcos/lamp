@@ -1,0 +1,46 @@
+circuit and
+    power and_arg0_on and:arg0
+    circuit and_arg0_on
+        lamp and:return and:arg1
+    ground
+    power and_arg0_off -and:arg0
+    circuit and_arg0_off
+        lamp and:return off
+    ground
+ground
+
+circuit nand
+    lamp and:arg0 nand:arg0
+    lamp and:arg1 nand:arg1
+    power and on
+    lamp nand:return -and:return
+ground
+
+circuit not
+    lamp not:return -not:arg0
+ground
+
+circuit or
+    power or_arg0_on -or:arg0
+    circuit or_arg0_on
+        lamp or:return or:arg1
+    ground
+    power or_arg0_off -or:arg0
+    circuit or_arg0_off
+        lamp or:return on
+    ground
+ground
+
+switch divider (((on on) (on on)) ((on on) (on on)))
+
+lamp nand:arg0 on
+lamp nand:arg1 off
+power nand on
+display -nand:return
+
+display block divider
+
+lamp or:arg0 off
+lamp or:arg1 on
+power or on
+display or:return

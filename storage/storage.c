@@ -308,11 +308,11 @@ int call_circuit(Storage *storage, FILE *source, char *name)
     If both lamp and lswitch are NULL, var does not exist.
 
     Storage *storage: Storage to get from;
-    char *name: Name to search by; 
+    char *var_name: Name to search by; 
     Lamp **lamp: Pointer to assign lamp to;
     LampSwitch **lswitch: Pointer to assign switch to.
 */
-void get_var_by_name(Storage *storage, char *name, Lamp **lamp, LampSwitch **lswitch)
+void get_var_by_name(Storage *storage, char *var_name, Lamp **lamp, LampSwitch **lswitch)
 {
     char *new_name = NULL;
     char *switch_name_no_directions = NULL; // Used to remove directions from the name. Switch element.
@@ -320,9 +320,15 @@ void get_var_by_name(Storage *storage, char *name, Lamp **lamp, LampSwitch **lsw
     Lamp *temp_lamp = NULL;
     LampSwitch *temp_lswitch = NULL;
     LampSwitch *element_temp = NULL;
+    unsigned char negative = 0;
+    char *name = var_name;
     *lamp = NULL;
     *lswitch = NULL;
-    // First verifies if is lamp/switch or switch element.  TODO transfer to aux function.
+    // Verifies if it is a negative.
+    negative = (name[0] == '-');
+    if (negative)
+        name = &(name[1]);
+    // Verifies if is lamp/switch or switch element.  TODO transfer to aux function.
     if (strchr(name,'.') != NULL)
     { // Switch element
         // Get switch.
@@ -339,9 +345,17 @@ void get_var_by_name(Storage *storage, char *name, Lamp **lamp, LampSwitch **lsw
             {
                 mock_name = (char*) malloc(sizeof(char) * 4);
                 strcpy(mock_name,"def");
-                *lamp = create_lamp(mock_name,(temp_lswitch->item_arr[0])->value);
+                if (negative)
+                    *lamp = create_lamp(mock_name,!((temp_lswitch->item_arr[0])->value));
+                else
+                    *lamp = create_lamp(mock_name,(temp_lswitch->item_arr[0])->value);
             }
-            *lswitch = temp_lswitch;
+            else
+            {
+                if (negative)
+                    invert_switch(temp_lswitch);
+                *lswitch = temp_lswitch;
+            }
             return;
         }
         else
@@ -353,7 +367,11 @@ void get_var_by_name(Storage *storage, char *name, Lamp **lamp, LampSwitch **lsw
         new_name = add_default_lamp_namespace(new_name);
     temp_lamp = get_lamp(storage,new_name);
     if (temp_lamp != NULL)
+    {
+        if (negative)
+            temp_lamp->value = !(temp_lamp->value);
         *lamp = temp_lamp;
+    }
     else
     {
         free(new_name);
@@ -362,7 +380,11 @@ void get_var_by_name(Storage *storage, char *name, Lamp **lamp, LampSwitch **lsw
             new_name = add_default_switch_namespace(new_name);
         temp_lswitch = get_switch(storage,new_name);
         if (temp_lswitch != NULL)
+        {
+            if (negative)
+                invert_switch(temp_lswitch);
             *lswitch = temp_lswitch;
+        }
     }
 }
 

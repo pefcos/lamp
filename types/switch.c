@@ -343,3 +343,17 @@ void delete_switch(LampSwitch *lswitch)
     }
     free(lswitch);
 }
+
+/*
+    Inverts on and off values in the switch.
+
+    LampSwitch *lswitch: Switch to invert.
+*/
+void invert_switch(LampSwitch *lswitch)
+{
+    register int i = 0;
+    for (i = 0; i < lswitch->item_arr_len; i++)
+    {
+        lswitch->item_arr[i]->value = !(lswitch->item_arr[i]->value);
+    }
+}

@@ -149,6 +149,13 @@ void display_switch(LampSwitch *lswitch, unsigned char block);
 void delete_switch(LampSwitch *lswitch);
 
 /*
+    Inverts on and off values in the switch.
+
+    LampSwitch *lswitch: Switch to invert.
+*/
+void invert_switch(LampSwitch *lswitch);
+
+/*
     Checks if the given switch is in fact a lamp.
 
     LampSwitch *lswitch: Switch to check.
