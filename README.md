@@ -1,6 +1,8 @@
 # lamp and lampi
 A boolean (lamp) based esoteric programming language, and its interpreter.
 
+Examples can be found in the examples directory.
+
 ## Lamp documentation
 
 ### Variable types
