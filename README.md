@@ -79,3 +79,9 @@ example_circ
 display example
 ```
 and now the displaying will show a "on" and a "off", since they both modify a lamp called example, but in different namespaces.
+
+This concludes the presentation of all of lamp's simple features.
+
+## Lampi usage
+
+Lampi is the lamp interpreter for linux operating systems, which can be invoked running "lampi" with the path to the .lamp file with your lamp code. An usage example would be `./lampi example.lamp`, to interpret the "example.lamp" file.
