@@ -111,8 +111,10 @@ Consgratulations! Now you too can start coding in lamp.
 
 ## Lampi usage
 
-Lampi is the lamp interpreter for linux operating systems, which can be invoked running "lampi" with the path to the .lamp file with your lamp code. An usage example would be `./lampi example.lamp`, to interpret the "example.lamp" file.
+Lampi is the lamp interpreter for linux operating systems, which can be invoked running "lampi" with the path to the .lamp file with your lamp code. An usage example would be `lampi example.lamp`, to interpret the "example.lamp" file.
 
 A lampi binary is provided in this repository, but to compile your own lampi you can clone this repository and execute `make lampi` on the repository's root directory.
 
-A debugging option is avaliable in lampi, you can access it by typing the "-d" argument after the file name. This will print messages on lamp creation/assignment and make 
+A debugging option is avaliable in lampi, you can access it by typing the "-d"/"--debug" argument after the file name. This will print messages on lamp command execution and make debugging easier.
+
+There is also a "-h"/"--help" option, to invoke it type `lampi -h`. It will display help about the usage of lampi.

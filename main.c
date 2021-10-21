@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
         break;
     
     case 3:
-        if (!strcmp(argv[2],"-d"))
+        if (!strcmp(argv[2],"-d") || !strcmp(argv[2],"--debug"))
             debug = 1;
         else
         {
@@ -25,6 +25,19 @@ int main(int argc, char *argv[])
             break;
         }
     case 2:
+        if (!strcmp("-v",argv[1]) || !strcmp("--version",argv[1]))
+        {
+            printf("lampi v1.0\n");
+            break;
+        }
+        if (!strcmp("-h",argv[1]) || !strcmp("--help",argv[1]))
+        {
+            printf("lampi v1.0\n");
+            printf("Usage: lampi <filename> [-d]\n");
+            printf("<filename>: Path or name of the file with lamp code to interpret.\n");
+            printf("[-d]: Debug option.\n");
+            break;
+        }
         source = fopen(argv[1],"r");
         if (source == NULL)
         {
