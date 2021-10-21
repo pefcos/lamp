@@ -162,10 +162,14 @@ IState *lamp_switch_display(IState *istate)
     get_var_by_name(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref));
     if (istate->lamp_ptr_ref != NULL)
     {
+        if (istate->debug)
+            printf("Displaying lamp %s:\n",istate->word);
         display_lamp(istate->lamp_ptr_ref,block);
     }
     else if (istate->lswitch_ptr_ref != NULL)
     {
+        if (istate->debug)
+            printf("Displaying switch %s:\n",istate->word);
         display_switch(istate->lswitch_ptr_ref,block);
     }
     else
