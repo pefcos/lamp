@@ -12,6 +12,10 @@ circuit print_lamp
     display block row3
     display block row4
     delete switch row0
+    delete switch row1
+    delete switch row2
+    delete switch row3
+    delete switch row4
 ground
 
 circuit main
