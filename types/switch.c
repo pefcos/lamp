@@ -146,13 +146,11 @@ LampSwitch *make_switch(FILE *source, char *name)
         return NULL;
     result->name = malloc((strlen(name) + 1) * sizeof(char));
     strcpy(result->name,name);
+    word = get_word(source);
+    if (word == NULL)
+        return NULL; // Error for invalid switch due to never reaching the NULL condition on current_directions.
     do
     {
-        if (word != NULL)
-            free(word); // Frees previous iteration word.
-        word = get_word(source);
-        if (word == NULL)
-            return NULL; // Error for invalid switch due to never reaching the NULL condition on current_directions.
         open = count_open(word);
         close = count_close(word);
         if (open > 0 && close > 0)
@@ -179,7 +177,15 @@ LampSwitch *make_switch(FILE *source, char *name)
         aux_directions = next_directions(current_directions,cdir_len,&aux_len);
         current_directions = aux_directions;
         aux_directions = NULL;
-        cdir_len = aux_len;      
+        cdir_len = aux_len; 
+        if (word != NULL)
+            free(word); // Frees previous iteration word.
+        if (cdir_len != 0)
+        {
+            word = get_word(source);
+            if (word == NULL)
+                return NULL; // Error for invalid switch due to never reaching the NULL condition on current_directions.
+        }     
     } while (cdir_len != 0);
     return result;
 }
