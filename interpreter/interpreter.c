@@ -109,6 +109,8 @@ LampSwitch *make_switch(IState *istate)
         get_var_by_name(istate->storage, word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref));
         if (istate->lswitch_ptr_ref != NULL)
         {
+            free(istate->lswitch_ptr_ref->name);
+            istate->lswitch_ptr_ref->name = duplicate_string(name);
             return istate->lswitch_ptr_ref;
         }
         istate->execution_end = EXCEPTION_NO_VAR_FOUND;
