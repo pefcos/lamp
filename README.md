@@ -11,7 +11,20 @@ Lamp's syntax is much simples than other programming languages, as lamp has no i
 ### Variable types
 Since it is a boolean based language, all values in lamp are either on (true) or off (false). With that in mind, there are no types such as integers or strings, instead, the lamp language has two types: lamps and switches. A lamp is a variable that is either on or off (just like a real life lamp). An example of lamp declaration would be: `lamp example on`. This creates a lamp called example with the value on. 
 
-A switch is analogous to a real life switch, that has an on and off position. Each position in a switch can hold a value, but all switches have only two positions, no more, no less. A basic example of a switch declaration would be: `switch example (on off)`. This creates a switch that holds the value on in the first position (called the off position) and the value off in the second position (called the on position). To access the first value we can type `example.off` while to access the second value we can type `example.on`. Simple, right? Now for the most interesting part. Switches can hold another switch instead of an on/off value, making nested switches not only viable, but essential in lamp programming. For example, we could declare a switch within a switch like this: `switch example (on (off on))`. Now, when accessing the on position, the value would be not on or off, but the `(off on)` switch. To access an element within the inner switch (off element for the example), we can type the following: `example.off.off`.
+A switch is analogous to a real life switch, that has an on and off position. Each position in a switch can hold a value, but all switches have only two positions, no more, no less. A basic example of a switch declaration would be: `switch example (on off)`. This creates a switch that holds the value on in the first position (called the off position) and the value off in the second position (called the on position). To access the first value we can type `example.off` while to access the second value we can type `example.on`. Simple, right? Now for the most interesting part. Switches can hold another switch instead of an on/off value, making nested switches not only viable, but essential in lamp programming. For example, we could declare a switch within a switch like this: `switch example (on (off on))`. Now, when accessing the on position, the value would be not on or off, but the `(off on)` switch. To access an element within the inner switch (off element for the example), we can type the following: `example.off.off`. A switch element that is not another switch is called a switch lamp, as it also stores on and off values.
+
+It is possible to build switches in a variety of ways. We could build a switch from an element of a bigger switch by typing the following code:
+```
+switch example_a (on (off on))
+switch example_b example_a.on
+```
+This code creates a switch called example_b with the value (off on), based on the element in the on position of the switch example_a. We can also reference individual lamps and switch lamps inside a switch declaration, for example:
+```
+switch example_a (on (off on))
+lamp example_b on
+switch example_c (example_b example_a.on.off)
+```
+This code generates a switch called example_c with the value (on off), based on the references to the lamp example_b and the switch lamp example_a.on.off. Note that mixing these two ways to make switches is not supported. If you try to make a switch like `switch example_b (example_a example_a.off)`, this will lead to an error, as example_a is not a lamp or a switch lamp, but a switch.
 
 ### Displaying values
 There are two types of value displays, a block display and a word display. Word displays are inferred while block displays have to be explicited. For example, consider the following code:
@@ -58,7 +71,7 @@ ground
 ```
 Ok, so you can write a circuit, great, now you need to learn how to call them! To execute code inside a circuit you have to type the word "power" followed by the circuit name and the "on" word, or a reference to a lamp with value on. If you type `power example_circ on`, you can start the code inside the example circuit we made before. If you typed `power example_circ off`, the circuit example_circ would not be called.
 
-Where can I call a circuit? Anywhere that is not inside itself, as lamp does not support recursion. This gives versatility to the syntax, as circuit definitions between lines of code will be ignored by lampi until it is called (and will be ignored forever if there is no "power" statement).
+Where can I call a circuit? Anywhere, including inside itself. This gives versatility to the syntax, as circuit definitions between lines of code will be ignored by lampi until it is called (and will be ignored forever if there is no "power" statement).
 
 Why do I have to put "on" in every circuit powering? Because, as you may have noticed, lamp language has no "if" statement, like most other languages do. The way to write an if statement in lamp is a clever trick involving circuits. The code:
 ```
