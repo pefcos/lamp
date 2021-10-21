@@ -1,0 +1,12 @@
+circuit recursion
+    display recursion:arg
+    lamp recursion:first recursion:arg.off
+    power rec_if -recursion:first
+    circuit rec_if
+        switch recursion:arg recursion:arg.on
+        power recursion on
+    ground
+ground
+
+switch recursion:arg (off (off (off (on (off (off on))))))
+power recursion on

@@ -192,10 +192,10 @@ IState *switch_declaration_assignment(IState *istate)
     }
     else
     {
-        remove_storage_switch(istate->storage,istate->name);
         istate->lswitch_ptr = make_switch(istate);
         if (istate->debug)
             printf("Assigned to switch %s.\n",istate->name);
+        remove_storage_switch(istate->storage,istate->name);
         store_switch(istate->storage,istate->lswitch_ptr);
     }
     istate->name = NULL;
