@@ -83,6 +83,7 @@ LampSwitch *make_switch(IState *istate)
     FILE *source = istate->source;
     char *name = istate->name;
     char *word = NULL;
+    char *varname = NULL; // Used in getting value of var by name inside switch declaration. 
     int open = 0;
     int close = 0;
     int cdir_len = 0; // Length of current directions array.
@@ -104,7 +105,7 @@ LampSwitch *make_switch(IState *istate)
     word = get_word(source);
     if (word == NULL)
         return NULL; // Error for invalid switch due to never reaching the NULL condition on current_directions.
-    else if(get_value(word) == ERROR)
+    else if(get_value(word) == ERROR && !has_parentheses(word))
     {
         get_var_by_name(istate->storage, word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref));
         if (istate->lswitch_ptr_ref != NULL)
@@ -137,7 +138,20 @@ LampSwitch *make_switch(IState *istate)
         to_add = (LampSwitchItem*) malloc(sizeof(LampSwitchItem));
         to_add->dir_arr_len = cdir_len;
         to_add->directions = current_directions;
-        to_add->value = get_value(word);  
+        to_add->value = get_value(word);
+        //Checks if is a variable reference.
+        if (to_add->value == ERROR)
+        {
+            varname = trim_parentheses(word);
+            get_var_by_name(istate->storage, varname, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref));
+            if (istate->lamp_ptr_ref == NULL)
+            {
+                istate->execution_end = EXCEPTION_INVALID_SWITCH_COMPONENT;
+                return NULL;
+            }
+            to_add->value = istate->lamp_ptr_ref->value;
+            varname = NULL;
+        }  
         append_to_switch(result,to_add);  
         to_add = NULL;                        
         //Test end condition and update directions.

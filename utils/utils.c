@@ -19,14 +19,29 @@ int validate_name(char *name)
 }
 
 /*
-    Removes () characters and processes word value.
+    Checks if word contains ().
 
-    char *word: Word to trim '()' from and extract value.
+    char *name: Word to check.
 */
-int get_value(char *word)
+int has_parentheses(char *word)
+{
+    register int i = 0;
+    for (i = 0; i < strlen(word); i++)
+        if (word[i] == '(' || word[i] == ')')
+            return 1;
+    return 0;
+}
+
+/*
+    Removes () characters from word.
+
+    char *word: Word to trim '()'.
+*/
+char *trim_parentheses(char *word)
 {
     register int i = 0; 
     char copy[MAX_WORD_LEN] = "\0";
+    char *final = NULL;
     while (word[i] == '(')
         i++;
     strcpy(copy,word+i);
@@ -36,10 +51,35 @@ int get_value(char *word)
         i++;
     }
     copy[i] = '\0';
+    // Mallocs and returns allocated string.
+    final = (char*) malloc(sizeof(char) * strlen(copy));
+    for (i = 0; i <= strlen(copy); i++)
+    {
+        final[i] = copy[i];
+    }
+    return final;
+}
+
+/*
+    Removes () characters and processes word value.
+
+    char *word: Word to trim '()' from and extract value.
+*/
+int get_value(char *word)
+{
+    register int i = 0; 
+    char *copy = trim_parentheses(word);
     if (!strcmp(copy,"on"))
+    {
+        free(copy);
         return ON;
+    }
     if (!strcmp(copy,"off"))
+    {
+        free(copy);
         return OFF;
+    }
+    free(copy);
     return ERROR;
 }
 

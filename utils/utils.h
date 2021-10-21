@@ -23,6 +23,20 @@ typedef struct stackframe Stack;
 int validate_name(char *name);
 
 /*
+    Checks if word contains ().
+
+    char *name: Word to check.
+*/
+int has_parentheses(char *word);
+
+/*
+    Removes () characters from word.
+
+    char *word: Word to trim '()'.
+*/
+char *trim_parentheses(char *word);
+
+/*
     Removes () characters and processes word value.
 
     char *word: Word to trim '()' from and extract value.

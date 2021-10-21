@@ -13,6 +13,11 @@
 #define STORAGE_H
 #include "../storage/storage.h"
 #endif
+// Includes storage.
+#ifndef UTILS_H
+#define UTILS_H
+#include "../utils/utils.h"
+#endif
 
 struct interpreter_state
 {
