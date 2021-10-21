@@ -71,6 +71,91 @@ IState *lamp_declaration_assignment(IState *istate)
 }
 
 /*
+    Makes a switch based on words from file.
+    The order of inserting is: recalculate directions, append to array in dir position (IF DIR != NULL).
+
+    IState *istate: Interpreter state.
+*/
+LampSwitch *make_switch(IState *istate)
+{
+    register int i = 0;
+    register int j = 0;
+    FILE *source = istate->source;
+    char *name = istate->name;
+    char *word = NULL;
+    int open = 0;
+    int close = 0;
+    int cdir_len = 0; // Length of current directions array.
+    int aux_len = 0; // Used in next_directions function as length of aux_directions.
+    unsigned char *current_directions = NULL; //Stores current directions. This works as a cursor to situate the next information that should be recieved.
+    unsigned char *aux_directions = NULL; // Helps expanding the original array.
+    LampSwitch *result = NULL; // No lamp switch to start.
+    LampSwitchItem *to_add = NULL; // Item to add to switch.
+    // Initializes variables
+    result = (LampSwitch*) malloc(sizeof(LampSwitch));
+    result->item_arr = NULL;
+    result->item_arr_len = 0;
+    if (!has_namespace(name))
+        name = add_default_switch_namespace(name);
+    if (name != NULL && !validate_name(name))
+        return NULL;
+    result->name = malloc((strlen(name) + 1) * sizeof(char));
+    strcpy(result->name,name);
+    word = get_word(source);
+    if (word == NULL)
+        return NULL; // Error for invalid switch due to never reaching the NULL condition on current_directions.
+    else if(get_value(word) == ERROR)
+    {
+        get_var_by_name(istate->storage, word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref));
+        if (istate->lswitch_ptr_ref != NULL)
+        {
+            return istate->lswitch_ptr_ref;
+        }
+        istate->execution_end = EXCEPTION_NO_VAR_FOUND;
+        return NULL; 
+    }
+    do
+    {
+        open = count_open(word);
+        close = count_close(word);
+        if (open > 0 && close > 0)
+            return NULL;  // Error for invalid switch item, opening and closing in the same item.
+        for (i = 0; i < open; i++)
+        {
+            aux_directions = malloc((cdir_len + 1) * sizeof(unsigned char));
+            for (j = 0; j < cdir_len; j++)
+                aux_directions[j] = current_directions[j]; // Copies array elements to new array.
+            free(current_directions);
+            current_directions = aux_directions;
+            aux_directions = NULL;
+            // Insert element at end of direction array. cdir_len has not been incremented yet.
+            current_directions[cdir_len] = OFF;
+            cdir_len++;
+        }
+        to_add = (LampSwitchItem*) malloc(sizeof(LampSwitchItem));
+        to_add->dir_arr_len = cdir_len;
+        to_add->directions = current_directions;
+        to_add->value = get_value(word);  
+        append_to_switch(result,to_add);  
+        to_add = NULL;                        
+        //Test end condition and update directions.
+        aux_directions = next_directions(current_directions,cdir_len,&aux_len);
+        current_directions = aux_directions;
+        aux_directions = NULL;
+        cdir_len = aux_len; 
+        if (word != NULL)
+            free(word); // Frees previous iteration word.
+        if (cdir_len != 0)
+        {
+            word = get_word(source);
+            if (word == NULL)
+                return NULL; // Error for invalid switch due to never reaching the NULL condition on current_directions.
+        }     
+    } while (cdir_len != 0);
+    return result;
+}
+
+/*
     Switch declaration/assignment.
 */
 IState *switch_declaration_assignment(IState *istate)
@@ -84,7 +169,7 @@ IState *switch_declaration_assignment(IState *istate)
     istate->lswitch_ptr = get_switch(istate->storage,istate->name);
     if (istate->lswitch_ptr == NULL)
     {
-        istate->lswitch_ptr = make_switch(istate->source,istate->name);
+        istate->lswitch_ptr = make_switch(istate);
         if (istate->debug)
             printf("Created switch %s.\n",istate->name);
         store_switch(istate->storage,istate->lswitch_ptr);
@@ -92,7 +177,7 @@ IState *switch_declaration_assignment(IState *istate)
     else
     {
         remove_storage_switch(istate->storage,istate->name);
-        istate->lswitch_ptr = make_switch(istate->source,istate->name);
+        istate->lswitch_ptr = make_switch(istate);
         if (istate->debug)
             printf("Assigned to switch %s.\n",istate->name);
         store_switch(istate->storage,istate->lswitch_ptr);

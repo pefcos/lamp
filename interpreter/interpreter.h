@@ -45,6 +45,13 @@ IState *istate_init(FILE *source);
 IState *lamp_declaration_assignment(IState *istate);
 
 /*
+    Makes a switch based on words from file.
+
+    IState *istate: Interpreter state.
+*/
+LampSwitch *make_switch(IState *istate);  
+
+/*
     Switch declaration/assignment.
 
 */

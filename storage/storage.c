@@ -76,6 +76,7 @@ int store_switch(Storage *storage, LampSwitch *lswitch)
 {
     S_HC *cell = (storage->switches)[calc_hash(lswitch->name)];
     S_HC *new_end = NULL;
+    printf("hello.\n");
     if (cell == NULL)
     {
         // Bad code, too lazy to fix.

@@ -91,12 +91,8 @@ unsigned char *next_directions(unsigned char *dir_arr, int dir_arr_len, int *new
 void append_to_switch(LampSwitch *lswitch, LampSwitchItem *lsi);
 
 /*
-    Makes a switch based on words from file.
-
-    FILE *source: File to get switch from;
-    char *name: Name of the switch.
+    make_switch definition was moved to storage.h/storage.c due to dependency issues.
 */
-LampSwitch *make_switch(FILE *source, char *name);  
 
 /*
     Checks if a switch element has specific directions as its prefix.
