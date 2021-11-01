@@ -436,6 +436,13 @@ int interpret(IState *istate)
         {
             istate = ignore_comment(istate);
         }
+        else if (istate->word != NULL)
+        {
+            istate->execution_end = EXCEPTION_UNKNOWN_WORD;
+            if (istate->debug) 
+                printf("UNEXPECTED WORD: \"%s\".\n",istate->word);
+            return istate->execution_end;
+        }
         // Next word.
         istate->word = get_word(istate->source);
     }
