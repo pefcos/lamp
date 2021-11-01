@@ -111,11 +111,11 @@ char *get_word(FILE *source)
     char *word = NULL;
     register char let = ' ';
     register int counter = 0;
-    // Proceeds until the end of ' ' and '\n'.
+    // Proceeds until the end of ' ', '\n' and '\t'.
     do
     {
         let = fgetc(source);
-    } while (let == ' ' || let == '\n');
+    } while (let == ' ' || let == '\n' || let == '\t');
     // Counts number of letters in word.
     while (let != ' ' && let != '\n' && let != '\0' && let != EOF && counter < MAX_WORD_LEN)
     {
