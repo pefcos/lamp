@@ -1,7 +1,7 @@
 # lamp and lampi
-A boolean (lamp) based esoteric programming language, and its interpreter.
+A boolean (lamp) based esoteric programming language, and its interpreter. Version **1.0.1**.
 
-Examples can be found in the examples directory.
+Examples can be found in the examples directory. For older versions of Lamp, you can access the older Lampi interpreters inside the bin folder for the specific version you are searching for.
 
 ## Lamp documentation
 
@@ -118,3 +118,5 @@ A lampi binary is provided in this repository, but to compile your own lampi you
 A debugging option is avaliable in lampi, you can access it by typing the "-d"/"--debug" argument after the file name. This will print messages on lamp command execution and make debugging easier.
 
 There is also a "-h"/"--help" option, to invoke it type `lampi -h`. It will display help about the usage of lampi.
+
+You can also invoke lampi with the "-v"/"--version" option, like `lampi -v`. This will display the version of lampi you are currently using. Lamp is currently in version **1.0.1**.
