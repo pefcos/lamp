@@ -1,0 +1,75 @@
+##
+    This is a function that displays art based on its arguments.
+    Arguments:
+        art:arg0 => Displays the tree art.
+        art:arg1 => Displays the X art.
+        art:arg2 => Displays the heart art.
+##
+circuit art
+    switch art:spacer (off (off (off (off (off (off (off off)))))))
+    ## Displays the first art (tree) ##
+    power print_art_1 art:arg0
+    circuit print_art_1
+        switch art:art_1a (off (off (off (on (on (off (off off)))))))
+        switch art:art_1b (off (off (on  (on (on (on  (off off)))))))
+        switch art:art_1c (off (on  (on  (on (on (on  (on  off)))))))
+        switch art:art_1d (on  (on  (on  (on (on (on  (on  on)))))))
+        display block art:art_1a
+        display block art:art_1b
+        display block art:art_1c
+        display block art:art_1d
+        display block art:art_1a
+        display block art:art_1a
+        delete switch art:art_1a
+        delete switch art:art_1b
+        delete switch art:art_1c
+        delete switch art:art_1d
+        display block art:spacer
+    ground
+    ## Displays the second art (X) ##
+    power print_art_2 art:arg1
+    circuit print_art_2
+        switch art:art_2a (on (off (off (off (off (off (off on)))))))
+        switch art:art_2b (off (on (off (off (off (off (on off)))))))
+        switch art:art_2c (off (off (on (off (off (on (off off)))))))
+        switch art:art_2d (off (off (off (on (on (off (off off)))))))
+        display block art:art_2a
+        display block art:art_2b
+        display block art:art_2c
+        display block art:art_2d
+        display block art:art_2c
+        display block art:art_2b
+        display block art:art_2a
+        delete switch art:art_2a
+        delete switch art:art_2b
+        delete switch art:art_2c
+        delete switch art:art_2d
+        display block art:spacer
+    ground
+    ## Displays the third art (heart) ##
+    power print_art_3 art:arg2
+    circuit print_art_3
+        switch art:art_3a (off (on (on (off (off (on (on off)))))))
+        switch art:art_3b (on (on (on (on (on (on (on on)))))))
+        switch art:art_3c (off (on (on (on (on (on (on off)))))))
+        switch art:art_3d (off (off (on (on (on (on (off off)))))))
+        switch art:art_3e (off (off (off (on (on (off (off off)))))))
+        display block art:art_3a
+        display block art:art_3b
+        display block art:art_3b
+        display block art:art_3c
+        display block art:art_3d
+        display block art:art_3e
+        delete switch art:art_3a
+        delete switch art:art_3b
+        delete switch art:art_3c
+        delete switch art:art_3d
+        delete switch art:art_3e
+    ground
+    delete switch art:spacer
+ground
+
+lamp art:arg0 on
+lamp art:arg1 on
+lamp art:arg2 on
+power art on
