@@ -1,9 +1,9 @@
 power main on
 
 circuit print_lamp
-    switch row0 (on  (off (off (off (off  (off (on  (on  (off  (off    (on  (off (off (on  (off      (on (on  (on  on ))))))))))))))))))
-    switch row1 (on  (off (off (off (off  (on  (off (off (on   (off    (on  (on  (on  (on  (off      (on (off (off on ))))))))))))))))))
-    switch row2 (on  (off (off (off (off  (on  (off (off (on   (off    (on  (off (off (on  (off      (on (on  (on  on ))))))))))))))))))
+    switch row0 (on  (off (off (off (off  (off (on  (on  (off  (off    (on  (off (off (on  (off      (on (on  (on  on))))))))))))))))))
+    switch row1 (on  (off (off (off (off  (on  (off (off (on   (off    (on  (on  (on  (on  (off      (on (off (off on))))))))))))))))))
+    switch row2 (on  (off (off (off (off  (on  (off (off (on   (off    (on  (off (off (on  (off      (on (on  (on  on))))))))))))))))))
     switch row3 (on  (off (off (off (off  (on  (on  (on  (on   (off    (on  (off (off (on  (off      (on (off (off off))))))))))))))))))
     switch row4 (on  (on  (on  (on  (off  (on  (off (off (on   (off    (on  (off (off (on  (off      (on (off (off off))))))))))))))))))
     display block row0
