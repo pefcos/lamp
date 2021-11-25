@@ -197,3 +197,19 @@ int is_switch_element_accessor(char *str)
         i++;
     return (str[i] == '.');
 }
+
+/*
+    Checks if string starts with comment indicator.
+*/
+int starts_with_comment(char *str)
+{
+    return (str[0] == '#' && str[1] == '#');
+}
+
+/*
+    Checks if string ends with comment indicator.
+*/
+int ends_with_comment(char *str)
+{
+    return (str[strlen(str)-1] == '#' && str[strlen(str)-2] == '#');
+}

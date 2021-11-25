@@ -365,7 +365,7 @@ IState *ignore_comment(IState *istate)
     {
         free(istate->word);
         istate->word = get_word(istate->source);
-    } while (strcmp("##",istate->word));
+    } while (istate->word != NULL && !ends_with_comment(istate->word) && strcmp("##",istate->word));
     free(istate->word);
     istate->word = NULL;
     return istate;
@@ -432,7 +432,7 @@ int interpret(IState *istate)
                 return istate->execution_end;
         }
         // Comment.
-        else if (istate->word != NULL && !strcmp("##",istate->word))
+        else if (istate->word != NULL && (!strcmp("##",istate->word) || starts_with_comment(istate->word)))
         {
             istate = ignore_comment(istate);
         }

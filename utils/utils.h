@@ -86,3 +86,13 @@ char *duplicate_string(char *str);
     char *str: String to check.
 */
 int is_switch_element_accessor(char *str);
+
+/*
+    Checks if string starts with comment indicator.
+*/
+int starts_with_comment(char *str);
+
+/*
+    Checks if string ends with comment indicator.
+*/
+int ends_with_comment(char *str);
