@@ -45,7 +45,7 @@ Now you know about block displays, but they are kind of useless for single lamps
 In lamp, a variable can have its value inverted using the "-" symbol before its name, without spaces in between. For example, we may want to display the inverse of a lamp's content. To display the inverse of the content of the lamp "example", we can write `display -example`. If example is "on", it will display "off", and if it is "off", lampi will display "on".
 
 ### Comments
-Comments are needed so that the programmer can better understand the code written, and every major programming language provides a way to write them. In lamp, to comment a section, you can type "##" to open and close a comment section. An example would be `## this is a lamp comment ##`. Note that a space before and after the "##" is required, so `##this is a lamp comment##` will not work and will likely lead to an error.
+Comments are needed so that the programmer can better understand the code written, and every major programming language provides a way to write them. In lamp, to comment a section, you can type "##" to open and close a comment section. An example would be `## this is a lamp comment ##`.
 
 ### Deleting variables
 Variables in lamp can also be deleted by the programmer by typing the word "delete", followed by the variable type and the variable name. An example of deleting a lamp variable is `delete lamp example`. This can be used to increase the programmer's control over memory usage, deleting lamps and switches that will not be used anymore.
