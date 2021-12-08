@@ -1,7 +1,7 @@
 # lamp and lampi
-A boolean (lamp) based esoteric programming language, and its interpreter. Version **1.0.1**.
+A boolean based esoteric programming language, and its interpreter.
 
-Examples can be found in the examples directory. For older versions of Lamp, you can access the older Lampi interpreters inside the bin folder for the specific version you are searching for.
+You can download the latest lampi release in the [releases](https://github.com/pefcos/lamp/releases) section.
 
 ## Lamp documentation
 
@@ -109,14 +109,16 @@ and now the displaying will show a "on" and a "off", since they both modify a la
 
 Consgratulations! Now you too can start coding in lamp.
 
-## Lampi usage
+## Lampi
 
 Lampi is the lamp interpreter for linux operating systems, which can be invoked running "lampi" with the path to the .lamp file with your lamp code. An usage example would be `lampi example.lamp`, to interpret the "example.lamp" file.
 
-A lampi binary is provided in this repository, but to compile your own lampi you can clone this repository and execute `make lampi` on the repository's root directory.
+Lampi binaries are provided in this repository in the [releases](https://github.com/pefcos/lamp/releases) section, but they may not work in every computer, so you can build your own lampi by cloning this repository and executing `make lampi` on the repository's root directory.
 
-A debugging option is avaliable in lampi, you can access it by typing the "-d"/"--debug" argument after the file name. This will print messages on lamp command execution and make debugging easier.
+### Usage options
+
+A debugging option is avaliable in lampi, you can access it by typing the "-d"/"--debug" argument after the file name. This will print messages on every lamp command execution and make debugging easier.
 
 There is also a "-h"/"--help" option, to invoke it type `lampi -h`. It will display help about the usage of lampi.
 
-You can also invoke lampi with the "-v"/"--version" option, like `lampi -v`. This will display the version of lampi you are currently using. Lamp is currently in version **1.0.1**.
+You can also invoke lampi with the "-v"/"--version" option, like `lampi -v`. This will display the version of lampi you are currently using. If you need a different version of lampi than the one you are currently using, you can access the [releases](https://github.com/pefcos/lamp/releases) section and download the lampi version you need.
