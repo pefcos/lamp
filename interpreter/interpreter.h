@@ -50,6 +50,20 @@ IState *istate_init(FILE *source);
 IState *lamp_declaration_assignment(IState *istate);
 
 /*
+    Copies a switch from the referenced switch.
+
+    IState *istate: Interpreter state.
+*/
+LampSwitch *assign_reference_to_switch(IState *istate);
+
+/*
+    Builds a switch using '(' and ')', together with references and values.
+    
+    IState *istate: Interpreter state.
+*/
+LampSwitch *switch_constructor(IState *istate);
+
+/*
     Makes a switch based on words from file.
 
     IState *istate: Interpreter state.

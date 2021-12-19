@@ -1,5 +1,16 @@
 #include "switch.h"
 
+
+void print_dirs(unsigned char *directions, int dir_len)
+{
+    register int i = 0;
+    printf("directions: ");
+    for (i = 0; i < dir_len; i++)
+    {
+        printf("%d",directions[i]);
+    }
+    printf("\n");
+}
 /*
     Converts an input string of directions into a number of native direction values.
     The first element of the returned array is length. NOT A DIRECTION.
@@ -86,8 +97,10 @@ unsigned char *next_directions(unsigned char *dir_arr, int dir_arr_len, int *new
     int last_off_index = -1; // Last off index stores the offset (array position) of the last OFF direction.
     unsigned char *result = NULL;
     for (i = 0; i < dir_arr_len; i++)
+    {
         if (dir_arr[i] == OFF)
             last_off_index = i;
+    }
     if (last_off_index >= 0)
     {
         result = malloc((last_off_index + 1) * sizeof(unsigned char));
@@ -95,8 +108,23 @@ unsigned char *next_directions(unsigned char *dir_arr, int dir_arr_len, int *new
             result[i] = dir_arr[i];
         result[last_off_index] = ON;
     }
-    *new_length = last_off_index + 1;
+    if (new_length != NULL)
+        *new_length = last_off_index + 1;
     return result; // Returns NULL if finished.
+}
+
+/*
+    Creates a switch with no items.
+
+    char *name: Name of the new switch.
+*/
+LampSwitch *new_switch(char *name)
+{
+    LampSwitch *result = (LampSwitch*) malloc(sizeof(LampSwitch));
+    result->item_arr = NULL;
+    result->item_arr_len = 0;
+    result->name = duplicate_string(name);
+    return result;
 }
 
 /*
@@ -300,4 +328,57 @@ int is_lamp(LampSwitch *lswitch)
     if (lswitch == NULL)
         return 0;
     return (lswitch->item_arr_len == 1);
+}
+
+/*
+    Returns a pointer to a LampSwitch with the same content as a given argument LampSwitch.
+
+    LampSwitch *lswitch: Switch to duplicate;
+    char *name: Name of the copy.
+*/
+LampSwitch *duplicate_switch(LampSwitch *lswitch, char *name)
+{
+    register int i = 0;
+    register int j = 0;
+    LampSwitch *result = (LampSwitch*) malloc(sizeof(LampSwitch));
+    result->name = name;
+    for (i = 0; i < lswitch->item_arr_len; i++)
+        append_to_switch(result,copy_without_prefix((lswitch->item_arr)[i],NULL,0));
+    return result;
+}
+
+/*
+    Creates a new LampSwitchItem.
+
+    unsigned char *directions: Directions of the element;
+    int dir_len: Length of the direction array;
+    unsigned char value: Value of the item.
+*/
+LampSwitchItem *new_switch_item(unsigned char *directions, int dir_len, unsigned char value)
+{
+    LampSwitchItem *item;
+    item = (LampSwitchItem*) malloc(sizeof(LampSwitchItem));
+    item->dir_arr_len = dir_len;
+    item->directions = directions;
+    item->value = value;
+}
+
+/*
+    Adds an off suffix to the direction.
+    Example:
+    on.off -> on.on.off
+    off -> on.off
+    on -> on.off
+
+    unsigned char *directions: Directions to append the off suffix to
+*/
+unsigned char *add_direction_off_suffix(unsigned char *directions, int *dir_len)
+{
+    register int i = 0;
+    directions = malloc(((*dir_len) + 1) * sizeof(unsigned char));
+    for(i = 0; i < (*dir_len); i++)
+        directions[i] = ON;
+    directions[(*dir_len)] = OFF;
+    (*dir_len)++;
+    return directions;
 }

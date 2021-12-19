@@ -83,6 +83,13 @@ int count_open(char *word);
 unsigned char *next_directions(unsigned char *dir_arr, int dir_arr_len, int *new_length);
 
 /*
+    Creates a switch with no items.
+
+    char *name: Name of the new switch.
+*/
+LampSwitch *new_switch(char *name);
+
+/*
     Appends a LampSwitchItem to a LampSwitch.
 
     LampSwitch *lswitch: LampSwitch to recieve the item;
@@ -91,7 +98,7 @@ unsigned char *next_directions(unsigned char *dir_arr, int dir_arr_len, int *new
 void append_to_switch(LampSwitch *lswitch, LampSwitchItem *lsi);
 
 /*
-    make_switch definition was moved to storage.h/storage.c due to dependency issues.
+    make_switch definition was moved to interpreter.h/interpreter.c due to dependency issues.
 */
 
 /*
@@ -157,3 +164,31 @@ void invert_switch(LampSwitch *lswitch);
     LampSwitch *lswitch: Switch to check.
 */
 int is_lamp(LampSwitch *lswitch);
+
+/*
+    Returns a pointer to a LampSwitch with the same content as a given argument LampSwitch.
+
+    LampSwitch *lswitch: Switch to duplicate;
+    char *name: Name of the copy.
+*/
+LampSwitch *duplicate_switch(LampSwitch *lswitch, char *name);
+
+/*
+    Creates a new LampSwitchItem.
+
+    unsigned char *directions: Directions of the element;
+    int dir_len: Length of the direction array;
+    unsigned char value: Value of the item.
+*/
+LampSwitchItem *new_switch_item(unsigned char *directions, int dir_len, unsigned char value);
+
+/*
+    Adds an off suffix to the direction.
+    Example:
+    on.off -> on.on.off
+    off -> on.off
+    on -> ERROR!
+
+    unsigned char *directions: Directions to append the off suffix to
+*/
+unsigned char *add_direction_off_suffix(unsigned char *directions, int *dir_len);

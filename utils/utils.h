@@ -51,11 +51,18 @@ int get_value(char *word);
 unsigned short int calc_hash(char *name);
 
 /*
-    Gets the first word in the file.
+    Gets the first word in the file and advances the cursor in the file.
 
     FILE *source: File to get the word from.
 */
 char *get_word(FILE *source);
+
+/*
+    Gets the first word in the file without advancing the cursor in the file.
+
+    FILE *source: File to peek the word from.
+*/
+char *peek_word(FILE *source);
 
 /*
     Adds the offset to the top (start) of the stack.

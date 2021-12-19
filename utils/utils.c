@@ -101,7 +101,7 @@ unsigned short int calc_hash(char *name)
 }
 
 /*
-    Gets the first word in the file. 
+    Gets the first word in the file and advances the cursor in the file.
     Returns NULL if the word is too big.
 
     FILE *source: File to get the word from.
@@ -133,6 +133,42 @@ char *get_word(FILE *source)
     word = (char*) malloc(counter * sizeof(char));
     fgets(word,counter,source);
     return word;
+}
+
+/*
+    Gets the first word in the file without advancing the cursor in the file.
+
+    FILE *source: File to peek the word from.
+*/
+char *peek_word(FILE *source)
+{
+    char *word = NULL;
+    register char let = ' ';
+    register int counter = 0;
+    // Proceeds until the end of ' ', '\n' and '\t'.
+    do
+    {
+        let = fgetc(source);
+    } while (let == ' ' || let == '\n' || let == '\t');
+    // Counts number of letters in word.
+    while (let != ' ' && let != '\n' && let != '\0' && let != EOF && counter < MAX_WORD_LEN)
+    {
+        counter++;
+        let = fgetc(source);
+    }
+    if (counter >= MAX_WORD_LEN || counter <= 0)
+        return NULL;
+    // Returns to the start of the word.
+    counter++; // Includes space for the '\0' character.
+    if (let != EOF)
+        fseek(source,counter * -1,SEEK_CUR);
+    else
+        fseek(source,(counter - 1) * -1,SEEK_END); // Lazy fix for EOF bug.
+    word = (char*) malloc(counter * sizeof(char));
+    fgets(word,counter,source);
+    fseek(source,counter * -1,SEEK_CUR);
+    return word;
+
 }
 
 /*

@@ -71,12 +71,99 @@ IState *lamp_declaration_assignment(IState *istate)
 }
 
 /*
+    Copies a switch from the referenced switch.
+
+    IState *istate: Interpreter state.
+*/
+LampSwitch *assign_reference_to_switch(IState *istate)
+{
+    register int i = 0;
+    LampSwitch *new_switch = NULL;
+
+    get_var_by_name(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref));
+    if (istate->lswitch_ptr_ref == NULL)
+    {
+        istate->execution_end = EXCEPTION_NO_SWITCH_FOUND;
+        return NULL;
+    }
+    new_switch = duplicate_switch(istate->lswitch_ptr_ref,istate->name);
+    return new_switch;
+}
+
+LampSwitch *reduced_switch_constructor(IState *istate)
+{
+    register int i = 0;
+    unsigned char *directions = NULL;
+    int dir_len = 0;
+    LampSwitch *result = new_switch(duplicate_string(istate->name));
+    
+    for (i = 1; i < strlen(istate->word) - 2; i++)
+    {
+        if ((istate->word)[i] != '.' && (istate->word)[i] != 'o')
+            return NULL; // TODO. Error, unknown char in switch notation.
+        directions = add_direction_off_suffix(directions,&dir_len);
+        append_to_switch(result,new_switch_item(directions,dir_len,((istate->word)[i] == 'o' ? ON : OFF)));
+    }
+    // Appends last value in on position.
+    append_to_switch(result,new_switch_item(next_directions(directions,dir_len,NULL),dir_len,((istate->word)[i] == 'o' ? ON : OFF)));
+
+    free(istate->word);
+    istate->word = NULL;
+    return result;
+}
+
+/*
+    Builds a switch using '(' and ')', together with references and values.
+    Things it should support on v1.1:
+        (on (off on)
+        ( on ( off on ) )
+        (on ( off on ))
+        (switch.on (on off))
+        (switch (on off))
+        (o.oo.o.oo.) -> Reduced notation switch, becomes (on (off (on (on (off (on (off (on (on off)))))))))
+        ((o.o) (on off))
+    
+    IState *istate: Interpreter state.
+*/
+LampSwitch *switch_constructor(IState *istate)
+{
+    int open, close = 0;
+    do
+    {
+        open = count_open(istate->word);
+        close = count_close(istate->word);
+        if (open > 0 && close > 0)
+            return reduced_switch_constructor(istate); // Reduced switch notation: (.o.oo.o.)
+        
+        free(istate->word);
+        istate->word = get_word(istate->source);
+    } while (open - close != 0);
+    return NULL;
+}
+
+/*
+    Makes a switch based on words from file.
+
+    IState *istate: Interpreter state.
+*/
+LampSwitch *make_switch(IState *istate)
+{
+    istate->word = get_word(istate->source);
+    if (istate->word == NULL)
+        return NULL;
+    if(!has_parentheses(istate->word))
+        return assign_reference_to_switch(istate);
+    else
+        return switch_constructor(istate); 
+}
+
+/*
     Makes a switch based on words from file.
     The order of inserting is: recalculate directions, append to array in dir position (IF DIR != NULL).
 
     IState *istate: Interpreter state.
 */
-LampSwitch *make_switch(IState *istate)
+/* LampSwitch *make_switch(IState *istate)
 {
     register int i = 0;
     register int j = 0;
@@ -169,7 +256,7 @@ LampSwitch *make_switch(IState *istate)
         }     
     } while (cdir_len != 0);
     return result;
-}
+} */
 
 /*
     Switch declaration/assignment.

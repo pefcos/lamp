@@ -1,0 +1,9 @@
+switch diego (.o.o...o)
+display diego
+
+##
+reduced:    (.   o     .     o       .       .        .    o)
+desired:    (off (on   (off   (on     (off     (off      (off on)))))))
+actual:     (off (on   (off   (on     (off     (off      (off on)))))))
+ON
+##
