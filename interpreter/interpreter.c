@@ -106,13 +106,20 @@ LampSwitch *reduced_switch_constructor(IState *istate)
         append_to_switch(result,new_switch_item(directions,dir_len,((istate->word)[i] == 'o' ? ON : OFF)));
     }
     // Appends last value in on position.
-    if ((istate->word)[i] != '.' && (istate->word)[i] != 'o' && (istate->word)[i] != '(' && (istate->word)[i] != ')')
+    if ((istate->word)[i] != '.' && (istate->word)[i] != 'o')
         return NULL; // TODO. Error, unknown char in switch notation.
-    if ((istate->word)[i] != '(' && (istate->word)[i] != ')')
-        append_to_switch(result,new_switch_item(next_directions(directions,dir_len,NULL),dir_len,((istate->word)[i] == 'o' ? ON : OFF)));
+    append_to_switch(result,new_switch_item(next_directions(directions,dir_len,NULL),dir_len,((istate->word)[i] == 'o' ? ON : OFF)));
 
     free(istate->word);
     istate->word = NULL;
+
+    //Before returning, checks if the resulting switch is valid.
+    if (result->item_arr_len < 2)
+    {
+        delete_switch(result);
+        istate->execution_end = EXCEPTION_INVALID_REDUCED_NOTATION;
+        return NULL;
+    }
     return result;
 }
 

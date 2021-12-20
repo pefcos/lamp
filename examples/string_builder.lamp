@@ -335,15 +335,20 @@ circuit delete_string
   delete switch string:row4
 ground
 
-## starts string with H ##
+circuit init_string
+  switch string:row0 (off off)
+  switch string:row1 (off off)
+  switch string:row2 (off off)
+  switch string:row3 (off off)
+  switch string:row4 (off off)
+ground
 
-switch string:row0 stringlets:h_row0
-switch string:row1 stringlets:h_row0
-switch string:row2 stringlets:h_row1
-switch string:row3 stringlets:h_row0
-switch string:row4 stringlets:h_row0
+## start of main code ##
 
-## adds "ello world" to "h" ##
+power init_string on
+
+## adds "hello world in lamp" to string ##
+power add_let_h on
 power add_let_e on
 power add_let_l on
 power add_let_l on
@@ -354,6 +359,14 @@ power add_let_o on
 power add_let_r on
 power add_let_l on
 power add_let_d on
+power add_let_space on
+power add_let_i on
+power add_let_n on
+power add_let_space on
+power add_let_l on
+power add_let_a on
+power add_let_m on
+power add_let_p on
 
 ## displays the message on the screen ##
 power display_string on
