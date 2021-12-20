@@ -173,10 +173,17 @@ LampSwitch *switch_constructor(IState *istate)
 
             else if (strlen(trim_parentheses(istate->word)) != 0)// Variable
             {
+                printf("var.\n");
                 get_var_by_name(istate->storage,trim_parentheses(istate->word),&(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref));
+                printf("got lamp %p.\n",istate->lamp_ptr_ref);
 
                 if (istate->lamp_ptr_ref != NULL) // If is lamp reference.
-                    to_add->value = istate->lamp_ptr_ref->value;
+                {
+                    to_add = new_switch_item(current_directions,current_directions_len,istate->lamp_ptr_ref->value);
+                    append_to_switch(result,to_add);
+                    current_directions = next_directions(current_directions,current_directions_len,&current_directions_len);
+                    to_add = NULL;
+                }
                 
                 else if (istate->lswitch_ptr_ref != NULL) // If is switch reference.
                 {

@@ -1,6 +1,5 @@
-switch diego (.o.o...o)
-switch vandersonso (   ( off 
-on)        off   )
+switch diego (o..o...o)
+switch vandersonso (   ( off on)        diego.on.off   )
 display diego
 display block diego
 display diego
