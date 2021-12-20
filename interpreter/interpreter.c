@@ -100,13 +100,16 @@ LampSwitch *reduced_switch_constructor(IState *istate)
     
     for (i = 1; i < strlen(istate->word) - 2; i++)
     {
-        if ((istate->word)[i] != '.' && (istate->word)[i] != 'o')
+        if ((istate->word)[i] != '.' && (istate->word)[i] != 'o' && (istate->word)[i] != '(' && (istate->word)[i] != ')')
             return NULL; // TODO. Error, unknown char in switch notation.
         directions = add_direction_off_suffix(directions,&dir_len);
         append_to_switch(result,new_switch_item(directions,dir_len,((istate->word)[i] == 'o' ? ON : OFF)));
     }
     // Appends last value in on position.
-    append_to_switch(result,new_switch_item(next_directions(directions,dir_len,NULL),dir_len,((istate->word)[i] == 'o' ? ON : OFF)));
+    if ((istate->word)[i] != '.' && (istate->word)[i] != 'o' && (istate->word)[i] != '(' && (istate->word)[i] != ')')
+        return NULL; // TODO. Error, unknown char in switch notation.
+    if ((istate->word)[i] != '(' && (istate->word)[i] != ')')
+        append_to_switch(result,new_switch_item(next_directions(directions,dir_len,NULL),dir_len,((istate->word)[i] == 'o' ? ON : OFF)));
 
     free(istate->word);
     istate->word = NULL;
@@ -134,6 +137,8 @@ LampSwitch *switch_constructor(IState *istate)
     int current_directions_len = 0; // Keeps size of current directions.
     int open, close, balance = 0; // Balance keeps track of total number (open - close).
     unsigned char *directions_to_add = NULL; // Stores directions to concat.
+    LampSwitch *reduced = NULL; // This is used only to store reduced notation switches.
+
     LampSwitch *result = new_switch(istate->name);
     
     do
@@ -144,12 +149,7 @@ LampSwitch *switch_constructor(IState *istate)
 
         if (open > 0 && close > 0) // Reduced switch notation: (.o.oo.o.)
         {
-            if (to_add == NULL)
-                return reduced_switch_constructor(istate); 
-            /* copy_items_with_prefix(result, 
-                reduced_switch_constructor(istate),
-                to_add->directions,
-                to_add->dir_arr_len); */
+            return reduced_switch_constructor(istate); 
         }
 
         else // Not reduced notation.
@@ -173,9 +173,7 @@ LampSwitch *switch_constructor(IState *istate)
 
             else if (strlen(trim_parentheses(istate->word)) != 0)// Variable
             {
-                printf("var.\n");
                 get_var_by_name(istate->storage,trim_parentheses(istate->word),&(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref));
-                printf("got lamp %p.\n",istate->lamp_ptr_ref);
 
                 if (istate->lamp_ptr_ref != NULL) // If is lamp reference.
                 {
@@ -187,21 +185,16 @@ LampSwitch *switch_constructor(IState *istate)
                 
                 else if (istate->lswitch_ptr_ref != NULL) // If is switch reference.
                 {
-                    copy_items_with_prefix(result,istate->lswitch_ptr_ref,to_add->directions,to_add->dir_arr_len);
-                    /* for (i = 0; i < istate->lswitch_ptr_ref->item_arr_len; i++)
+                    for (i = 0; i < istate->lswitch_ptr_ref->item_arr_len; i++)
                     {
-                        current_directions = concat_directions(
-                            to_add->directions,
-                            to_add->dir_arr_len,
-                            (istate->lswitch_ptr_ref->item_arr)[i]->directions,
-                            (istate->lswitch_ptr_ref->item_arr)[i]->dir_arr_len);
-                        to_add = new_switch_item(current_directions,
-                            to_add->dir_arr_len + (istate->lswitch_ptr_ref->item_arr)[i]->dir_arr_len,
+                        to_add = new_switch_item(
+                            concat_directions(current_directions,current_directions_len,(istate->lswitch_ptr_ref->item_arr)[i]->directions,(istate->lswitch_ptr_ref->item_arr)[i]->dir_arr_len),
+                            current_directions_len + (istate->lswitch_ptr_ref->item_arr)[i]->dir_arr_len,
                             (istate->lswitch_ptr_ref->item_arr)[i]->value);
                         append_to_switch(result,to_add);
-                    }  */
+                    } 
                     current_directions = next_directions(current_directions,current_directions_len,&current_directions_len);
-                    to_add = new_switch_item(current_directions,current_directions_len + open,OFF); // OFF is default value, will be changed later.
+                    to_add = NULL;
                 }
 
                 else

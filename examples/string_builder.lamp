@@ -1,0 +1,359 @@
+## all of this code uses namespace string and stringlets. ##
+
+## defines letter switches in namespace stringlets ##
+switch stringlets:space (....)
+
+switch stringlets:a_row0 (.oo.)
+switch stringlets:a_row1 (o..o)
+switch stringlets:a_row2 (oooo)
+
+switch stringlets:b_row0 (ooo.)
+switch stringlets:b_row1 (o..o)
+
+switch stringlets:c_row0 (.ooo)
+switch stringlets:c_row1 (o...)
+
+switch stringlets:d_row0 (ooo.)
+switch stringlets:d_row1 (o..o)
+
+switch stringlets:e_row0 (oooo)
+switch stringlets:e_row1 (o...)
+
+switch stringlets:f_row0 (oooo)
+switch stringlets:f_row1 (o...)
+
+switch stringlets:g_row0 (.ooo)
+switch stringlets:g_row1 (o...)
+switch stringlets:g_row2 (o.oo)
+switch stringlets:g_row3 (o..o)
+switch stringlets:g_row4 (.oo.)
+
+switch stringlets:h_row0 (o..o)
+switch stringlets:h_row1 (oooo)
+
+switch stringlets:i_row0 (oo)
+
+switch stringlets:j_row0 (ooo)
+switch stringlets:j_row1 (.oo)
+switch stringlets:j_row2 (oo.)
+
+switch stringlets:k_row0 (o...o)
+switch stringlets:k_row1 (o..o.)
+switch stringlets:k_row2 (ooo..)
+
+switch stringlets:l_row0 (o...)
+switch stringlets:l_row1 (oooo)
+
+switch stringlets:m_row0 (.o.o.)
+switch stringlets:m_row1 (o.o.o)
+switch stringlets:m_row2 (o...o)
+
+switch stringlets:n_row0 (o...o)
+switch stringlets:n_row1 (oo..o)
+switch stringlets:n_row2 (o.o.o)
+switch stringlets:n_row3 (o..oo)
+
+switch stringlets:o_row0 (.oo.)
+switch stringlets:o_row1 (o..o)
+
+switch stringlets:p_row0 (ooo.)
+switch stringlets:p_row1 (o..o)
+switch stringlets:p_row2 (o...)
+
+switch stringlets:q_row0 (.oo..)
+switch stringlets:q_row1 (o..o.)
+switch stringlets:q_row2 (.ooo.)
+switch stringlets:q_row3 (...oo)
+
+switch stringlets:r_row0 (ooo.)
+switch stringlets:r_row1 (o..o)
+
+switch stringlets:s_row0 (.ooo)
+switch stringlets:s_row1 (o...)
+switch stringlets:s_row2 (.oo.)
+switch stringlets:s_row3 (...o)
+switch stringlets:s_row4 (ooo.)
+
+switch stringlets:t_row0 (ooooo)
+switch stringlets:t_row1 (..o..)
+
+switch stringlets:u_row0 (o..o)
+switch stringlets:u_row1 (.oo.)
+
+switch stringlets:v_row0 (o...o)
+switch stringlets:v_row1 (.o.o.)
+switch stringlets:v_row2 (..o..)
+
+switch stringlets:w_row0 (o...o)
+switch stringlets:w_row1 (o.o.o)
+switch stringlets:w_row2 (.o.o.)
+
+switch stringlets:x_row0 (o...o)
+switch stringlets:x_row1 (.o.o.)
+switch stringlets:x_row2 (..o..)
+
+switch stringlets:y_row0 (o...o)
+switch stringlets:y_row1 (.ooo.)
+switch stringlets:y_row2 (..o..)
+
+switch stringlets:z_row0 (ooooo)
+switch stringlets:z_row1 (...o.)
+switch stringlets:z_row2 (..o..)
+switch stringlets:z_row3 (.o...)
+
+## circuits to add letters ##
+
+circuit add_let_space
+  switch string:row0 (string:row0 (off stringlets:space))
+  switch string:row1 (string:row1 (off stringlets:space))
+  switch string:row2 (string:row2 (off stringlets:space))
+  switch string:row3 (string:row3 (off stringlets:space))
+  switch string:row4 (string:row4 (off stringlets:space))
+ground
+
+circuit add_let_a
+  switch string:row0 (string:row0 (off stringlets:a_row0))
+  switch string:row1 (string:row1 (off stringlets:a_row1))
+  switch string:row2 (string:row2 (off stringlets:a_row2))
+  switch string:row3 (string:row3 (off stringlets:a_row1))
+  switch string:row4 (string:row4 (off stringlets:a_row1))
+ground
+
+circuit add_let_b
+  switch string:row0 (string:row0 (off stringlets:b_row0))
+  switch string:row1 (string:row1 (off stringlets:b_row1))
+  switch string:row2 (string:row2 (off stringlets:b_row0))
+  switch string:row3 (string:row3 (off stringlets:b_row1))
+  switch string:row4 (string:row4 (off stringlets:b_row0))
+ground
+
+circuit add_let_c
+  switch string:row0 (string:row0 (off stringlets:c_row0))
+  switch string:row1 (string:row1 (off stringlets:c_row1))
+  switch string:row2 (string:row2 (off stringlets:c_row1))
+  switch string:row3 (string:row3 (off stringlets:c_row1))
+  switch string:row4 (string:row4 (off stringlets:c_row0))
+ground
+
+circuit add_let_d
+  switch string:row0 (string:row0 (off stringlets:d_row0))
+  switch string:row1 (string:row1 (off stringlets:d_row1))
+  switch string:row2 (string:row2 (off stringlets:d_row1))
+  switch string:row3 (string:row3 (off stringlets:d_row1))
+  switch string:row4 (string:row4 (off stringlets:d_row0))
+ground
+
+circuit add_let_e
+  switch string:row0 (string:row0 (off stringlets:e_row0))
+  switch string:row1 (string:row1 (off stringlets:e_row1))
+  switch string:row2 (string:row2 (off stringlets:e_row0))
+  switch string:row3 (string:row3 (off stringlets:e_row1))
+  switch string:row4 (string:row4 (off stringlets:e_row0))
+ground
+
+circuit add_let_f
+  switch string:row0 (string:row0 (off stringlets:f_row0))
+  switch string:row1 (string:row1 (off stringlets:f_row1))
+  switch string:row2 (string:row2 (off stringlets:f_row0))
+  switch string:row3 (string:row3 (off stringlets:f_row1))
+  switch string:row4 (string:row4 (off stringlets:f_row1))
+ground
+
+circuit add_let_g
+  switch string:row0 (string:row0 (off stringlets:g_row0))
+  switch string:row1 (string:row1 (off stringlets:g_row1))
+  switch string:row2 (string:row2 (off stringlets:g_row2))
+  switch string:row3 (string:row3 (off stringlets:g_row3))
+  switch string:row4 (string:row4 (off stringlets:g_row4))
+ground
+
+circuit add_let_h
+  switch string:row0 (string:row0 (off stringlets:h_row0))
+  switch string:row1 (string:row1 (off stringlets:h_row0))
+  switch string:row2 (string:row2 (off stringlets:h_row1))
+  switch string:row3 (string:row3 (off stringlets:h_row0))
+  switch string:row4 (string:row4 (off stringlets:h_row0))
+ground
+
+circuit add_let_i
+  switch string:row0 (string:row0 (off stringlets:i_row0))
+  switch string:row1 (string:row1 (off stringlets:i_row0))
+  switch string:row2 (string:row2 (off stringlets:i_row0))
+  switch string:row3 (string:row3 (off stringlets:i_row0))
+  switch string:row4 (string:row4 (off stringlets:i_row0))
+ground
+
+circuit add_let_j
+  switch string:row0 (string:row0 (off stringlets:j_row0))
+  switch string:row1 (string:row1 (off stringlets:j_row1))
+  switch string:row2 (string:row2 (off stringlets:j_row1))
+  switch string:row3 (string:row3 (off stringlets:j_row1))
+  switch string:row4 (string:row4 (off stringlets:j_row2))
+ground
+
+circuit add_let_k
+  switch string:row0 (string:row0 (off stringlets:k_row0))
+  switch string:row1 (string:row1 (off stringlets:k_row1))
+  switch string:row2 (string:row2 (off stringlets:k_row2))
+  switch string:row3 (string:row3 (off stringlets:k_row1))
+  switch string:row4 (string:row4 (off stringlets:k_row0))
+ground
+
+circuit add_let_l
+  switch string:row0 (string:row0 (off stringlets:l_row0))
+  switch string:row1 (string:row1 (off stringlets:l_row0))
+  switch string:row2 (string:row2 (off stringlets:l_row0))
+  switch string:row3 (string:row3 (off stringlets:l_row0))
+  switch string:row4 (string:row4 (off stringlets:l_row1))
+ground
+
+circuit add_let_m
+  switch string:row0 (string:row0 (off stringlets:m_row0))
+  switch string:row1 (string:row1 (off stringlets:m_row1))
+  switch string:row2 (string:row2 (off stringlets:m_row1))
+  switch string:row3 (string:row3 (off stringlets:m_row2))
+  switch string:row4 (string:row4 (off stringlets:m_row2))
+ground
+
+circuit add_let_n
+  switch string:row0 (string:row0 (off stringlets:n_row0))
+  switch string:row1 (string:row1 (off stringlets:n_row1))
+  switch string:row2 (string:row2 (off stringlets:n_row2))
+  switch string:row3 (string:row3 (off stringlets:n_row3))
+  switch string:row4 (string:row4 (off stringlets:n_row0))
+ground
+
+circuit add_let_o
+  switch string:row0 (string:row0 (off stringlets:o_row0))
+  switch string:row1 (string:row1 (off stringlets:o_row1))
+  switch string:row2 (string:row2 (off stringlets:o_row1))
+  switch string:row3 (string:row3 (off stringlets:o_row1))
+  switch string:row4 (string:row4 (off stringlets:o_row0))
+ground
+
+circuit add_let_p
+  switch string:row0 (string:row0 (off stringlets:p_row0))
+  switch string:row1 (string:row1 (off stringlets:p_row1))
+  switch string:row2 (string:row2 (off stringlets:p_row0))
+  switch string:row3 (string:row3 (off stringlets:p_row2))
+  switch string:row4 (string:row4 (off stringlets:p_row2))
+ground
+
+circuit add_let_q
+  switch string:row0 (string:row0 (off stringlets:q_row0))
+  switch string:row1 (string:row1 (off stringlets:q_row1))
+  switch string:row2 (string:row2 (off stringlets:q_row1))
+  switch string:row3 (string:row3 (off stringlets:q_row2))
+  switch string:row4 (string:row4 (off stringlets:q_row3))
+ground
+
+circuit add_let_r
+  switch string:row0 (string:row0 (off stringlets:r_row0))
+  switch string:row1 (string:row1 (off stringlets:r_row1))
+  switch string:row2 (string:row2 (off stringlets:r_row0))
+  switch string:row3 (string:row3 (off stringlets:r_row1))
+  switch string:row4 (string:row4 (off stringlets:r_row1))
+ground
+
+circuit add_let_s
+  switch string:row0 (string:row0 (off stringlets:s_row0))
+  switch string:row1 (string:row1 (off stringlets:s_row1))
+  switch string:row2 (string:row2 (off stringlets:s_row2))
+  switch string:row3 (string:row3 (off stringlets:s_row3))
+  switch string:row4 (string:row4 (off stringlets:s_row4))
+ground
+
+circuit add_let_t
+  switch string:row0 (string:row0 (off stringlets:t_row0))
+  switch string:row1 (string:row1 (off stringlets:t_row1))
+  switch string:row2 (string:row2 (off stringlets:t_row1))
+  switch string:row3 (string:row3 (off stringlets:t_row1))
+  switch string:row4 (string:row4 (off stringlets:t_row1))
+ground
+
+circuit add_let_u
+  switch string:row0 (string:row0 (off stringlets:u_row0))
+  switch string:row1 (string:row1 (off stringlets:u_row0))
+  switch string:row2 (string:row2 (off stringlets:u_row0))
+  switch string:row3 (string:row3 (off stringlets:u_row0))
+  switch string:row4 (string:row4 (off stringlets:u_row1))
+ground
+
+circuit add_let_v
+  switch string:row0 (string:row0 (off stringlets:v_row0))
+  switch string:row1 (string:row1 (off stringlets:v_row0))
+  switch string:row2 (string:row2 (off stringlets:v_row1))
+  switch string:row3 (string:row3 (off stringlets:v_row1))
+  switch string:row4 (string:row4 (off stringlets:v_row2))
+ground
+
+circuit add_let_w
+  switch string:row0 (string:row0 (off stringlets:w_row0))
+  switch string:row1 (string:row1 (off stringlets:w_row0))
+  switch string:row2 (string:row2 (off stringlets:w_row1))
+  switch string:row3 (string:row3 (off stringlets:w_row1))
+  switch string:row4 (string:row4 (off stringlets:w_row2))
+ground
+
+circuit add_let_x
+  switch string:row0 (string:row0 (off stringlets:x_row0))
+  switch string:row1 (string:row1 (off stringlets:x_row1))
+  switch string:row2 (string:row2 (off stringlets:x_row2))
+  switch string:row3 (string:row3 (off stringlets:x_row1))
+  switch string:row4 (string:row4 (off stringlets:x_row0))
+ground
+
+circuit add_let_y
+  switch string:row0 (string:row0 (off stringlets:y_row0))
+  switch string:row1 (string:row1 (off stringlets:y_row0))
+  switch string:row2 (string:row2 (off stringlets:y_row1))
+  switch string:row3 (string:row3 (off stringlets:y_row2))
+  switch string:row4 (string:row4 (off stringlets:y_row2))
+ground
+
+circuit add_let_z
+  switch string:row0 (string:row0 (off stringlets:z_row0))
+  switch string:row1 (string:row1 (off stringlets:z_row1))
+  switch string:row2 (string:row2 (off stringlets:z_row2))
+  switch string:row3 (string:row3 (off stringlets:z_row3))
+  switch string:row4 (string:row4 (off stringlets:z_row0))
+ground
+
+circuit display_string
+  display block string:row0
+  display block string:row1
+  display block string:row2
+  display block string:row3
+  display block string:row4
+ground
+
+circuit delete_string
+  delete switch string:row0
+  delete switch string:row1
+  delete switch string:row2
+  delete switch string:row3
+  delete switch string:row4
+ground
+
+## starts string with H ##
+
+switch string:row0 stringlets:h_row0
+switch string:row1 stringlets:h_row0
+switch string:row2 stringlets:h_row1
+switch string:row3 stringlets:h_row0
+switch string:row4 stringlets:h_row0
+
+## adds "ello world" to "h" ##
+power add_let_e on
+power add_let_l on
+power add_let_l on
+power add_let_o on
+power add_let_space on
+power add_let_w on
+power add_let_o on
+power add_let_r on
+power add_let_l on
+power add_let_d on
+
+## displays the message on the screen ##
+power display_string on
