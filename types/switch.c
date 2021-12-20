@@ -1,16 +1,5 @@
 #include "switch.h"
 
-
-void print_dirs(unsigned char *directions, int dir_len)
-{
-    register int i = 0;
-    printf("directions (len %d): ",dir_len);
-    for (i = 0; i < dir_len; i++)
-    {
-        printf("%d",directions[i]);
-    }
-    printf("\n");
-}
 /*
     Converts an input string of directions into a number of native direction values.
     The first element of the returned array is length. NOT A DIRECTION.

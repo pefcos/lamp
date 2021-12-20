@@ -57,6 +57,13 @@ IState *lamp_declaration_assignment(IState *istate);
 LampSwitch *assign_reference_to_switch(IState *istate);
 
 /*
+    Builds a switch in reduced format.
+
+    IState *istate: Interpreter state.
+*/
+LampSwitch *reduced_switch_constructor(IState *istate);
+
+/*
     Builds a switch using '(' and ')', together with references and values.
     
     IState *istate: Interpreter state.

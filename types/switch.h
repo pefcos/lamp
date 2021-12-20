@@ -52,9 +52,6 @@ struct lswitch_hashcell
 
 typedef struct lswitch_hashcell S_HC;
 
-
-void print_dirs(unsigned char *directions, int dir_len);
-
 /*
     Converts an input string of directions into a number of native direction values.
 
