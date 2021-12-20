@@ -52,6 +52,9 @@ struct lswitch_hashcell
 
 typedef struct lswitch_hashcell S_HC;
 
+
+void print_dirs(unsigned char *directions, int dir_len);
+
 /*
     Converts an input string of directions into a number of native direction values.
 
@@ -72,6 +75,12 @@ int count_close(char *word);
     char *word: Word to count '(' in.
 */
 int count_open(char *word);
+
+/*
+    Concatenates two direction arrays.
+    Does NOT free any of the arguments!
+*/
+unsigned char *concat_directions(unsigned char *dir_arr1, int dir_arr1_len, unsigned char *dir_arr2, int dir_arr2_len);
 
 /*
     Calculates the next expected direction for switch.
@@ -96,6 +105,11 @@ LampSwitch *new_switch(char *name);
     LampSwitchItem *lsi: Item to append.
 */
 void append_to_switch(LampSwitch *lswitch, LampSwitchItem *lsi);
+
+/*
+    Copies items from a switch to another switch, adding a specified prefix.
+*/
+void copy_items_with_prefix(LampSwitch *destination, LampSwitch *origin, unsigned char *prefix, int prefix_len);
 
 /*
     make_switch definition was moved to interpreter.h/interpreter.c due to dependency issues.

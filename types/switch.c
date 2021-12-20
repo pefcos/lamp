@@ -4,7 +4,7 @@
 void print_dirs(unsigned char *directions, int dir_len)
 {
     register int i = 0;
-    printf("directions: ");
+    printf("directions (len %d): ",dir_len);
     for (i = 0; i < dir_len; i++)
     {
         printf("%d",directions[i]);
@@ -85,6 +85,21 @@ int count_open(char *word)
 }
 
 /*
+    Concatenates two direction arrays.
+    Does NOT free any of the arguments!
+*/
+unsigned char *concat_directions(unsigned char *dir_arr1, int dir_arr1_len, unsigned char *dir_arr2, int dir_arr2_len)
+{
+    register int i = 0;
+    unsigned char *result = malloc((dir_arr1_len + dir_arr2_len) * sizeof(unsigned char));
+    for (i = 0; i < dir_arr1_len; i++)
+        result[i] = dir_arr1[i];
+    for (i = 0; i < dir_arr2_len; i++)
+        result[dir_arr1_len + i] = dir_arr2[i];
+    return result;
+}
+
+/*
     Calculates the next expected direction for switch.
 
     unsigned char *dir_arr: Direction array;
@@ -107,6 +122,12 @@ unsigned char *next_directions(unsigned char *dir_arr, int dir_arr_len, int *new
         for (i = 0; i < last_off_index; i++)
             result[i] = dir_arr[i];
         result[last_off_index] = ON;
+    }
+    if (dir_arr == NULL)
+    {
+        result = malloc(sizeof(unsigned char));
+        result[0] = OFF;
+        last_off_index = 0;
     }
     if (new_length != NULL)
         *new_length = last_off_index + 1;
@@ -142,6 +163,31 @@ void append_to_switch(LampSwitch *lswitch, LampSwitchItem *lsi)
     new_arr[lswitch->item_arr_len] = lsi;
     (lswitch->item_arr_len)++;
     (lswitch->item_arr) = new_arr;
+}
+
+/*
+    Copies items from a switch to another switch, adding a specified prefix.
+*/
+void copy_items_with_prefix(LampSwitch *destination, LampSwitch *origin, unsigned char *prefix, int prefix_len)
+{
+    register int i = 0;
+    unsigned char *directions = NULL;
+    LampSwitchItem *item = NULL;
+    LampSwitchItem *to_add = NULL;
+
+    for (i = 0; i < origin->item_arr_len; i++)
+    {
+        item = (origin->item_arr)[i];
+        directions = concat_directions(
+            prefix,
+            prefix_len,
+            item->directions,
+            item->dir_arr_len);
+        to_add = new_switch_item(directions,
+            prefix_len + item->dir_arr_len,
+            item->value);
+        append_to_switch(destination,to_add);
+    }
 }
 
 /*
@@ -361,6 +407,7 @@ LampSwitchItem *new_switch_item(unsigned char *directions, int dir_len, unsigned
     item->dir_arr_len = dir_len;
     item->directions = directions;
     item->value = value;
+    return item;
 }
 
 /*

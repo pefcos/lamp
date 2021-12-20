@@ -1,4 +1,5 @@
 #include "interpreter.h"
+#include <signal.h>
 
 /*
     Initializes an interpreter state.
@@ -127,18 +128,89 @@ LampSwitch *reduced_switch_constructor(IState *istate)
 */
 LampSwitch *switch_constructor(IState *istate)
 {
-    int open, close = 0;
+    register int i = 0;
+    LampSwitchItem *to_add = NULL;
+    unsigned char *current_directions = NULL;
+    int current_directions_len = 0; // Keeps size of current directions.
+    int open, close, balance = 0; // Balance keeps track of total number (open - close).
+    unsigned char *directions_to_add = NULL; // Stores directions to concat.
+    LampSwitch *result = new_switch(istate->name);
+    
     do
     {
         open = count_open(istate->word);
         close = count_close(istate->word);
-        if (open > 0 && close > 0)
-            return reduced_switch_constructor(istate); // Reduced switch notation: (.o.oo.o.)
-        
+        balance += open - close;
+
+        if (open > 0 && close > 0) // Reduced switch notation: (.o.oo.o.)
+        {
+            if (to_add == NULL)
+                return reduced_switch_constructor(istate); 
+            /* copy_items_with_prefix(result, 
+                reduced_switch_constructor(istate),
+                to_add->directions,
+                to_add->dir_arr_len); */
+        }
+
+        else // Not reduced notation.
+        {
+            if (open > 0) // '(' detected
+            {
+                directions_to_add = malloc(open * sizeof(unsigned char));
+                for (i = 0; i < open; i++)
+                    directions_to_add[i] = OFF;
+                current_directions = concat_directions(current_directions,current_directions_len,directions_to_add,open);
+                current_directions_len += open;
+            }
+
+            if (get_value(istate->word) != ERROR) // ON or OFF value.
+            {
+                to_add = new_switch_item(current_directions,current_directions_len,get_value(istate->word)); // OFF is default value, will be changed later.
+                append_to_switch(result,to_add);
+                current_directions = next_directions(current_directions,current_directions_len,&current_directions_len);
+                to_add = NULL;
+            }
+
+            else if (strlen(trim_parentheses(istate->word)) != 0)// Variable
+            {
+                get_var_by_name(istate->storage,trim_parentheses(istate->word),&(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref));
+
+                if (istate->lamp_ptr_ref != NULL) // If is lamp reference.
+                    to_add->value = istate->lamp_ptr_ref->value;
+                
+                else if (istate->lswitch_ptr_ref != NULL) // If is switch reference.
+                {
+                    copy_items_with_prefix(result,istate->lswitch_ptr_ref,to_add->directions,to_add->dir_arr_len);
+                    /* for (i = 0; i < istate->lswitch_ptr_ref->item_arr_len; i++)
+                    {
+                        current_directions = concat_directions(
+                            to_add->directions,
+                            to_add->dir_arr_len,
+                            (istate->lswitch_ptr_ref->item_arr)[i]->directions,
+                            (istate->lswitch_ptr_ref->item_arr)[i]->dir_arr_len);
+                        to_add = new_switch_item(current_directions,
+                            to_add->dir_arr_len + (istate->lswitch_ptr_ref->item_arr)[i]->dir_arr_len,
+                            (istate->lswitch_ptr_ref->item_arr)[i]->value);
+                        append_to_switch(result,to_add);
+                    }  */
+                    current_directions = next_directions(current_directions,current_directions_len,&current_directions_len);
+                    to_add = new_switch_item(current_directions,current_directions_len + open,OFF); // OFF is default value, will be changed later.
+                }
+
+                else
+                {
+                    return NULL; // ERROR no var found.
+                }
+                    
+            }
+        }
+
         free(istate->word);
-        istate->word = get_word(istate->source);
-    } while (open - close != 0);
-    return NULL;
+        istate->word = NULL;
+        if (balance != 0)
+            istate->word = get_word(istate->source);
+    } while (balance != 0);
+    return result;
 }
 
 /*
