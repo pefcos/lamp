@@ -14,3 +14,8 @@ All changes to Lamp will be documented in this file. To run programs in a specif
 - Added support for tab indentation.
 - Unknown/unexpected words now will interrupt program execution.
 - Comments no longer require spaces after/before the "##"
+
+## [1.1]
+- Added support for mixed switch assignment (where switches can be switch elements as well).
+- Added reduced switch notation.
+- Added switch flexible spacing in writing ('(' and ')' no longer need to be attached to words).

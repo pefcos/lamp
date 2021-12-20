@@ -18,13 +18,15 @@ It is possible to build switches in a variety of ways. We could build a switch f
 switch example_a (on (off on))
 switch example_b example_a.on
 ```
-This code creates a switch called example_b with the value (off on), based on the element in the on position of the switch example_a. We can also reference individual lamps and switch lamps inside a switch declaration, for example:
+This code creates a switch called example_b with the value (off on), based on the element in the on position of the switch example_a. We can also reference individual lamps, switch lamps and even switches inside a switch declaration, for example:
 ```
 switch example_a (on (off on))
 lamp example_b on
-switch example_c (example_b example_a.on.off)
+switch example_c ((example_b example_a.on.off) example_a)
 ```
-This code generates a switch called example_c with the value (on off), based on the references to the lamp example_b and the switch lamp example_a.on.off. Note that mixing these two ways to make switches is not supported. If you try to make a switch like `switch example_b (example_a example_a.off)`, this will lead to an error, as example_a is not a lamp or a switch lamp, but a switch.
+This code generates a switch called example_c with the value ((on off) (on (off on))), based on the references to the lamp example_b, the switch lamp example_a.on.off, and the switch example_a.
+
+Lastly, it is also possible to use a reduced notation to declare switches, this notation consists of typing the '.' and 'o' characters to represent off and on values respectively, between a pair of perentheses. For example, the switch (on (off (on on))) could be declared as `switch example (o.oo)`. No spaces are allowed inside the reduced notation. 
 
 ### Displaying values
 There are two types of value displays, a block display and a word display. Word displays are inferred while block displays have to be explicited. For example, consider the following code:
@@ -119,4 +121,4 @@ A debugging option is avaliable in lampi, you can access it by typing the "-d"/"
 
 There is also a "-h"/"--help" option, to invoke it type `lampi -h`. It will display help about the usage of lampi.
 
-You can also invoke lampi with the "-v"/"--version" option, like `lampi -v`. This will display the version of lampi you are currently using. Lamp is currently in version **1.0.1**.
+You can also invoke lampi with the "-v"/"--version" option, like `lampi -v`. This will display the version of lampi you are currently using. Lamp is currently in version **1.1**.
