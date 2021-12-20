@@ -37,7 +37,7 @@ This code creates a lamp called example with the value on, and prints the word "
 lamp example on
 display block example
 ```
-This would print a "█" on the screen.
+This would print a "█" on the screen. Even if word displays are inferred, they can also be explicited, an example of this would be `display word example`.
 
 Now you know about block displays, but they are kind of useless for single lamps. Let's talk about displaying switches! They are displayed the same way as lamps and can also be displayed in blocks and words. Pairing block displays with switches gives you a creative way to draw on the display (see examples/print_lamp.lamp for an example on block display drawing).
 

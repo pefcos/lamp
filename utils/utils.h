@@ -96,3 +96,8 @@ int starts_with_comment(char *str);
     Checks if string ends with comment indicator.
 */
 int ends_with_comment(char *str);
+
+/*
+    Prints end message and gives more information on errors.
+*/
+void print_end_message(int execution_end, char *word);

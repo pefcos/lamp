@@ -213,3 +213,51 @@ int ends_with_comment(char *str)
 {
     return (str[strlen(str)-1] == '#' && str[strlen(str)-2] == '#');
 }
+
+/*
+    Prints end message and gives more information on errors.
+*/
+void print_end_message(int execution_end, char *word)
+{
+    switch (execution_end)
+    {
+    case ERROR_UNKNOWN_WORD:
+        if (word == NULL)
+            printf("ERROR: Unknown word found, please check the syntax in your program.\n");
+        else
+            printf("ERROR: Unknown word \"%s\".\n",word);
+        break;
+
+    case ERROR_NO_VAR_FOUND:
+        if (word == NULL)
+            printf("ERROR: Trying to access a variable that does not exist.\n");
+        else
+            printf("ERROR: Trying to access variable \"%s\", but it does not exist.\n",word);
+        break;
+
+    case ERROR_INVALID_SWITCH_COMPONENT:
+        if (word == NULL)
+            printf("ERROR: Trying to create a switch with an invalid component.\n");
+        else
+            printf("ERROR: Trying to create a switch with an invalid component in \"%s\".\n",word);
+        break;
+        
+    case ERROR_UNGROUNDED_CIRCUIT:
+        printf("ERROR: A circuit has no ground.\n");
+        break;
+
+    case ERROR_UNKNOWN_TYPE:
+        if (word == NULL)
+            printf("ERROR: Trying to delete a variable with an unknown type.\n");
+        else
+            printf("ERROR: Trying to delete a variable with the unknown type \"%s\".\n",word);
+        break;
+
+    default:
+        break;
+    }
+    if (execution_end != END)
+        printf("Program execution interrupted.\n");
+    else
+        printf("Program finished successfully.\n");
+}

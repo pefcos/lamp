@@ -45,7 +45,7 @@ IState *lamp_declaration_assignment(IState *istate)
             istate->value = istate->lamp_ptr_ref->value;
         else
         {
-            istate->execution_end = EXCEPTION_NO_VAR_FOUND;
+            istate->execution_end = ERROR_NO_VAR_FOUND;
             return istate; // Error no variable found.
         }
     }
@@ -114,7 +114,7 @@ LampSwitch *make_switch(IState *istate)
             istate->lswitch_ptr_ref->name = duplicate_string(name);
             return istate->lswitch_ptr_ref;
         }
-        istate->execution_end = EXCEPTION_NO_VAR_FOUND;
+        istate->execution_end = ERROR_NO_VAR_FOUND;
         return NULL; 
     }
     do
@@ -146,7 +146,7 @@ LampSwitch *make_switch(IState *istate)
             get_var_by_name(istate->storage, varname, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref));
             if (istate->lamp_ptr_ref == NULL)
             {
-                istate->execution_end = EXCEPTION_INVALID_SWITCH_COMPONENT;
+                istate->execution_end = ERROR_INVALID_SWITCH_COMPONENT;
                 return NULL;
             }
             to_add->value = istate->lamp_ptr_ref->value;
@@ -237,7 +237,7 @@ IState *lamp_switch_delete(IState *istate)
     }
     else
     {
-        istate->execution_end = EXCEPTION_UNKNOWN_TYPE;// EXCEPTION UNKNOWN TYPE
+        istate->execution_end = ERROR_UNKNOWN_TYPE;// EXCEPTION UNKNOWN TYPE
         return istate;
     }
     free(istate->name);
@@ -275,8 +275,7 @@ IState *lamp_switch_display(IState *istate)
     }
     else
     {
-        free(istate->word);
-        istate->execution_end = EXCEPTION_NO_VAR_FOUND;// EXCEPTION_NO_VAR_FOUND
+        istate->execution_end = ERROR_NO_VAR_FOUND;// ERROR_NO_VAR_FOUND
         return istate;
     }
     free(istate->word);
@@ -300,7 +299,7 @@ IState *ignore_circuit(IState *istate)
     }
     if (istate->word == NULL)
     {
-        istate->execution_end = EXCEPTION_UNGROUNDED_CIRCUIT; // NO ground for circuit.
+        istate->execution_end = ERROR_UNGROUNDED_CIRCUIT; // NO ground for circuit.
         return istate;
     }
     free(istate->word);
@@ -342,7 +341,7 @@ IState *power_circuit(IState *istate)
             istate->value = istate->lamp_ptr_ref->value;
         else
         {
-            istate->execution_end = EXCEPTION_NO_VAR_FOUND;
+            istate->execution_end = ERROR_NO_VAR_FOUND;
             return istate; // Error no variable found.
         }
     }
@@ -438,7 +437,7 @@ int interpret(IState *istate)
         }
         else if (istate->word != NULL)
         {
-            istate->execution_end = EXCEPTION_UNKNOWN_WORD;
+            istate->execution_end = ERROR_UNKNOWN_WORD;
             if (istate->debug) 
                 printf("UNEXPECTED WORD: \"%s\".\n",istate->word);
             return istate->execution_end;
