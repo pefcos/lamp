@@ -52,10 +52,7 @@ int main(int argc, char *argv[])
                 printf("Program finished successfully.\n");
         }
         else
-            if (istate->debug)
-                printf("Program execution interrupted with code %d.\n",istate->execution_end);
-            else
-                printf("Program execution interrupted.\n");
+            print_end_message(istate->execution_end,istate->word);
         break;
 
     default:

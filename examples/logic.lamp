@@ -52,7 +52,7 @@ display block divider
 lamp or:arg0 off
 lamp or:arg1 on
 power or on
-display or:return
+display word or:return
 delete lamp or:arg0
 delete lamp or:arg1
 delete lamp or:return

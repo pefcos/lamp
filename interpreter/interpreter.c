@@ -46,7 +46,7 @@ IState *lamp_declaration_assignment(IState *istate)
             istate->value = istate->lamp_ptr_ref->value;
         else
         {
-            istate->execution_end = EXCEPTION_NO_VAR_FOUND;
+            istate->execution_end = ERROR_NO_VAR_FOUND;
             return istate; // Error no variable found.
         }
     }
@@ -84,7 +84,7 @@ LampSwitch *assign_reference_to_switch(IState *istate)
     get_var_by_name(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref));
     if (istate->lswitch_ptr_ref == NULL)
     {
-        istate->execution_end = EXCEPTION_NO_SWITCH_FOUND;
+        istate->execution_end = ERROR_NO_SWITCH_FOUND;
         return NULL;
     }
     new_switch = duplicate_switch(istate->lswitch_ptr_ref,istate->name);
@@ -123,7 +123,7 @@ LampSwitch *reduced_switch_constructor(IState *istate)
     if (result->item_arr_len < 2)
     {
         delete_switch(result);
-        istate->execution_end = EXCEPTION_INVALID_REDUCED_NOTATION;
+        istate->execution_end = ERROR_INVALID_REDUCED_NOTATION;
         return NULL;
     }
     return result;
@@ -145,6 +145,10 @@ LampSwitch *switch_constructor(IState *istate)
     LampSwitch *reduced = NULL; // This is used only to store reduced notation switches.
 
     LampSwitch *result = new_switch(istate->name);
+    open = count_open(istate->word);
+    close = count_close(istate->word);
+    if (open > 0 && close > 0) // Reduced switch notation: (.o.oo.o.)
+        return reduced_switch_constructor(istate); 
     
     do
     {
@@ -152,9 +156,10 @@ LampSwitch *switch_constructor(IState *istate)
         close = count_close(istate->word);
         balance += open - close;
 
-        if (open > 0 && close > 0) // Reduced switch notation: (.o.oo.o.)
+        if (open > 0 && close > 0) // Error.
         {
-            return reduced_switch_constructor(istate); 
+            istate->execution_end = ERROR_INVALID_SWITCH_COMPONENT; 
+            return NULL;
         }
 
         else // Not reduced notation.
@@ -300,7 +305,7 @@ IState *lamp_switch_delete(IState *istate)
     }
     else
     {
-        istate->execution_end = EXCEPTION_UNKNOWN_TYPE;// EXCEPTION UNKNOWN TYPE
+        istate->execution_end = ERROR_UNKNOWN_TYPE;// EXCEPTION UNKNOWN TYPE
         return istate;
     }
     free(istate->name);
@@ -338,8 +343,7 @@ IState *lamp_switch_display(IState *istate)
     }
     else
     {
-        free(istate->word);
-        istate->execution_end = EXCEPTION_NO_VAR_FOUND;// EXCEPTION_NO_VAR_FOUND
+        istate->execution_end = ERROR_NO_VAR_FOUND;// ERROR_NO_VAR_FOUND
         return istate;
     }
     free(istate->word);
@@ -363,7 +367,7 @@ IState *ignore_circuit(IState *istate)
     }
     if (istate->word == NULL)
     {
-        istate->execution_end = EXCEPTION_UNGROUNDED_CIRCUIT; // NO ground for circuit.
+        istate->execution_end = ERROR_UNGROUNDED_CIRCUIT; // NO ground for circuit.
         return istate;
     }
     free(istate->word);
@@ -405,7 +409,7 @@ IState *power_circuit(IState *istate)
             istate->value = istate->lamp_ptr_ref->value;
         else
         {
-            istate->execution_end = EXCEPTION_NO_VAR_FOUND;
+            istate->execution_end = ERROR_NO_VAR_FOUND;
             return istate; // Error no variable found.
         }
     }
@@ -501,7 +505,7 @@ int interpret(IState *istate)
         }
         else if (istate->word != NULL)
         {
-            istate->execution_end = EXCEPTION_UNKNOWN_WORD;
+            istate->execution_end = ERROR_UNKNOWN_WORD;
             if (istate->debug) 
                 printf("UNEXPECTED WORD: \"%s\".\n",istate->word);
             return istate->execution_end;
