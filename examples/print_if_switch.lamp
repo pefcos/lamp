@@ -1,0 +1,21 @@
+##
+    The code will print the argument on the screen if the argument is a switch AND if its off position contains another switch.
+##
+circuit print_if_offpos_is_switch
+    power if_switch switch? pis:arg0.off
+    circuit if_switch
+        display pis:arg0
+    ground
+ground
+
+switch pis:arg0 (on (off on))
+power print_if_offpos_is_switch on
+delete switch pis:arg0
+
+lamp pis:arg0 on
+power print_if_offpos_is_switch on
+delete lamp pis:arg0
+
+switch pis:arg0 ((off off) (off on))
+power print_if_offpos_is_switch on
+delete switch pis:arg0

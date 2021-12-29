@@ -15,6 +15,10 @@
 #include "../utils/utils.h"
 #endif
 
+#define NO_TYPE_CHECK 0 // No type check was found.
+#define LAMP_TYPE_CHECK 1 // "lamp?" type check was found.
+#define SWITCH_TYPE_CHECK 2 // "switch?" type check was found.
+
 /*
     Struct that stores circuit references in an array of fseek offsets from SEEK_SET.
 */
@@ -121,6 +125,18 @@ void get_circ_refs(Storage *storage, FILE *source);
     char *name: Name of the circuit.
 */
 int call_circuit(Storage *storage, FILE *source, char *name);
+
+/*
+    Gets the lamp/switch by its name or processes a type_check.
+    Returns 1 if there was a type check, returns 0 otherwise.
+
+    Storage *storage: Storage to get from;
+    char *word: Name to search by or check token; 
+    Lamp **lamp: Pointer to assign lamp to;
+    LampSwitch **lswitch: Pointer to assign switch to;
+    FILE *source: Source to retrieve next word for if word is a type check.
+*/
+int get_var_or_type_check(Storage *storage, char *word, Lamp **lamp, LampSwitch **lswitch, FILE *source);
 
 /*
     Gets the lamp/switch by its name. Useful to get value.

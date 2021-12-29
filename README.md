@@ -28,6 +28,14 @@ This code generates a switch called example_c with the value ((on off) (on (off 
 
 Lastly, it is also possible to use a reduced notation to declare switches, this notation consists of typing the '.' and 'o' characters to represent off and on values respectively, between a pair of perentheses. For example, the switch (on (off (on on))) could be declared as `switch example (o.oo)`. No spaces are allowed inside the reduced notation. 
 
+### Type checks
+There are times in lamp (especially when dealing with switches that have lamp and switch elements) where you might need to check the type of data you are processing before using the data. This can be done via a type check, which can be written as `lamp? example` to check if example is a lamp, or as `switch? example` to check if example is a switch. Type checks will evaluate to "on" if the types match and to "off" if the types do not match. You can assign this result to lamps or use it anywhere a lamp variable could be used. An example of assignment with type checks is:
+```
+lamp example off
+lamp check lamp? example
+```
+This will create a lamp called check with value "on".
+
 ### Displaying values
 There are two types of value displays, a block display and a word display. Word displays are inferred while block displays have to be explicited. For example, consider the following code:
 ```

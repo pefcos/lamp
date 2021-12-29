@@ -9,10 +9,14 @@
 */
 Lamp *create_lamp(char *name, unsigned char initial_value)
 {
+    name = duplicate_string(name);
     if (!has_namespace(name))
         name = add_default_lamp_namespace(name);
     if (name != NULL && !validate_name(name))
+    {
+        free(name);
         return NULL;
+    }
     Lamp *pointer = (Lamp*) malloc(sizeof(Lamp));
     pointer->name = (char*) malloc(sizeof(*name));
     if (name != NULL)
@@ -20,6 +24,7 @@ Lamp *create_lamp(char *name, unsigned char initial_value)
     else
         pointer->name = NULL;
     pointer->value = initial_value;
+    free(name);
     return pointer;
 }
 

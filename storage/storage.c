@@ -304,6 +304,50 @@ int call_circuit(Storage *storage, FILE *source, char *name)
 }
 
 /*
+    Gets the lamp/switch by its name or processes a type_check.
+    Returns 1 if there was a type check, returns 0 otherwise.
+
+    Storage *storage: Storage to get from;
+    char *word: Name to search by or check token; 
+    Lamp **lamp: Pointer to assign lamp to;
+    LampSwitch **lswitch: Pointer to assign switch to;
+    FILE *source: Source to retrieve next word for if word is a type check.
+*/
+int get_var_or_type_check(Storage *storage, char *word, Lamp **lamp, LampSwitch **lswitch, FILE *source)
+{
+    char *negativeless = NULL; // Trims the '-' in the start of a string if it starts with that.
+    int has_negative = 0; // Uses to duplicate the right thing to store in variable negativeless.
+    unsigned char return_value = OFF; // Value of the returning lamp if it is a type check.
+    unsigned char type_check = NO_TYPE_CHECK; // Set on strcmp.
+
+    if (word[0] == '-') 
+        has_negative = 1;
+    negativeless = duplicate_string(&(word[has_negative]));
+    if(!strcmp(negativeless,"lamp?"))
+        type_check = LAMP_TYPE_CHECK;
+    else if(!strcmp(negativeless,"switch?"))
+        type_check = SWITCH_TYPE_CHECK;
+    
+    free(negativeless);
+    negativeless = NULL;
+    if (type_check == LAMP_TYPE_CHECK || type_check == SWITCH_TYPE_CHECK)
+    {
+        free(word);
+        word = get_word(source);
+        get_var_by_name(storage, word, lamp, lswitch);
+        if ((*lamp != NULL && type_check == LAMP_TYPE_CHECK) || (*lswitch != NULL && type_check == SWITCH_TYPE_CHECK))
+            return_value = ON;
+        *lamp = create_lamp("typecheck",return_value);
+        return 1; // There was a "lamp?" or "switch?" type check.
+    }
+
+    // No type check was made.
+    get_var_by_name(storage, word, lamp, lswitch);
+    return 0;
+
+}
+
+/*
     Gets the lamp/switch by its name. Useful to get value.
     If both lamp and lswitch are NULL, var does not exist.
 

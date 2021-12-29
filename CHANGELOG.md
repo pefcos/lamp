@@ -19,3 +19,4 @@ All changes to Lamp will be documented in this file. To run programs in a specif
 - Added support for mixed switch assignment (where switches can be switch elements as well).
 - Added reduced switch notation.
 - Added switch flexible spacing in writing ('(' and ')' no longer need to be attached to words).
+- Added "lamp?" and "switch?" words for handling type checks.

@@ -1,5 +1,6 @@
 #include "interpreter.h"
 #include <signal.h>
+#include <curses.h>
 
 /*
     Initializes an interpreter state.
@@ -41,7 +42,7 @@ IState *lamp_declaration_assignment(IState *istate)
         istate->value = get_value(istate->word);
     else // Tries to get reference to other variable.
     {
-        get_var_by_name(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref));
+        get_var_or_type_check(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref),istate->source);
         if (istate->lamp_ptr_ref != NULL)
             istate->value = istate->lamp_ptr_ref->value;
         else
@@ -328,7 +329,7 @@ IState *lamp_switch_display(IState *istate)
         free(istate->word);
         istate->word = get_word(istate->source); // Assumes its a var name.
     }
-    get_var_by_name(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref));
+    get_var_or_type_check(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref),istate->source);
     if (istate->lamp_ptr_ref != NULL)
     {
         if (istate->debug)
@@ -404,7 +405,7 @@ IState *power_circuit(IState *istate)
         istate->value = get_value(istate->word);
     else // Tries to get reference to other to see if turns on or off.
     {
-        get_var_by_name(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref));
+        get_var_or_type_check(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref),istate->source);
         if (istate->lamp_ptr_ref != NULL)
             istate->value = istate->lamp_ptr_ref->value;
         else
