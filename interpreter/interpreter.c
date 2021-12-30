@@ -210,6 +210,8 @@ LampSwitch *switch_constructor(IState *istate)
 
                 else
                 {
+                    istate->execution_end = ERROR_NO_VAR_FOUND;
+                    istate->word = trim_parentheses(istate->word);
                     return NULL; // ERROR no var found.
                 }
                     
@@ -255,6 +257,8 @@ IState *switch_declaration_assignment(IState *istate)
     if (istate->lswitch_ptr == NULL)
     {
         istate->lswitch_ptr = make_switch(istate);
+        if (istate->execution_end != NOT_END)
+            return istate;
         if (istate->debug)
             printf("Created switch %s.\n",istate->name);
         store_switch(istate->storage,istate->lswitch_ptr);
@@ -262,6 +266,8 @@ IState *switch_declaration_assignment(IState *istate)
     else
     {
         istate->lswitch_ptr = make_switch(istate);
+        if (istate->execution_end != NOT_END)
+            return istate;
         if (istate->debug)
             printf("Assigned to switch %s.\n",istate->name);
         remove_storage_switch(istate->storage,istate->name);
