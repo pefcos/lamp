@@ -54,16 +54,16 @@ IState *lamp_declaration_assignment(IState *istate)
     istate->lamp_ptr = get_lamp(istate->storage,istate->name);
     if (istate->lamp_ptr == NULL)
     {
+        istate->lamp_ptr = create_lamp(istate->name, istate->value);
         if (istate->debug)
             printf("Created lamp %s with value %d.\n",istate->name,(int) istate->value);
-        istate->lamp_ptr = create_lamp(istate->name, istate->value);
         store_lamp(istate->storage,istate->lamp_ptr);
     }
     else
     {
+        istate->lamp_ptr->value = istate->value;
         if (istate->debug)
             printf("Assigned value %d to lamp %s.\n",(int) istate->value, istate->name);
-        istate->lamp_ptr->value = istate->value;
         free(istate->name);
     }
     istate->name = NULL;
