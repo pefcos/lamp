@@ -1,0 +1,64 @@
+## 
+  The code implements a general switch stack, with push and pop operations.
+  Uses general namespace "stack". 
+##
+
+circuit push
+
+    ## Checks if stack exists and creates it if it does not exist. ##
+    lamp stack:exists switch? stack:stack
+    power stack_not_exists -stack:exists
+    circuit stack_not_exists
+        switch stack:stack (off off) ## (off off) is the stack base. ##
+    ground
+
+    ## Pushes to stack. ##
+    switch stack:stack (stack:to_push stack:stack)
+
+ground
+
+circuit pop
+    
+    ## Checks if stack is not minimal. ##
+    lamp stack:minimal lamp? stack:stack.on 
+    power pop_not_minimal -stack:minimal
+    circuit pop_not_minimal
+        
+        ## Assigns return ##
+        switch stack:popped stack:stack.off
+        ## Reassigns stack ##
+        switch stack:stack stack:stack.on 
+
+    ground   
+ground 
+
+## Start of main code. Defining switches to push to the stack. ##
+
+switch a ( off (on on) )
+switch b ( ( (off on) on ) (off off) )
+switch c (off off)
+
+## Pushes switches to stack ##
+
+display a
+switch stack:to_push a
+power push on
+
+display b
+switch stack:to_push b
+power push on
+
+display c
+switch stack:to_push c
+power push on
+
+## Pops switches from stack and gets the result. ##
+
+power pop on
+display stack:popped
+
+power pop on
+display stack:popped
+
+power pop on
+display stack:popped
