@@ -101,6 +101,29 @@ unsigned short int calc_hash(char *name)
 }
 
 /*
+    Recounts lines from the start of the file. Useful to update line count after circuit calls.
+    Returns current line number on file cursor.
+
+    FILE *source: File to find cursor line position.
+*/
+int which_line(FILE *source)
+{
+    register int line = 1;
+    char c = '\0';
+    unsigned long int current = 0;
+    unsigned long int target = ftell(source);
+    fseek(source, 0, SEEK_SET);
+    while(current < target)
+    {
+        c = fgetc(source);
+        if (c == '\n')
+            line++;
+        current++;
+    }
+    return line;
+}
+
+/*
     Gets the first word in the file. 
     Returns NULL if the word is too big.
 
@@ -217,29 +240,29 @@ int ends_with_comment(char *str)
 /*
     Prints end message and gives more information on errors.
 */
-void print_end_message(int execution_end, char *word)
+void print_end_message(int execution_end, char *word, int line)
 {
     switch (execution_end)
     {
     case ERROR_UNKNOWN_WORD:
         if (word == NULL)
-            printf("ERROR: Unknown word found, please check the syntax in your program.\n");
+            printf("ERROR: Unknown word found at line %d, please check the syntax in your program.\n",line);
         else
-            printf("ERROR: Unknown word \"%s\".\n",word);
+            printf("ERROR: Unknown word \"%s\" at line %d.\n",word,line);
         break;
 
     case ERROR_NO_VAR_FOUND:
         if (word == NULL)
-            printf("ERROR: Trying to access a variable that does not exist.\n");
+            printf("ERROR: Trying to access a variable that does not exist on line %d.\n",line);
         else
-            printf("ERROR: Trying to access variable \"%s\", but it does not exist.\n",word);
+            printf("ERROR: Trying to access variable \"%s\" on line %d, but it does not exist.\n",word,line);
         break;
 
     case ERROR_INVALID_SWITCH_COMPONENT:
         if (word == NULL)
-            printf("ERROR: Trying to create a switch with an invalid component.\n");
+            printf("ERROR: Trying to create a switch with an invalid component on line %d.\n",line);
         else
-            printf("ERROR: Trying to create a switch with an invalid component in \"%s\".\n",word);
+            printf("ERROR: Trying to create a switch with an invalid component in \"%s\" on line %d.\n",word,line);
         break;
         
     case ERROR_UNGROUNDED_CIRCUIT:
@@ -248,10 +271,18 @@ void print_end_message(int execution_end, char *word)
 
     case ERROR_UNKNOWN_TYPE:
         if (word == NULL)
-            printf("ERROR: Trying to delete a variable with an unknown type.\n");
+            printf("ERROR: Trying to delete a variable with an unknown type on line %d.\n",line);
         else
-            printf("ERROR: Trying to delete a variable with the unknown type \"%s\".\n",word);
+            printf("ERROR: Trying to delete a variable with the unknown type \"%s\" on line %d.\n",word,line);
         break;
+
+    case ERROR_UNKNOWN_CIRCUIT:
+        if (word == NULL)
+            printf("ERROR: Trying to call a circuit with an unknown name on line %d.\n",line);
+        else
+            printf("ERROR: Trying to call a circuit with the unknown name \"%s\" on line %d.\n",word,line);
+        break;
+
 
     default:
         break;
