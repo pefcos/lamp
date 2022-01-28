@@ -295,6 +295,12 @@ IState *lamp_switch_delete(IState *istate)
             istate->name = add_default_lamp_namespace(istate->name); // Defaults to lamp
         if (get_lamp(istate->storage,istate->name) != NULL)
             remove_storage_lamp(istate->storage, istate->name);
+        else
+        {
+            istate->execution_end = ERROR_NO_VAR_FOUND;
+            istate->word = istate->name;
+            return istate;
+        }
         if (istate->debug)
             printf("Deleted lamp %s.\n",istate->name);
     }
@@ -307,6 +313,12 @@ IState *lamp_switch_delete(IState *istate)
             istate->name = add_default_switch_namespace(istate->name); // Defaults to lamp
         if (get_switch(istate->storage,istate->name) != NULL)
             remove_storage_switch(istate->storage, istate->name);
+        else
+        {
+            istate->execution_end = ERROR_NO_VAR_FOUND;
+            istate->word = istate->name;
+            return istate;
+        }
         if (istate->debug)
             printf("Deleted switch %s.\n",istate->name);
     }

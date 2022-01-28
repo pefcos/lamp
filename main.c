@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
                 printf("Program finished successfully.\n");
         }
         else
-            print_end_message(istate->execution_end,istate->word);
+            print_end_message(istate->execution_end,istate->word,which_line(istate->source));
         break;
 
     default:

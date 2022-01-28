@@ -51,7 +51,15 @@ int get_value(char *word);
 unsigned short int calc_hash(char *name);
 
 /*
-    Gets the first word in the file and advances the cursor in the file.
+    Recounts lines from the start of the file. Useful to update line count after circuit calls.
+    Returns current line number on file cursor.
+
+    FILE *source: File to find cursor line position.
+*/
+int which_line(FILE *source);
+
+/*
+    Gets the first word in the file.
 
     FILE *source: File to get the word from.
 */
@@ -107,4 +115,4 @@ int ends_with_comment(char *str);
 /*
     Prints end message and gives more information on errors.
 */
-void print_end_message(int execution_end, char *word);
+void print_end_message(int execution_end, char *word, int line);
