@@ -10,10 +10,10 @@ circuit art
     ## Displays the first art (tree) ##
     power print_art_1 art:arg0
     circuit print_art_1
-        switch art:art_1a (off (off (off (on (on (off (off off)))))))
-        switch art:art_1b (off (off (on  (on (on (on  (off off)))))))
-        switch art:art_1c (off (on  (on  (on (on (on  (on  off)))))))
-        switch art:art_1d (on  (on  (on  (on (on (on  (on  on)))))))
+        switch art:art_1a (...oo...)
+        switch art:art_1b (..oooo..)
+        switch art:art_1c (.oooooo.)
+        switch art:art_1d (oooooooo)
         display block art:art_1a
         display block art:art_1b
         display block art:art_1c
@@ -29,10 +29,10 @@ circuit art
     ## Displays the second art (X) ##
     power print_art_2 art:arg1
     circuit print_art_2
-        switch art:art_2a (on (off (off (off (off (off (off on)))))))
-        switch art:art_2b (off (on (off (off (off (off (on off)))))))
-        switch art:art_2c (off (off (on (off (off (on (off off)))))))
-        switch art:art_2d (off (off (off (on (on (off (off off)))))))
+        switch art:art_2a (o......o)
+        switch art:art_2b (.o....o.)
+        switch art:art_2c (..o..o..)
+        switch art:art_2d (...oo...)
         display block art:art_2a
         display block art:art_2b
         display block art:art_2c
@@ -49,11 +49,11 @@ circuit art
     ## Displays the third art (heart) ##
     power print_art_3 art:arg2
     circuit print_art_3
-        switch art:art_3a (off (on (on (off (off (on (on off)))))))
-        switch art:art_3b (on (on (on (on (on (on (on on)))))))
-        switch art:art_3c (off (on (on (on (on (on (on off)))))))
-        switch art:art_3d (off (off (on (on (on (on (off off)))))))
-        switch art:art_3e (off (off (off (on (on (off (off off)))))))
+        switch art:art_3a (.oo..oo.)
+        switch art:art_3b (oooooooo)
+        switch art:art_3c (.oooooo.)
+        switch art:art_3d (..oooo..)
+        switch art:art_3e (...oo...)
         display block art:art_3a
         display block art:art_3b
         display block art:art_3b
