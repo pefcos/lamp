@@ -34,6 +34,9 @@ struct interpreter_state
     FILE *source;
     unsigned char debug; // Enables/disables prints explaining code.
     unsigned char execution_end; // Return type for end of program. While 0 does not return.
+    // Namespaces
+    char *lamp_namespace;
+    char *lswitch_namespace;
 };
 
 typedef struct interpreter_state IState;
@@ -42,6 +45,12 @@ typedef struct interpreter_state IState;
     Initializes an interpreter state.
 */
 IState *istate_init(FILE *source);
+
+// Namespace functions
+
+IState *set_lamp_namespace(IState *istate, char *namespace);
+
+IState *set_switch_namespace(IState *istate, char *namespace);
 
 /*
     Lamp declaration/assignment.

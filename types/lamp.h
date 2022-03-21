@@ -44,7 +44,7 @@ typedef struct lamp_hashcell L_HC;
     char *name: Name of the lamp;
     unsigned char initial_value: Value of the lamp, can be 1 or 0.
 */
-Lamp *create_lamp(char *name, unsigned char initial_value);
+Lamp *create_lamp(char *name, unsigned char initial_value, char *namespace);
 
 /*
     Prints a lamp's value.

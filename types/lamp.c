@@ -5,13 +5,14 @@
     Returns a lamp ponter.
 
     char *name: Name of the lamp;
-    unsigned char initial_value: Value of the lamp, can be 1 or 0.
+    unsigned char initial_value: Value of the lamp, can be 1 or 0;
+    char *namespace: Namespace to add the lamp in.
 */
-Lamp *create_lamp(char *name, unsigned char initial_value)
+Lamp *create_lamp(char *name, unsigned char initial_value, char *namespace)
 {
     name = duplicate_string(name);
     if (!has_namespace(name))
-        name = add_default_lamp_namespace(name);
+        name = add_default_lamp_namespace(name, namespace);
     if (name != NULL && !validate_name(name))
     {
         free(name);

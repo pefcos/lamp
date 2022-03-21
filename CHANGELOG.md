@@ -24,3 +24,6 @@ All changes to Lamp will be documented in this file. To run programs in a specif
 - Added reduced switch notation.
 - Added switch flexible spacing in writing ('(' and ')' no longer need to be attached to words).
 - Added "lamp?" and "switch?" words for handling type checks.
+
+## [1.1.1]
+- Added the "namespace" keyword to change lamp and switch namespaces onward.

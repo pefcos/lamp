@@ -69,6 +69,8 @@ display a:example
 ```
 will display "on".
 
+If you want to use a certain namespace for a whole section of your code, you can use the "namespace" keyword to add a namespace to a certain amount of words. An example would be `namespace example`, after this line, all variables that have no explicit namespace will be associated to the "example" namespace. You can even set a namespace for a specific type of variable, for example `namespace lamp example` will apply the namespace "example" only to lamps, but leave switches' namespace unchanged.
+
 A thing to note is that all variables have namespaces, even if implied. The default namespace for lamps is "lamp", while the default namespace for switch is "switch". The line of lamp code `lamp example on` will actually create a lamp example inside the "lamp" namespace, therefore it is the same as writing `lamp lamp:example on`. Namespacing may seem unnecessary given what you know about lamp so far, but it will come in handy in the next section.
 
 ### Circuits

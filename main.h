@@ -1,6 +1,6 @@
 /*
-    Initial concept by: Arthur Allebrandt Werlang.
-    Final design and interpreter implementation: Pedro Fronchetti Costa da Silva.
+    Initial concept by: arthwerlang.
+    Final design and interpreter implementation: pefcos.
 
     Lamp interpreter.
 */

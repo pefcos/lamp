@@ -20,16 +20,16 @@ int has_namespace(char *name)
 /*
     Adds "lamp:" in front of lamp name.
 
-    char *name: Name of lamp to add namespace to. It will be added directly to this variable.
+    char *name: Name of lamp to add namespace to. It will be added directly to this variable;
+    char *state_lamp_namespace: Default namespace to add to lamp.
 */
-char *add_default_lamp_namespace(char *name)
+char *add_default_lamp_namespace(char *name, char *state_lamp_namespace)
 {
     register int i = 0;
-    char prefix[6] = "lamp:";
     char *aux_pointer = NULL;
-    char *new_name = malloc((strlen(prefix) + strlen(name)) * sizeof(char));
-    strcpy(new_name,prefix);
-    aux_pointer = new_name + strlen(prefix);
+    char *new_name = malloc((strlen(state_lamp_namespace) + strlen(name)) * sizeof(char));
+    strcpy(new_name,state_lamp_namespace);
+    aux_pointer = new_name + strlen(state_lamp_namespace);
     strcpy(aux_pointer,name);
     free(name);
     name = new_name;
@@ -37,18 +37,18 @@ char *add_default_lamp_namespace(char *name)
 }
 
 /*
-    Adds "switch:" in front of lamp name.
+    Adds the switch namespace in front of lamp name.
 
-    char *name: Name of switch to add namespace to. It will be added directly to this variable.
+    char *name: Name of switch to add namespace to. It will be added directly to this variable;
+    char *state_switch_namespace: Default namespace to add to lamp.
 */
-char *add_default_switch_namespace(char *name)
+char *add_default_switch_namespace(char *name, char *state_switch_namespace)
 {
     register int i = 0;
-    char prefix[8] = "switch:";
     char *aux_pointer = NULL;
-    char *new_name = malloc((strlen(prefix) + strlen(name)) * sizeof(char));
-    strcpy(new_name,prefix);
-    aux_pointer = new_name + strlen(prefix);
+    char *new_name = malloc((strlen(state_switch_namespace) + strlen(name)) * sizeof(char));
+    strcpy(new_name,state_switch_namespace);
+    aux_pointer = new_name + strlen(state_switch_namespace);
     strcpy(aux_pointer,name);
     free(name);
     name = new_name;

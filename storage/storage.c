@@ -313,7 +313,7 @@ int call_circuit(Storage *storage, FILE *source, char *name)
     LampSwitch **lswitch: Pointer to assign switch to;
     FILE *source: Source to retrieve next word for if word is a type check.
 */
-int get_var_or_type_check(Storage *storage, char *word, Lamp **lamp, LampSwitch **lswitch, FILE *source)
+int get_var_or_type_check(Storage *storage, char *word, Lamp **lamp, LampSwitch **lswitch, FILE *source, char *lamp_namespace, char* lswitch_namespace)
 {
     char *negativeless = NULL; // Trims the '-' in the start of a string if it starts with that.
     int has_negative = 0; // Uses to duplicate the right thing to store in variable negativeless.
@@ -334,15 +334,15 @@ int get_var_or_type_check(Storage *storage, char *word, Lamp **lamp, LampSwitch 
     {
         free(word);
         word = get_word(source);
-        get_var_by_name(storage, word, lamp, lswitch);
+        get_var_by_name(storage, word, lamp, lswitch, lamp_namespace, lswitch_namespace);
         if ((*lamp != NULL && type_check == LAMP_TYPE_CHECK) || (*lswitch != NULL && type_check == SWITCH_TYPE_CHECK))
             return_value = ON;
-        *lamp = create_lamp("typecheck",return_value);
+        *lamp = create_lamp("typecheck",return_value, lamp_namespace);
         return 1; // There was a "lamp?" or "switch?" type check.
     }
 
     // No type check was made.
-    get_var_by_name(storage, word, lamp, lswitch);
+    get_var_by_name(storage, word, lamp, lswitch, lamp_namespace, lswitch_namespace);
     return 0;
 
 }
@@ -354,13 +354,16 @@ int get_var_or_type_check(Storage *storage, char *word, Lamp **lamp, LampSwitch 
     Storage *storage: Storage to get from;
     char *var_name: Name to search by; 
     Lamp **lamp: Pointer to assign lamp to;
-    LampSwitch **lswitch: Pointer to assign switch to.
+    LampSwitch **lswitch: Pointer to assign switch to;
+    char *lamp_namespace: Namespace to search for lamps;
+    char *lswitch_namespace: Namespace to search for switches.
 */
-void get_var_by_name(Storage *storage, char *var_name, Lamp **lamp, LampSwitch **lswitch)
+void get_var_by_name(Storage *storage, char *var_name, Lamp **lamp, LampSwitch **lswitch, char *lamp_namespace, char *lswitch_namespace)
 {
     char *new_name = NULL;
     char *switch_name_no_directions = NULL; // Used to remove directions from the name. Switch element.
     char *mock_name = NULL; // Used to create lamp. Switch element.
+    char *mock_namespace = NULL; // Used to create lamp. Switch element.
     Lamp *temp_lamp = NULL;
     LampSwitch *temp_lswitch = NULL;
     LampSwitch *element_temp = NULL;
@@ -378,7 +381,7 @@ void get_var_by_name(Storage *storage, char *var_name, Lamp **lamp, LampSwitch *
         // Get switch.
         new_name = duplicate_string(name);
         if (!has_namespace(new_name))
-            new_name = add_default_switch_namespace(new_name);
+            new_name = add_default_switch_namespace(new_name,lswitch_namespace);
         switch_name_no_directions = switch_name(new_name);
         element_temp = get_switch(storage,switch_name_no_directions);
         // Get the element.
@@ -390,9 +393,9 @@ void get_var_by_name(Storage *storage, char *var_name, Lamp **lamp, LampSwitch *
                 mock_name = (char*) malloc(sizeof(char) * 4);
                 strcpy(mock_name,"def");
                 if (negative)
-                    *lamp = create_lamp(mock_name,!((temp_lswitch->item_arr[0])->value));
+                    *lamp = create_lamp(mock_name,!((temp_lswitch->item_arr[0])->value), lamp_namespace);
                 else
-                    *lamp = create_lamp(mock_name,(temp_lswitch->item_arr[0])->value);
+                    *lamp = create_lamp(mock_name,(temp_lswitch->item_arr[0])->value, lamp_namespace);
             }
             else
             {
@@ -408,7 +411,7 @@ void get_var_by_name(Storage *storage, char *var_name, Lamp **lamp, LampSwitch *
     // NOT a switch element.
     new_name = duplicate_string(name);
     if (!has_namespace(new_name))
-        new_name = add_default_lamp_namespace(new_name);
+        new_name = add_default_lamp_namespace(new_name,lamp_namespace);
     temp_lamp = get_lamp(storage,new_name);
     if (temp_lamp != NULL)
     {
@@ -421,7 +424,7 @@ void get_var_by_name(Storage *storage, char *var_name, Lamp **lamp, LampSwitch *
         free(new_name);
         new_name = duplicate_string(name);
         if (!has_namespace(new_name))
-            new_name = add_default_switch_namespace(new_name);
+            new_name = add_default_switch_namespace(new_name,lswitch_namespace);
         temp_lswitch = get_switch(storage,new_name);
         if (temp_lswitch != NULL)
         {

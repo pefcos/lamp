@@ -1,5 +1,5 @@
 /*
-    Pedro Fronchetti Costa da Silva, 08/2021
+    pefcos, 08/2021
     Lamp interpreter.
 */
 
@@ -27,12 +27,12 @@ int main(int argc, char *argv[])
     case 2:
         if (!strcmp("-v",argv[1]) || !strcmp("--version",argv[1]))
         {
-            printf("lampi v1.1\n");
+            printf("lampi v1.1.1\n");
             break;
         }
         if (!strcmp("-h",argv[1]) || !strcmp("--help",argv[1]))
         {
-            printf("lampi v1.1\n");
+            printf("lampi v1.1.1\n");
             printf("Usage: lampi <filename> [-d]\n");
             printf("<filename>: Path or name of the file with lamp code to interpret.\n");
             printf("[-d]: Debug option.\n");

@@ -1,6 +1,10 @@
 #include "interpreter.h"
 #include <signal.h>
+#include <string.h>
 #include <curses.h>
+
+#define LNSLEN (strlen("lamp:") + 1)
+#define SNSLEN (strlen("switch:") + 1)
 
 /*
     Initializes an interpreter state.
@@ -20,10 +24,33 @@ IState *istate_init(FILE *source)
     istate->storage = create_storage();
     istate->source = source;
     istate->execution_end = NOT_END;
+    // Sets default namespaces.
+    istate->lamp_namespace = (char*) malloc(LNSLEN * sizeof(char));
+    strcpy(istate->lamp_namespace,"lamp:");
+    istate->lswitch_namespace = (char*) malloc(SNSLEN * sizeof(char));
+    strcpy(istate->lswitch_namespace,"switch:");
     // Get circuit references.
     get_circ_refs(istate->storage,source);
     fseek(source,0,SEEK_SET);
     istate->source = source;
+    return istate;
+}
+
+IState *set_lamp_namespace(IState *istate, char *namespace)
+{
+    free(istate->lamp_namespace);
+    istate->lamp_namespace = (char*) malloc(sizeof(char) * (strlen(namespace) + 1));
+    strcpy(istate->lamp_namespace,namespace);
+    (istate->lamp_namespace)[strlen(namespace)] = ':';
+    return istate;
+}
+
+IState *set_switch_namespace(IState *istate, char *namespace)
+{
+    free(istate->lswitch_namespace);
+    istate->lswitch_namespace = (char*) malloc(sizeof(char) * (strlen(namespace) + 1));
+    strcpy(istate->lswitch_namespace,namespace);
+    (istate->lswitch_namespace)[strlen(namespace)] = ':';
     return istate;
 }
 
@@ -36,13 +63,13 @@ IState *lamp_declaration_assignment(IState *istate)
     istate->word = get_word(istate->source);
     istate->name = istate->word;
     if (!has_namespace(istate->name))
-        istate->name = add_default_lamp_namespace(istate->name); 
+        istate->name = add_default_lamp_namespace(istate->name,istate->lamp_namespace); 
     istate->word = get_word(istate->source);
     if (!strcmp(istate->word,"on") || !strcmp(istate->word,"off")) // Tries to get on/off literal values.
         istate->value = get_value(istate->word);
     else // Tries to get reference to other variable.
     {
-        get_var_or_type_check(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref),istate->source);
+        get_var_or_type_check(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref), istate->source, istate->lamp_namespace, istate->lswitch_namespace);
         if (istate->lamp_ptr_ref != NULL)
             istate->value = istate->lamp_ptr_ref->value;
         else
@@ -54,7 +81,7 @@ IState *lamp_declaration_assignment(IState *istate)
     istate->lamp_ptr = get_lamp(istate->storage,istate->name);
     if (istate->lamp_ptr == NULL)
     {
-        istate->lamp_ptr = create_lamp(istate->name, istate->value);
+        istate->lamp_ptr = create_lamp(istate->name, istate->value, istate->lamp_namespace);
         if (istate->debug)
             printf("Created lamp %s with value %d.\n",istate->name,(int) istate->value);
         store_lamp(istate->storage,istate->lamp_ptr);
@@ -82,7 +109,7 @@ LampSwitch *assign_reference_to_switch(IState *istate)
     register int i = 0;
     LampSwitch *new_switch = NULL;
 
-    get_var_by_name(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref));
+    get_var_by_name(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref), istate->lamp_namespace, istate->lswitch_namespace);
     if (istate->lswitch_ptr_ref == NULL)
     {
         istate->execution_end = ERROR_NO_SWITCH_FOUND;
@@ -184,7 +211,7 @@ LampSwitch *switch_constructor(IState *istate)
 
             else if (strlen(trim_parentheses(istate->word)) != 0)// Variable
             {
-                get_var_by_name(istate->storage,trim_parentheses(istate->word),&(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref));
+                get_var_by_name(istate->storage,trim_parentheses(istate->word),&(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref), istate->lamp_namespace, istate->lswitch_namespace);
 
                 if (istate->lamp_ptr_ref != NULL) // If is lamp reference.
                 {
@@ -251,7 +278,7 @@ IState *switch_declaration_assignment(IState *istate)
     istate->word = get_word(istate->source);
     istate->name = istate->word;
     if (!has_namespace(istate->name))
-        istate->name = add_default_switch_namespace(istate->name);
+        istate->name = add_default_switch_namespace(istate->name,istate->lswitch_namespace);
     istate->word = NULL;
     istate->lswitch_ptr = get_switch(istate->storage,istate->name);
     if (istate->lswitch_ptr == NULL)
@@ -292,7 +319,7 @@ IState *lamp_switch_delete(IState *istate)
         istate->word = get_word(istate->source);
         istate->name = istate->word;
         if (!has_namespace(istate->name))
-            istate->name = add_default_lamp_namespace(istate->name); // Defaults to lamp
+            istate->name = add_default_lamp_namespace(istate->name,istate->lamp_namespace); // Defaults to lamp
         if (get_lamp(istate->storage,istate->name) != NULL)
             remove_storage_lamp(istate->storage, istate->name);
         else
@@ -310,7 +337,7 @@ IState *lamp_switch_delete(IState *istate)
         istate->word = get_word(istate->source);
         istate->name = istate->word;
         if (!has_namespace(istate->name))
-            istate->name = add_default_switch_namespace(istate->name); // Defaults to lamp
+            istate->name = add_default_switch_namespace(istate->name,istate->lswitch_namespace); // Defaults to lamp
         if (get_switch(istate->storage,istate->name) != NULL)
             remove_storage_switch(istate->storage, istate->name);
         else
@@ -347,7 +374,7 @@ IState *lamp_switch_display(IState *istate)
         free(istate->word);
         istate->word = get_word(istate->source); // Assumes its a var name.
     }
-    get_var_or_type_check(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref),istate->source);
+    get_var_or_type_check(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref),istate->source, istate->lamp_namespace, istate->lswitch_namespace);
     if (istate->lamp_ptr_ref != NULL)
     {
         if (istate->debug)
@@ -423,7 +450,7 @@ IState *power_circuit(IState *istate)
         istate->value = get_value(istate->word);
     else // Tries to get reference to other to see if turns on or off.
     {
-        get_var_or_type_check(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref),istate->source);
+        get_var_or_type_check(istate->storage, istate->word, &(istate->lamp_ptr_ref), &(istate->lswitch_ptr_ref),istate->source, istate->lamp_namespace, istate->lswitch_namespace);
         if (istate->lamp_ptr_ref != NULL)
             istate->value = istate->lamp_ptr_ref->value;
         else
@@ -439,6 +466,30 @@ IState *power_circuit(IState *istate)
     }
     free(istate->name);
     free(istate->word);
+    return istate;
+}
+
+/*
+    Sets both lamp and switch namespaces.
+*/
+IState *set_namespaces(IState *istate)
+{
+    istate->word = get_word(istate->source);
+    if (!strcmp(istate->word,"lamp"))
+    {
+        istate->word = get_word(istate->source);
+        set_lamp_namespace(istate, istate->word);
+    }
+    else if (!strcmp(istate->word,"switch"))
+    {
+        istate->word = get_word(istate->source);
+        set_switch_namespace(istate, istate->word);
+    }
+    else
+    {
+        set_lamp_namespace(istate, istate->word);
+        set_switch_namespace(istate, istate->word);
+    }
     return istate;
 }
 
@@ -514,6 +565,13 @@ int interpret(IState *istate)
         else if (istate->word != NULL && !strcmp("power",istate->word))
         {
             istate = power_circuit(istate);
+            if (istate->execution_end != NOT_END)
+                return istate->execution_end;
+        }
+        // Defining namespace.
+        else if (istate->word != NULL && !strcmp("namespace",istate->word))
+        {
+            istate = set_namespaces(istate);
             if (istate->execution_end != NOT_END)
                 return istate->execution_end;
         }

@@ -136,7 +136,7 @@ int call_circuit(Storage *storage, FILE *source, char *name);
     LampSwitch **lswitch: Pointer to assign switch to;
     FILE *source: Source to retrieve next word for if word is a type check.
 */
-int get_var_or_type_check(Storage *storage, char *word, Lamp **lamp, LampSwitch **lswitch, FILE *source);
+int get_var_or_type_check(Storage *storage, char *word, Lamp **lamp, LampSwitch **lswitch, FILE *source, char *lamp_namespace, char* lswitch_namespace);
 
 /*
     Gets the lamp/switch by its name. Useful to get value.
@@ -144,6 +144,8 @@ int get_var_or_type_check(Storage *storage, char *word, Lamp **lamp, LampSwitch 
     Storage *storage: Storage to get from;
     char *var_name: Name to search by; 
     Lamp **lamp: Pointer to assign lamp to;
-    LampSwitch **lswitch: Pointer to assign switch to.
+    LampSwitch **lswitch: Pointer to assign switch to;
+    char *lamp_namespace: Namespace to search for lamps;
+    char *lswitch_namespace: Namespace to search for switches.
 */
-void get_var_by_name(Storage *storage, char *var_name, Lamp **lamp, LampSwitch **lswitch);
+void get_var_by_name(Storage *storage, char *var_name, Lamp **lamp, LampSwitch **lswitch, char *lamp_namespace, char *lswitch_namespace);
