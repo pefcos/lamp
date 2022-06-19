@@ -1,3 +1,6 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -28,3 +31,5 @@
 #define ERROR_UNKNOWN_WORD 57
 #define ERROR_UNKNOWN_CIRCUIT 59
 #define ERROR_INVALID_REDUCED_NOTATION 61
+
+#endif

@@ -1,17 +1,9 @@
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+#ifndef TYPE_SWITCH_H
+#define TYPE_SWITCH_H
+
 #include "../constants/constants.h"
-#endif
-
-#ifndef UTILS_H
-#define UTILS_H
 #include "../utils/utils.h"
-#endif
-
-#ifndef NAMESPACES_H
-#define NAMESPACES_H
 #include "../storage/namespaces.h"
-#endif
 
 /*
     Switch item struct.
@@ -203,3 +195,5 @@ LampSwitchItem *new_switch_item(unsigned char *directions, int dir_len, unsigned
     unsigned char *directions: Directions to append the off suffix to
 */
 unsigned char *add_direction_off_suffix(unsigned char *directions, int *dir_len);
+
+#endif

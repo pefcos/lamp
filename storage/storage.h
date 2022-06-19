@@ -1,19 +1,10 @@
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+#ifndef STORAGE_H
+#define STORAGE_H
+
 #include "../constants/constants.h"
-#endif
-#ifndef TYPE_LAMP_H
-#define TYPE_LAMP_H
 #include "../types/lamp.h"
-#endif
-#ifndef TYPE_SWITCH_H
-#define TYPE_SWITCH_H
 #include "../types/switch.h"
-#endif
-#ifndef UTILS_H
-#define UTILS_H
 #include "../utils/utils.h"
-#endif
 
 #define NO_TYPE_CHECK 0 // No type check was found.
 #define LAMP_TYPE_CHECK 1 // "lamp?" type check was found.
@@ -147,3 +138,5 @@ int get_var_or_type_check(Storage *storage, char *word, Lamp **lamp, LampSwitch 
     LampSwitch **lswitch: Pointer to assign switch to.
 */
 void get_var_by_name(Storage *storage, char *var_name, Lamp **lamp, LampSwitch **lswitch);
+
+#endif

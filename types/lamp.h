@@ -1,17 +1,11 @@
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+#ifndef TYPE_LAMP_H
+#define TYPE_LAMP_H
+
 #include "../constants/constants.h"
-#endif
 
-#ifndef UTILS_H
-#define UTILS_H
 #include "../utils/utils.h"
-#endif
 
-#ifndef NAMESPACES_H
-#define NAMESPACES_H
 #include "../storage/namespaces.h"
-#endif
 
 /*
     Lamp struct.
@@ -60,3 +54,5 @@ void display_lamp(Lamp *lamp, unsigned char block);
     Lamp *lamp: Lamp to destroy;
 */
 void delete_lamp(Lamp *lamp);
+
+#endif

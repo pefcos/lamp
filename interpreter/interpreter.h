@@ -1,23 +1,10 @@
-// Includes lamp type.
-#ifndef TYPE_LAMP_H
-#define TYPE_LAMP_H
+#ifndef INTERPRETER_H
+#define INTERPRETER_H
+
 #include "../types/lamp.h"
-#endif
-// Includes switch type.
-#ifndef TYPE_SWITCH_H
-#define TYPE_SWITCH_H
 #include "../types/switch.h"
-#endif
-// Includes storage.
-#ifndef STORAGE_H
-#define STORAGE_H
 #include "../storage/storage.h"
-#endif
-// Includes storage.
-#ifndef UTILS_H
-#define UTILS_H
 #include "../utils/utils.h"
-#endif
 
 struct interpreter_state
 {
@@ -110,3 +97,5 @@ IState *ignore_comment(IState *istate);
     Storage *storage: Storage to store values in.
 */
 int interpret(IState *istate);
+
+#endif

@@ -1,7 +1,7 @@
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+#ifndef UTILS_H
+#define UTILS_H
+
 #include "../constants/constants.h"
-#endif
 
 /*
     Struct that stores offsets before function calls.
@@ -116,3 +116,5 @@ int ends_with_comment(char *str);
     Prints end message and gives more information on errors.
 */
 void print_end_message(int execution_end, char *word, int line);
+
+#endif

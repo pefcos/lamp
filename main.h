@@ -1,11 +1,7 @@
 /*
-    Initial concept by: Arthur Allebrandt Werlang.
-    Final design and interpreter implementation: Pedro Fronchetti Costa da Silva.
+    Initial concept by: thuiah.
+    Final design and interpreter implementation: pefcos.
 
     Lamp interpreter.
 */
-// Includes interpreter.
-#ifndef INTERPRETER_H
-#define INTERPRETER_H
 #include "./interpreter/interpreter.h"
-#endif

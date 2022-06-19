@@ -1,5 +1,5 @@
 /*
-    Pedro Fronchetti Costa da Silva, 08/2021
+    pefcos, 08/2021
     Lamp interpreter.
 */
 
